@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-           <groupId>org.hibernate</groupId>
-           <artifactId>hibernate-tools-parent</artifactId>
-           <version>6.0.0-SNAPSHOT</version>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-tools-parent</artifactId>
+		<version>6.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>hibernate-tools</artifactId>
@@ -23,9 +23,9 @@
 	</issueManagement>
 
 	<scm>
-	  <connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
-	  <developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
-	  <url>http://github.com/hibernate/hibernate-tools</url>
+		<connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
+		<developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
+		<url>http://github.com/hibernate/hibernate-tools</url>
 	</scm>
 
 	<organization>
@@ -56,31 +56,31 @@
 	</developers>
 
 	<properties>
-        <maven.deploy.skip>false</maven.deploy.skip>
-        <maven.install.skip>false</maven.install.skip>
+		<maven.deploy.skip>false</maven.deploy.skip>
+		<maven.install.skip>false</maven.install.skip>
 	</properties>
-	
+
 	<dependencies>
-	    <dependency>
-		    <groupId>commons-collections</groupId>
-		    <artifactId>commons-collections</artifactId>
-	    </dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.eclipse.jdt</groupId>
-            <artifactId>org.eclipse.jdt.core</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
@@ -97,14 +97,26 @@
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
 		</dependency>
-	    <dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-api</artifactId>
-	    </dependency>
- 		<dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-		</dependency> 
+		</dependency>
 	</dependencies>
 
+	<distributionManagement>
+		<repository>
+			<id>global</id>
+			<name>Global Repository</name>
+			<url>http://maven.aboucipu.fr/repository/global</url>
+		</repository>
+		<snapshotRepository>
+			<id>global</id>
+			<name>Global Repository</name>
+			<url>http://maven.aboucipu.fr/repository/global</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
