@@ -1,6 +1,8 @@
 ${pojo.getPackageDeclaration()}
 // Generated ${date} by Hibernate Tools ${version}
 
+import api_builder.app.jackson.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 <#assign classbody>
 <#include "PojoTypeDeclaration.ftl"/> {
 

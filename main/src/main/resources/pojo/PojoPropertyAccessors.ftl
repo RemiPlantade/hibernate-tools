@@ -7,6 +7,7 @@
      */
 </#if>
     <#include "GetPropertyAnnotation.ftl"/>
+    <#if !pojo.isComponent(property)>@JsonView(Views.Public.class)</#if>
     ${pojo.getPropertyGetModifiers(property)} ${pojo.getJavaTypeName(property, jdk5)} ${pojo.getGetterSignature(property)}() {
         return this.${c2j.keyWordCheck(property.name)};
     }
