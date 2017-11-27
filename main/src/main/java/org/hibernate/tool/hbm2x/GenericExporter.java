@@ -15,11 +15,11 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 
 public class GenericExporter extends AbstractExporter {
-	
+
 	static abstract class ModelIterator {		
 		abstract void process(GenericExporter ge);
 	}
-	
+
 	static Map<String, ModelIterator> modelIterators = new HashMap<String, ModelIterator>();
 	static {
 		modelIterators.put( "configuration", new ModelIterator() {
@@ -49,10 +49,10 @@ public class GenericExporter extends AbstractExporter {
 			}
 		});
 		modelIterators.put("component", new ModelIterator() {
-			
+
 			void process(GenericExporter ge) {
 				Map<String, Component> components = new HashMap<String, Component>();
-				
+
 				Iterator<?> iterator = 
 						ge.getCfg2JavaTool().getPOJOIterator(
 								ge.getMetadata().getEntityBindings().iterator());
@@ -61,7 +61,7 @@ public class GenericExporter extends AbstractExporter {
 					POJOClass element = (POJOClass) iterator.next();
 					ConfigurationNavigator.collectComponents(components, element);											
 				}
-						
+
 				iterator = components.values().iterator();
 				while ( iterator.hasNext() ) {					
 					Component component = (Component) iterator.next();
@@ -71,36 +71,36 @@ public class GenericExporter extends AbstractExporter {
 			}
 		});
 	}
-	
+
 	private String templateName;
 	private String filePattern;
 	private String forEach;
-	
+
 	public String getTemplateName() {
 		return templateName;
 	}
-	
+
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
 	}
-		
-	
+
+
 	public void setForEach(String foreach) {
 		this.forEach = foreach;
 	}
-	
-	
+
+
 	protected void doStart() {
-				
+
 		if(filePattern==null) {
 			throw new ExporterException("File pattern not set on " + this.getClass());
 		}
 		if(templateName==null) {
 			throw new ExporterException("Template name not set on " + this.getClass());
 		}
-		
+
 		List<ModelIterator> exporters = new ArrayList<ModelIterator>();
-	
+
 		if(StringHelper.isEmpty( forEach )) {
 			if(filePattern.indexOf("{class-name}")>=0) {				
 				exporters.add( modelIterators.get( "entity" ) );
@@ -110,7 +110,7 @@ public class GenericExporter extends AbstractExporter {
 			}
 		} else {
 			StringTokenizer tokens = new StringTokenizer(forEach, ",");
-		 
+
 			while ( tokens.hasMoreTokens() ) {
 				String nextToken = tokens.nextToken();
 				ModelIterator modelIterator = modelIterators.get(nextToken);
@@ -168,9 +168,9 @@ public class GenericExporter extends AbstractExporter {
 	public void setFilePattern(String filePattern) {
 		this.filePattern = filePattern;		
 	}
-	
+
 	public String getFilePattern() {
 		return filePattern;
 	}
-	
+
 }
