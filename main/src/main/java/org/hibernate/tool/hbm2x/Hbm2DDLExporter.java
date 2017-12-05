@@ -186,4 +186,9 @@ public class Hbm2DDLExporter extends AbstractExporter {
 	public void setHaltonerror(boolean haltOnError) {
 		this.haltOnError = haltOnError;
 	}
+
+	@Override
+	public String getId() {
+		return ID_HBM2_DDL;
+	}
 }

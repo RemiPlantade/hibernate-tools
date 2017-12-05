@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.hibernate.tool.hbm2x.conf.TestWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,6 @@ public class TemplateProducer {
 	}
 	
 	public void produce(Map<String,Object> additionalContext, String templateName, File destination, String identifier, String fileType, String rootContext) {
-		
 		String tempResult = produceToString( additionalContext, templateName, rootContext );
 		
 		if(tempResult.trim().length()==0) {
@@ -34,7 +34,6 @@ public class TemplateProducer {
 		}
 		FileWriter fileWriter = null;
 		try {
-			
 			th.ensureExistence( destination );    
 	     
 			ac.addFile(destination, fileType);

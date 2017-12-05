@@ -56,4 +56,9 @@ public interface Exporter {
 	 */
 	public void start();
 	
+	/**
+	 * Return Exporter id to know which is processing
+	 */
+	public String getId();
+	
 }

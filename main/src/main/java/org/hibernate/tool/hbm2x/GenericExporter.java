@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.eclipse.osgi.internal.loader.ModuleClassLoader.GenerationProtectionDomain;
+import org.hibernate.boot.model.IdGeneratorStrategyInterpreter.GeneratorNameDeterminationContext;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Component;
+import org.hibernate.tool.hbm2x.conf.TestWindow;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
@@ -42,9 +45,28 @@ public class GenericExporter extends AbstractExporter {
 						ge.getCfg2JavaTool().getPOJOIterator(
 								ge.getMetadata().getEntityBindings().iterator());
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
+				List<String> entitiesListName = new ArrayList<>();
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
-					ge.exportPersistentClass( additionalContext, element );					
+					ge.exportPersistentClass( additionalContext, element );
+					if(ge.templateName == "pojo/Pojo.ftl") {
+						entitiesListName.add(element.getDeclarationName());
+					}
+				}
+				if(ge.templateName.equals("pojo/Pojo.ftl")) {
+					new Thread() {
+						@Override
+						public void run() {
+							javafx.application.Application.launch(TestWindow.class);
+						}
+					}.start();
+					TestWindow.setListView(entitiesListName);
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -61,12 +83,18 @@ public class GenericExporter extends AbstractExporter {
 					POJOClass element = (POJOClass) iterator.next();
 					ConfigurationNavigator.collectComponents(components, element);											
 				}
+				//				new Thread() {
+				//					@Override
+				//					public void run() {
+				//						javafx.application.Application.launch(TestWindow.class);
+				//					}
+				//				}.start();
 
 				iterator = components.values().iterator();
 				while ( iterator.hasNext() ) {					
 					Component component = (Component) iterator.next();
 					ComponentPOJOClass element = new ComponentPOJOClass(component,ge.getCfg2JavaTool());
-					ge.exportComponent( additionalContext, element );					
+					ge.exportComponent( additionalContext, element );	
 				}
 			}
 		});
@@ -171,6 +199,11 @@ public class GenericExporter extends AbstractExporter {
 
 	public String getFilePattern() {
 		return filePattern;
+	}
+
+	@Override
+	public String getId() {
+		return ID_GENERIC;
 	}
 
 }

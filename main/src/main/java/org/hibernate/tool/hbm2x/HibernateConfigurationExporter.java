@@ -184,5 +184,10 @@ public class HibernateConfigurationExporter extends AbstractExporter {
 		}
 		return result.toString();
 	  }
+
+	@Override
+	public String getId() {
+		return ID_CONFIG;
+	}
 	
 }

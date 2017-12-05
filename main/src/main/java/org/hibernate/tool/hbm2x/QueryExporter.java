@@ -88,4 +88,9 @@ public class QueryExporter extends AbstractExporter {
 		this.queryStrings = queryStrings;		
 	}
 
+	@Override
+	public String getId() {
+		return ID_QUERY;
+	}
+
 }

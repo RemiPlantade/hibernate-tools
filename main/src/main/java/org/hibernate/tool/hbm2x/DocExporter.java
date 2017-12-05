@@ -621,5 +621,10 @@ public class DocExporter extends AbstractExporter {
     public String getName() {
     	return "hbm2doc";
     }
+
+	@Override
+	public String getId() {
+		return ID_DOC;
+	}
        
 }

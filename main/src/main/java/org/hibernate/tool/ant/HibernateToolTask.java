@@ -21,6 +21,7 @@ import org.hibernate.boot.MappingNotFoundException;
 import org.hibernate.boot.jaxb.Origin;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.hbm2x.conf.TestWindow;
 
 /**
  * @author max
@@ -167,7 +168,6 @@ public class HibernateToolTask extends Task {
 			ClassLoader classLoader = this.getClass().getClassLoader();
 			loader.setParent(classLoader ); // if this is not set, classes from the taskdef cannot be found - which is crucial for e.g. annotations.
 			loader.setThreadContextLoader();
-			
 			while (iterator.hasNext() ) {				
 				generatorTask = iterator.next();
 				log(count++ + ". task: " + generatorTask.getName() );

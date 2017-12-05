@@ -38,6 +38,16 @@ public abstract class AbstractExporter implements Exporter {
 
 	private Cfg2HbmTool c2h;
 	private Cfg2JavaTool c2j;
+	
+	public static final String ID_GENERIC ="generic";
+	public static final String ID_HB2M_2_JAVA ="hb2m2java";
+	public static final String ID_HBM_LINT ="hbmlint";
+	public static final String ID_HB2M2_HBMX ="hb2m2java";
+	public static final String ID_HBM2_DDL ="hbm2ddl";
+	public static final String ID_HBM2_CFGX ="hbm2cfgx";
+	public static final String ID_QUERY ="query";
+	public static final String ID_DOC ="doc";
+	public static final String ID_CONFIG ="config";
 
 	public AbstractExporter() {
 		c2h = new Cfg2HbmTool();
@@ -239,5 +249,8 @@ public abstract class AbstractExporter implements Exporter {
 		}
 		return value;
 	}
+
+	@Override
+	public abstract String getId();
 
 }
