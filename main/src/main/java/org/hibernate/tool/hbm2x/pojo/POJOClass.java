@@ -49,6 +49,8 @@ public interface POJOClass extends ImportContext {
 	public String getImplementsDeclaration();
 	public String getImplements();
 	
+	public String getParentPackage(String childPackage);
+	
 	public String getExtendsDeclaration();
 	public String getExtends();
 	

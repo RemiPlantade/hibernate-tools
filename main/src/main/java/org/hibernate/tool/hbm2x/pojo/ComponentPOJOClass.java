@@ -174,4 +174,11 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	{
 		return null;
 	}
+
+	@Override
+	public String getParentPackage(String childPackage) {
+		// TODO Auto-generated method stub
+		
+		return childPackage.substring(0,childPackage.lastIndexOf('.'));
+	}
 }

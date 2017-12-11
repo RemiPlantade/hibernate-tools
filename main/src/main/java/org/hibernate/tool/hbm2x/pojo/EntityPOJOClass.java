@@ -920,4 +920,10 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return clazz.getVersion();
 	}
 
+	@Override
+	public String getParentPackage(String childPackage) {
+		
+		return childPackage.substring(0,childPackage.lastIndexOf('.'));
+	}
+
 }

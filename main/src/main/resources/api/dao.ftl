@@ -21,7 +21,7 @@ public interface ${declarationName}Dao {
 	public List<${declarationName}> getAll();
     public ${declarationName} get${declarationName}ById(int id);
     public List<${declarationName}> get${declarationName}ByAttr(String attrName, String value);
-    public void delete${declarationName}(int id);
+    public void delete${declarationName}(${declarationName} e);
     public boolean ${declarationName}Existes(${declarationName} e);
 }
 </#assign>
