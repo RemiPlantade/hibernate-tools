@@ -2,7 +2,6 @@ target
 testdb
 toolstestoutput
 bin
-*~
 reverseoutput
 .classpath
 .project
