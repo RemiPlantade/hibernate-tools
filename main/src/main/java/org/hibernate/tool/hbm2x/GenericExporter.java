@@ -60,6 +60,7 @@ public class GenericExporter extends AbstractExporter {
 							javafx.application.Application.launch(TestWindow.class);
 						}
 					}.start();
+					System.out.println("===== Size" + entitiesListName.size());
 					TestWindow.setListView(entitiesListName);
 					try {
 						Thread.sleep(5000);
