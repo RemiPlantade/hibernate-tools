@@ -1,6 +1,7 @@
 package org.hibernate.tool.hbm2x.conf;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.application.Application;
@@ -19,7 +20,23 @@ public class TestWindow extends Application {
 	private static ListView<String> entity_list;
 	private Stage primaryStage;
     private BorderPane rootLayout;
+    
+    
 	
+	@Override
+	public void init() throws Exception {
+		super.init();
+		Parameters params = getParameters();
+		
+		String[] beans = new String[params.getUnnamed().size()];
+		for (int i = 0; i < params.getUnnamed().size() ; i++) { 
+			beans[0] = params.getUnnamed().get(i);
+		}
+		ObservableList<String> items = FXCollections.observableArrayList (beans);
+     	entity_list = new ListView<>();
+     	entity_list.setItems(items);
+	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
@@ -36,7 +53,6 @@ public class TestWindow extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/TestView.fxml"));
             rootLayout = (BorderPane) loader.load();
-            entity_list = new ListView<>();
             rootLayout.setCenter(entity_list);
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);

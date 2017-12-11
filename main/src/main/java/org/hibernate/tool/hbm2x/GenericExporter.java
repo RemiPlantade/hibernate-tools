@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.eclipse.osgi.internal.loader.ModuleClassLoader.GenerationProtectionDomain;
-import org.hibernate.boot.model.IdGeneratorStrategyInterpreter.GeneratorNameDeterminationContext;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Component;
 import org.hibernate.tool.hbm2x.conf.TestWindow;
@@ -49,15 +47,20 @@ public class GenericExporter extends AbstractExporter {
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
 					ge.exportPersistentClass( additionalContext, element );
-					if(ge.templateName == "pojo/Pojo.ftl") {
+					if(ge.templateName.equals("pojo/Pojo.ftl")) {
 						entitiesListName.add(element.getDeclarationName());
 					}
+				}
+				String[] beansName = new String[entitiesListName.size()];
+				for (int i = 0; i < entitiesListName.size(); i++) {
+					beansName[i] = entitiesListName.get(i);
 				}
 				if(ge.templateName.equals("pojo/Pojo.ftl")) {
 					new Thread() {
 						@Override
 						public void run() {
-							javafx.application.Application.launch(TestWindow.class);
+							
+							javafx.application.Application.launch(TestWindow.class,beansName);
 						}
 					}.start();
 					System.out.println("===== Size" + entitiesListName.size());
