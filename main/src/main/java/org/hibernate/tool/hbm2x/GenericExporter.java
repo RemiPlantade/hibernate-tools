@@ -49,25 +49,6 @@ public class GenericExporter extends AbstractExporter {
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
 					ge.exportPersistentClass( additionalContext, element );
-					if(ge.templateName == "pojo/Pojo.ftl") {
-						entitiesListName.add(element.getDeclarationName());
-					}
-				}
-				if(ge.templateName.equals("pojo/Pojo.ftl")) {
-					new Thread() {
-						@Override
-						public void run() {
-							javafx.application.Application.launch(TestWindow.class);
-						}
-					}.start();
-					System.out.println("===== Size" + entitiesListName.size());
-					TestWindow.setListView(entitiesListName);
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 				}
 			}
 		});
