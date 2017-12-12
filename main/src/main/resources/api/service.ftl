@@ -1,5 +1,7 @@
 <#if apipackage??>
 package ${apipackage};
+import ${pojo.getPackageName()}.${pojo.getShortName()};
+import java.util.List;
 <#else>
 ${pojo.getPackageDeclaration()}
 </#if>
@@ -13,6 +15,13 @@ ${pojo.getPackageDeclaration()}
  * @author Hibernate Tools
  */
 public interface ${declarationName}Service {
+    
+    public void add${declarationName}(${declarationName} e);
+    public void update${declarationName}(${declarationName} e);
+	public List<${declarationName}> getAll();
+    public ${declarationName} get${declarationName}ById(int id);
+    public List<${declarationName}> get${declarationName}ByAttr(String attrName, String value);
+    public void delete${declarationName}(${declarationName} e);
     
 }
 </#assign>
