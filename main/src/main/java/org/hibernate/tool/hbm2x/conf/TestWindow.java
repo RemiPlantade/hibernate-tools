@@ -35,6 +35,7 @@ public class TestWindow extends Application {
 		ObservableList<String> items = FXCollections.observableArrayList (beans);
      	entity_list = new ListView<>();
      	entity_list.setItems(items);
+     	entity_list.refresh();
 	}
 
 	@Override
@@ -80,9 +81,4 @@ public class TestWindow extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
 }

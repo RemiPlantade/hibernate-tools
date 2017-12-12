@@ -71,6 +71,7 @@ public class HibernateToolTask extends Task {
 	}
 	
 	public ExporterTask createHbmTemplate() {
+		System.out.println("=============== createHbmTemplate");
 		ExporterTask generator = new GenericExporterTask(this);
 		addGenerator( generator );
 		return generator;

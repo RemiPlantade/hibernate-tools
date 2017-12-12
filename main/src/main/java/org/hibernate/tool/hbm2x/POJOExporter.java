@@ -16,7 +16,6 @@ public class POJOExporter extends GenericExporter {
 	protected void init() {
 		setTemplateName(POJO_JAVACLASS_FTL);
 		setFilePattern("{package-name}/{class-name}.java");    
-		System.out.println("=============== INIT pojo");
 	}
 
 	public POJOExporter() {

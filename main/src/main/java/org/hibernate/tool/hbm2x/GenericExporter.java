@@ -59,18 +59,11 @@ public class GenericExporter extends AbstractExporter {
 					new Thread() {
 						@Override
 						public void run() {
-							
 							javafx.application.Application.launch(TestWindow.class,beansName);
 						}
 					}.start();
-					System.out.println("===== Size" + entitiesListName.size());
-					TestWindow.setListView(entitiesListName);
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					System.out.println("===== Size "  + entitiesListName.size());
+					//TestWindow.setListView(entitiesListName);
 				}
 			}
 		});
@@ -87,13 +80,6 @@ public class GenericExporter extends AbstractExporter {
 					POJOClass element = (POJOClass) iterator.next();
 					ConfigurationNavigator.collectComponents(components, element);											
 				}
-				//				new Thread() {
-				//					@Override
-				//					public void run() {
-				//						javafx.application.Application.launch(TestWindow.class);
-				//					}
-				//				}.start();
-
 				iterator = components.values().iterator();
 				while ( iterator.hasNext() ) {					
 					Component component = (Component) iterator.next();
