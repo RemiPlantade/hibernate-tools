@@ -3,6 +3,10 @@ package ${apipackage};
 import api_builder.gen.api.bean.${pojo.getShortName()};
 import api_builder.gen.api.service.impl.${pojo.getShortName()}ServiceImpl;
 
+<#if pojo.getIdentifierProperty().getType().isComponentType()>
+import ${pojo.getIdentifierProperty().getType().getName()};
+</#if>
+
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +69,28 @@ public class ${declarationName}Controller {
         	    return new ResponseEntity<Void>(HttpStatus.CONFLICT);
                 }
                 HttpHeaders headers = new HttpHeaders();
-                headers.setLocation(builder.path("/${declarationName}/{id}").buildAndExpand(instance.getId${declarationName}()).toUri());
+                
+               <#if pojo.hasIdentifierProperty()>
+               	
+               		headers.setLocation(builder.path("/${declarationName}/{id}").buildAndExpand(instance.${pojo.getGetterSignature(pojo.getIdentifierProperty())}()).toUri());
+               	
+               </#if>
+             
                 return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+	}
+	
+	@JsonView(Views.${declarationName}Views.class)
+	@PutMapping("${declarationName}")
+	public ResponseEntity<${declarationName}> update${declarationName}(@RequestBody ${declarationName} instance) {
+		${declarationName}Serv.update${declarationName}(instance);
+		return new ResponseEntity<${declarationName}>(instance, HttpStatus.OK);
+	}
+	
+	@JsonView(Views.${declarationName}Views.class)
+	@DeleteMapping("${declarationName}/{id}")
+	public ResponseEntity<Void> deleteArticle(@RequestBody ${declarationName} instance) {
+		${declarationName}Serv.delete${declarationName}(instance);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
     
 }

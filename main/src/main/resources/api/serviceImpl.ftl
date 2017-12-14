@@ -3,6 +3,9 @@ package ${apipackage};
 import ${pojo.getPackageName()}.${pojo.getShortName()};
 import api_builder.gen.api.service.${pojo.getShortName()}Service;
 import api_builder.gen.api.dao.impl.${pojo.getShortName()}DaoImpl;
+<#if pojo.getIdentifierProperty().getType().isComponentType()>
+import ${pojo.getIdentifierProperty().getType().getName()};
+</#if>
 import java.util.List;
 
 <#else>
@@ -26,8 +29,8 @@ public class ${declarationName}ServiceImpl implements ${declarationName}Service 
     		dao = new ${declarationName}DaoImpl();
     	}
     	
-	    public void add${declarationName}(${declarationName} e){
-	    	dao.add${declarationName}(e);
+	    public boolean add${declarationName}(${declarationName} e){
+	    	return dao.add${declarationName}(e);
 	    }
 	    public void update${declarationName}(${declarationName} e){
 	    	dao.update${declarationName}(e);

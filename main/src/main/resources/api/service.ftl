@@ -2,6 +2,9 @@
 package ${apipackage};
 import ${pojo.getPackageName()}.${pojo.getShortName()};
 import java.util.List;
+<#if pojo.getIdentifierProperty().getType().isComponentType()>
+import ${pojo.getIdentifierProperty().getType().getName()};
+</#if>
 <#else>
 ${pojo.getPackageDeclaration()}
 </#if>
@@ -16,7 +19,7 @@ ${pojo.getPackageDeclaration()}
  */
 public interface ${declarationName}Service {
     
-    public void add${declarationName}(${declarationName} e);
+    public boolean add${declarationName}(${declarationName} e);
     public void update${declarationName}(${declarationName} e);
 	public List<${declarationName}> getAll();
     public ${declarationName} get${declarationName}ById(int id);

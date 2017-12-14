@@ -1,6 +1,9 @@
 <#if apipackage??>
 package ${apipackage};
 import ${pojo.getPackageName()}.${pojo.getShortName()};
+<#if pojo.getIdentifierProperty().getType().isComponentType()>
+import ${pojo.getIdentifierProperty().getType().getName()};
+</#if>
 import java.util.List;
 <#else>
 ${pojo.getPackageDeclaration()}
@@ -16,10 +19,12 @@ ${pojo.getPackageDeclaration()}
  */
 public interface ${declarationName}Dao {
 
-	public void add${declarationName}(${declarationName} e);
+	public boolean add${declarationName}(${declarationName} e);
 	public void update${declarationName}(${declarationName} e);
 	public List<${declarationName}> getAll();
-    public ${declarationName} get${declarationName}ById(int id);
+	<#if !pojo.isComponent() && pojo.hasIdentifierProperty()>
+    public ${declarationName} get${declarationName}ById(${pojo.getIdentifierProperty().getType().getName()} id);
+    </#if>
     public List<${declarationName}> get${declarationName}ByAttr(String attrName, String value);
     public void delete${declarationName}(${declarationName} e);
 }

@@ -46,9 +46,10 @@ public class GenericExporter extends AbstractExporter {
 								ge.getMetadata().getEntityBindings().iterator());
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				List<String> entitiesListName = new ArrayList<>();
-				while ( iterator.hasNext() ) {					
+				while ( iterator.hasNext() ) {			
 					POJOClass element = (POJOClass) iterator.next();
-					ge.exportPersistentClass( additionalContext, element );
+
+						ge.exportPersistentClass( additionalContext, element );
 				}
 			}
 		});
@@ -73,10 +74,14 @@ public class GenericExporter extends AbstractExporter {
 				//				}.start();
 
 				iterator = components.values().iterator();
-				while ( iterator.hasNext() ) {					
+				while ( iterator.hasNext() ) {			
+					
 					Component component = (Component) iterator.next();
 					ComponentPOJOClass element = new ComponentPOJOClass(component,ge.getCfg2JavaTool());
-					ge.exportComponent( additionalContext, element );	
+					if(ge.templateName.equals("pojo/Pojo.ftl")) {
+						ge.exportComponent( additionalContext, element );	
+					}
+
 				}
 			}
 		});

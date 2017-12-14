@@ -231,6 +231,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 			return buf.toString();
 		}
 	}
+	
 
 	private boolean usePropertyInEquals(Property property) {
 		boolean hasEqualsMetaAttribute = c2j.hasMetaAttribute(property, "use-in-equals");		

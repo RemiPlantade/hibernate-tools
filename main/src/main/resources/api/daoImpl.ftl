@@ -2,8 +2,12 @@
 package ${apipackage};
 import api_builder.gen.api.dao.${pojo.getShortName()}Dao;
 import api_builder.gen.api.bean.${pojo.getShortName()};
+<#if pojo.getIdentifierProperty().getType().isComponentType()>
+import ${pojo.getIdentifierProperty().getType().getName()};
+</#if>
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.EntityExistsException;
 <#else>
 ${pojo.getPackageDeclaration()}
 </#if>
@@ -20,15 +24,15 @@ public class ${declarationName}DaoImpl implements ${declarationName}Dao{
     
     @${pojo.importType("javax.persistence.PersistenceContext")} private ${pojo.importType("javax.persistence.EntityManager")} entityManager;
     
-        public void add${declarationName}(${declarationName} transientInstance) {
+        public boolean add${declarationName}(${declarationName} transientInstance) {
         
         try {
             entityManager.persist(transientInstance);
-            
+            entityManager.getTransaction().commit();
+            return true;
         }
-        catch (RuntimeException re) {
-            
-            throw re;
+        catch (EntityExistsException re) {
+            return false;
         }
     } 
     
@@ -51,7 +55,7 @@ public class ${declarationName}DaoImpl implements ${declarationName}Dao{
             throw re;
         }
     }
-    
+    	<#if pojo.hasIdentifierProperty()>
         public ${declarationName} get${declarationName}ById(int id) {
         try {
             ${declarationName} instance = entityManager.find(${pojo.getDeclarationName()}.class, id);
@@ -61,7 +65,7 @@ public class ${declarationName}DaoImpl implements ${declarationName}Dao{
             throw re;
         }
     }
-    
+        </#if>
     public List<${declarationName}> getAll(){
     
     	try {

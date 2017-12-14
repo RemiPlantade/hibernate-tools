@@ -168,7 +168,7 @@ public class HibernateToolTask extends Task {
 			ClassLoader classLoader = this.getClass().getClassLoader();
 			loader.setParent(classLoader ); // if this is not set, classes from the taskdef cannot be found - which is crucial for e.g. annotations.
 			loader.setThreadContextLoader();
-			while (iterator.hasNext() ) {				
+			while (iterator.hasNext() ) {		
 				generatorTask = iterator.next();
 				log(count++ + ". task: " + generatorTask.getName() );
 				generatorTask.execute();			
