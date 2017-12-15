@@ -39,7 +39,7 @@ import org.hibernate.type.ForeignKeyDirection;
 public class EntityPOJOClass extends BasicPOJOClass {
 
 	private PersistentClass clazz;
-
+	
 	public EntityPOJOClass(PersistentClass clazz, Cfg2JavaTool cfg) {
 		super(clazz, cfg);
 		this.clazz = clazz;
@@ -924,6 +924,17 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	public String getParentPackage(String childPackage) {
 		
 		return childPackage.substring(0,childPackage.lastIndexOf('.'));
+	}
+
+	@Override
+	public boolean isJavaType(String shortTypeName) {
+		boolean isJavaType = false;
+		for (int i = 0; i < JAVA_TYPES.length; i++) {
+			if(JAVA_TYPES[i].equals(shortTypeName)) {
+				isJavaType = true;
+			}
+		}
+		return isJavaType;
 	}
 
 }

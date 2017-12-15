@@ -45,16 +45,15 @@ public class GenericExporter extends AbstractExporter {
 						ge.getCfg2JavaTool().getPOJOIterator(
 								ge.getMetadata().getEntityBindings().iterator());
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
-				List<String> entitiesListName = new ArrayList<>();
 				while ( iterator.hasNext() ) {			
 					POJOClass element = (POJOClass) iterator.next();
-
+					element.generateImports();
+					System.out.println("================= Exporting Entity : " + element.getDeclarationName());
 						ge.exportPersistentClass( additionalContext, element );
 				}
 			}
 		});
 		modelIterators.put("component", new ModelIterator() {
-
 			void process(GenericExporter ge) {
 				Map<String, Component> components = new HashMap<String, Component>();
 
@@ -64,19 +63,14 @@ public class GenericExporter extends AbstractExporter {
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
-					ConfigurationNavigator.collectComponents(components, element);											
+					ConfigurationNavigator.collectComponents(components, element);	
+					
 				}
-				//				new Thread() {
-				//					@Override
-				//					public void run() {
-				//						javafx.application.Application.launch(TestWindow.class);
-				//					}
-				//				}.start();
-
 				iterator = components.values().iterator();
 				while ( iterator.hasNext() ) {			
 					Component component = (Component) iterator.next();
 					ComponentPOJOClass element = new ComponentPOJOClass(component,ge.getCfg2JavaTool());
+					System.out.println("================= Exporting component : " + element.getDeclarationName());
 					ge.exportComponent( additionalContext, element );	
 				}
 			}

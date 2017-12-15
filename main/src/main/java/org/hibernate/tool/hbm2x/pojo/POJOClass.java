@@ -106,5 +106,10 @@ public interface POJOClass extends ImportContext {
 	
 	public boolean hasVersionProperty();
 	public Property getVersionProperty();
+	
+	/** Aboucorp add
+	 * Compare typename with List to determine if it's a java type
+	 */
+	public boolean isJavaType(String shortTypeName);
 		
 }

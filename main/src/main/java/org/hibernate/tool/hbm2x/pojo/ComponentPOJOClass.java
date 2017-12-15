@@ -23,7 +23,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	protected String getMappedClassName() {
 		return clazz.getComponentClassName();
 	}
-	
+
 	public String getExtends() {
 		String extendz = "";
 
@@ -41,7 +41,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 
 		return "".equals( extendz ) ? null : extendz;
 	}
-	    
+
 	public String getImplements() {
 		List<String> interfaces = new ArrayList<String>();
 
@@ -72,7 +72,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 			return null;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Iterator<Property> getAllPropertiesIterator() {
 		return clazz.getPropertyIterator();
@@ -81,7 +81,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	public boolean isComponent() {
 		return true;
 	}
-	
+
 	public boolean hasIdentifierProperty() {
 		return false;
 	}
@@ -93,7 +93,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	public String generateBasicAnnotation(Property property) {
 		return "";
 	}
-	
+
 	public String generateAnnIdGenerator() {
 		return "";
 	}
@@ -101,33 +101,33 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	public String generateAnnTableUniqueConstraint() {
 		return "";
 	}
-	
+
 	public Object getDecoratedObject() {
 		return clazz;
 	}
-	
+
 	public boolean isSubclass() {
 		return false;
 	}
-	
+
 	public List<Property> getPropertiesForFullConstructor() {
 		List<Property> res = new ArrayList<Property>();
-		
+
 		Iterator<Property> iter = getAllPropertiesIterator();
 		while(iter.hasNext()) {
 			res.add(iter.next());
 		}
 		return res;
 	}
-	
+
 	public List<Property> getPropertyClosureForFullConstructor() {
 		return getPropertiesForFullConstructor();
 	}
-	
+
 	public List<Property> getPropertyClosureForSuperclassFullConstructor() {
 		return Collections.emptyList();
 	}
-	
+
 	public List<Property> getPropertiesForMinimalConstructor() {
 		List<Property> res = new ArrayList<Property>();
 		Iterator<Property> iter = getAllPropertiesIterator();
@@ -158,15 +158,15 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	public String toString() {
 		return "Component: " + (clazz==null?"<none>":clazz.getComponentClassName());
 	}
-	
+
 	public Property getIdentifierProperty(){
 		return null;
 	}
 
-   public boolean hasVersionProperty() {
-	   return false;
-   }
-   
+	public boolean hasVersionProperty() {
+		return false;
+	}
+
 	/*
 	 * @see org.hibernate.tool.hbm2x.pojo.POJOClass#getVersionProperty()
 	 */
@@ -178,7 +178,18 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	@Override
 	public String getParentPackage(String childPackage) {
 		// TODO Auto-generated method stub
-		
+
 		return childPackage.substring(0,childPackage.lastIndexOf('.'));
+	}
+
+	@Override
+	public boolean isJavaType(String shortTypeName) {
+		boolean isJavaType = false;
+		for (int i = 0; i < JAVA_TYPES.length; i++) {
+			if(JAVA_TYPES[i].equals(shortTypeName)) {
+				isJavaType = true;
+			}
+		}
+		return isJavaType;
 	}
 }

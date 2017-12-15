@@ -39,6 +39,8 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	protected ImportContext importContext;
 	protected MetaAttributable meta;
 	protected final Cfg2JavaTool c2j;
+	protected final String[] JAVA_TYPES = {"Integer","Double","Float","String","Boolean","Short","Byte","Object"}; 
+
 	
 	public BasicPOJOClass(MetaAttributable ma, Cfg2JavaTool c2j) {
 		this.meta = ma;
