@@ -3,9 +3,6 @@ package ${apipackage};
 import ${pojo.getPackageName()}.${pojo.getShortName()};
 import api_builder.gen.api.service.${pojo.getShortName()}Service;
 import api_builder.gen.api.dao.impl.${pojo.getShortName()}DaoImpl;
-<#if pojo.getIdentifierProperty().getType().isComponentType()>
-import ${pojo.getIdentifierProperty().getType().getName()};
-</#if>
 import java.util.List;
 
 <#else>
@@ -40,7 +37,7 @@ public class ${declarationName}ServiceImpl implements ${declarationName}Service 
 			List<${declarationName}> listInstance =  dao.getAll();
 			return listInstance;
 		}
-	    public ${declarationName} get${declarationName}ById(int id){
+	    public ${declarationName} get${declarationName}ById(Object id){
 	    
 	    	${declarationName} instance = dao.get${declarationName}ById(id);
 	    	return instance;

@@ -3,10 +3,6 @@ package ${apipackage};
 import api_builder.gen.api.bean.${pojo.getShortName()};
 import api_builder.gen.api.service.impl.${pojo.getShortName()}ServiceImpl;
 
-<#if pojo.getIdentifierProperty().getType().isComponentType()>
-import ${pojo.getIdentifierProperty().getType().getName()};
-</#if>
-
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +44,7 @@ public class ${declarationName}Controller {
 
     @JsonView(Views.${declarationName}Views.class)
 	@GetMapping("${declarationName}/{id}")
-    public ResponseEntity<${declarationName}> getArticleById(@PathVariable("id") Integer id) {
+    public ResponseEntity<${declarationName}> getArticleById(@PathVariable("id") Object id) {
 		${declarationName} instance = ${declarationName}Serv.get${declarationName}ById(id);
 		return new ResponseEntity<${declarationName}>(instance, HttpStatus.OK);
 	}

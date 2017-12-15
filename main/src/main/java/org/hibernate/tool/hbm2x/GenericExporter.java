@@ -75,13 +75,9 @@ public class GenericExporter extends AbstractExporter {
 
 				iterator = components.values().iterator();
 				while ( iterator.hasNext() ) {			
-					
 					Component component = (Component) iterator.next();
 					ComponentPOJOClass element = new ComponentPOJOClass(component,ge.getCfg2JavaTool());
-					if(ge.templateName.equals("pojo/Pojo.ftl")) {
-						ge.exportComponent( additionalContext, element );	
-					}
-
+					ge.exportComponent( additionalContext, element );	
 				}
 			}
 		});
