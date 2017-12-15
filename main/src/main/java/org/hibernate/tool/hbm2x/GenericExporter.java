@@ -47,10 +47,14 @@ public class GenericExporter extends AbstractExporter {
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				while ( iterator.hasNext() ) {			
 					POJOClass element = (POJOClass) iterator.next();
-					element.generateImports();
 					System.out.println("================= Exporting Entity : " + element.getDeclarationName());
 						ge.exportPersistentClass( additionalContext, element );
 				}
+				iterator = 
+						ge.getCfg2JavaTool().getPOJOIterator(
+								ge.getMetadata().getEntityBindings().iterator());
+				//Create Singles file
+				ge.exportSingleClasses(additionalContext, iterator);
 			}
 		});
 		modelIterators.put("component", new ModelIterator() {
@@ -83,6 +87,14 @@ public class GenericExporter extends AbstractExporter {
 
 	public String getTemplateName() {
 		return templateName;
+	}
+
+	protected void exportSingleClasses(Map<String, Object> additionalContext, Iterator<?> pojoIter) {
+		List<POJOClass> pojoList = new ArrayList<>();
+		while(pojoIter.hasNext()) {
+			pojoList.add((POJOClass) pojoIter.next());
+		}
+		exportSingle(additionalContext, pojoList);
 	}
 
 	public void setTemplateName(String templateName) {
@@ -139,6 +151,22 @@ public class GenericExporter extends AbstractExporter {
 
 	protected void exportPersistentClass(Map<String, Object> additionalContext, POJOClass element) {
 		exportPOJO(additionalContext, element);		
+	}
+	/**
+	 * Aboucorp
+	 * @param additionalContext
+	 * @param pojoList
+	 */
+	protected void exportSingle(Map<String, Object> additionalContext, List<POJOClass> pojoList) {
+		TemplateProducer producer = new TemplateProducer(getTemplateHelper(),getArtifactCollector());
+		additionalContext.put("pojos", pojoList);
+//		additionalContext.put("pojo", element);
+//		additionalContext.put("clazz", element.getDecoratedObject());
+//		String filename = resolveFilename( element );
+//		if(filename.endsWith(".java") && filename.indexOf('$')>=0) {
+//			log.warn("Filename for " + getClassNameForFile( element ) + " contains a $. Innerclass generation is not supported.");
+//		}
+		producer.produceOne(additionalContext, getTemplateName(), new File(getOutputDirectory(),"Views.java"), templateName);
 	}
 
 	protected void exportPOJO(Map<String, Object> additionalContext, POJOClass element) {

@@ -101,5 +101,17 @@ public class TemplateProducer {
 		String fileType = outputFile.getName();
 		fileType = fileType.substring(fileType.indexOf('.')+1);
 		produce(additionalContext, templateName, outputFile, identifier, fileType, rootContext);
+	}
+	/**
+	 * Aboucor^p
+	 * @param additionalContext
+	 * @param templateName
+	 * @param file
+	 * @param templateName2
+	 */
+	public void produceOne(Map<String, Object> additionalContext, String templateName, File file,
+			String templateName2) {
+		// TODO Auto-generated method stub
+		
 	}	
 }
