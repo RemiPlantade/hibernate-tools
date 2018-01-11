@@ -19,15 +19,16 @@ public class TemplateProducer {
 	private static final Logger log = LoggerFactory.getLogger(TemplateProducer.class);
 	private final TemplateHelper th;
 	private ArtifactCollector ac;
-	
+
 	public TemplateProducer(TemplateHelper th, ArtifactCollector ac) {
 		this.th = th;
 		this.ac = ac;
 	}
-	
+
 	public void produce(Map<String,Object> additionalContext, String templateName, File destination, String identifier, String fileType, String rootContext) {
+		System.out.println("!!!!!!!!!!!!!!!!!!!! In normal produce");
 		String tempResult = produceToString( additionalContext, templateName, rootContext );
-		
+
 		if(tempResult.trim().length()==0) {
 			log.warn("Generated output is empty. Skipped creation for file " + destination);
 			return;
@@ -35,14 +36,14 @@ public class TemplateProducer {
 		FileWriter fileWriter = null;
 		try {
 			th.ensureExistence( destination );    
-	     
+
 			ac.addFile(destination, fileType);
 			log.debug("Writing " + identifier + " to " + destination.getAbsolutePath() );
 			fileWriter = new FileWriter(destination);
-            fileWriter.write(tempResult);			
+			fileWriter.write(tempResult);			
 		} 
 		catch (Exception e) {
-		    throw new ExporterException("Error while writing result to file", e);	
+			throw new ExporterException("Error while writing result to file", e);	
 		} finally {
 			if(fileWriter!=null) {
 				try {
@@ -54,13 +55,53 @@ public class TemplateProducer {
 				}				
 			}
 		}
-		
+
 	}
+
+
+	/**
+	 * Aboucorp
+	 * @param additionalContext
+	 * @param templateName
+	 * @param file
+	 * @param templateName2
+	 * @param string 
+	 */
+	public void produceOne(Map<String, Object> additionalContext, String templateName, File destination,
+			String identifier, String fileType, String rootContext) {
+		String tempResult = produceToString( additionalContext, templateName, rootContext );
+		if(tempResult.trim().length()==0) {
+			log.warn("Generated output is empty. Skipped creation for file " + destination);
+			return;
+		}
+		FileWriter fileWriter = null;
+		try {
+			th.ensureExistence( destination );    
+
+			ac.addFile(destination, fileType);
+			log.debug("Writing " + identifier + " to " + destination.getAbsolutePath() );
+			fileWriter = new FileWriter(destination);
+			fileWriter.write(tempResult);			
+		} 
+		catch (Exception e) {
+			throw new ExporterException("Error while writing result to file", e);	
+		} finally {
+			if(fileWriter!=null) {
+				try {
+					fileWriter.flush();
+					fileWriter.close();
+				}
+				catch (IOException e) {
+					log.warn("Exception while flushing/closing " + destination,e);
+				}				
+			}
+		}
+	}	
 
 
 	private String produceToString(Map<String,Object> additionalContext, String templateName, String rootContext) {
 		Map<String,Object> contextForFirstPass = additionalContext;
-		putInContext( th, contextForFirstPass );		
+		putInContext( th, contextForFirstPass );	
 		StringWriter tempWriter = new StringWriter();
 		BufferedWriter bw = new BufferedWriter(tempWriter);
 		// First run - writes to in-memory string
@@ -96,22 +137,10 @@ public class TemplateProducer {
 		fileType = fileType.substring(fileType.indexOf('.')+1);
 		produce(additionalContext, templateName, outputFile, identifier, fileType, null);
 	}
-	
+
 	public void produce(Map<String,Object> additionalContext, String templateName, File outputFile, String identifier, String rootContext) {
 		String fileType = outputFile.getName();
 		fileType = fileType.substring(fileType.indexOf('.')+1);
 		produce(additionalContext, templateName, outputFile, identifier, fileType, rootContext);
 	}
-	/**
-	 * Aboucor^p
-	 * @param additionalContext
-	 * @param templateName
-	 * @param file
-	 * @param templateName2
-	 */
-	public void produceOne(Map<String, Object> additionalContext, String templateName, File file,
-			String templateName2) {
-		// TODO Auto-generated method stub
-		
-	}	
 }

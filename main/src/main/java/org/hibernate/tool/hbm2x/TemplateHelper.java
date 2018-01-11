@@ -116,6 +116,7 @@ public class TemplateHelper {
 	   
     public void putInContext(String key, Object value) {
     	log.trace("putInContext " + key + "=" + value);
+    	//System.out.println("============= putInContext " + key + "=" + value);
         if(value == null) throw new IllegalStateException("value must not be null for " + key);
         Object replaced = internalPutInContext(key,value);
         if(replaced!=null) {

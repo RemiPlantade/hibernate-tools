@@ -1,5 +1,8 @@
 <#if apipackage??>
 package ${apipackage};
+<#if pojo.hasIdentifierProperty() && !pojo.isJavaType(pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5))>
+import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)};
+</#if>
 import api_builder.gen.api.dao.${pojo.getShortName()}Dao;
 import api_builder.gen.api.bean.${pojo.getShortName()};
 import java.util.List;
@@ -53,7 +56,7 @@ public class ${declarationName}DaoImpl implements ${declarationName}Dao{
         }
     }
 
-        public ${declarationName} get${declarationName}ById(Object id) {
+        public ${declarationName} get${declarationName}ById(<#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id) {
         try {
             ${declarationName} instance = entityManager.find(${pojo.getDeclarationName()}.class, id);
             return instance;
