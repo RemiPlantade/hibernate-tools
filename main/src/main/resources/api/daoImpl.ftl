@@ -8,6 +8,9 @@ import api_builder.gen.api.bean.${pojo.getShortName()};
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.EntityExistsException;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 <#else>
 ${pojo.getPackageDeclaration()}
 </#if>
@@ -15,6 +18,8 @@ ${pojo.getPackageDeclaration()}
 // Improved by AbouCorp
 
 <#assign classbody>
+@Transactional
+@Repository
 <#assign declarationName = pojo.importType(pojo.getDeclarationName())>/**
  * Home object for domain model class ${declarationName}.
  * @see ${pojo.getQualifiedDeclarationName()}
@@ -22,14 +27,14 @@ ${pojo.getPackageDeclaration()}
  */
 public class ${declarationName}DaoImpl implements ${declarationName}Dao{
     
-    @${pojo.importType("javax.persistence.PersistenceContext")} private ${pojo.importType("javax.persistence.EntityManager")} entityManager;
+    @${pojo.importType("javax.persistence.PersistenceContext")} 
+    private ${pojo.importType("javax.persistence.EntityManager")} entityManager;
     
-        public boolean add${declarationName}(${declarationName} transientInstance) {
-        
-        try {
-            entityManager.persist(transientInstance);
-            entityManager.getTransaction().commit();
-            return true;
+    public boolean add${declarationName}(${declarationName} transientInstance) {
+       	try {
+           entityManager.persist(transientInstance);
+           entityManager.getTransaction().commit();
+           return true;
         }
         catch (EntityExistsException re) {
             return false;

@@ -5,8 +5,11 @@ import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierPropert
 </#if>
 import ${pojo.getPackageName()}.${pojo.getShortName()};
 import api_builder.gen.api.service.${pojo.getShortName()}Service;
-import api_builder.gen.api.dao.impl.${pojo.getShortName()}DaoImpl;
+import api_builder.gen.api.dao.${pojo.getShortName()}Dao;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 
 <#else>
 ${pojo.getPackageDeclaration()}
@@ -15,18 +18,15 @@ ${pojo.getPackageDeclaration()}
 // Improved by AbouCorp
 
 <#assign classbody>
+@Service
 <#assign declarationName = pojo.importType(pojo.getDeclarationName())>/**
  * Home object for domain model class ${declarationName}.
  * @see ${pojo.getQualifiedDeclarationName()}
  * @author Hibernate Tools
  */
 public class ${declarationName}ServiceImpl implements ${declarationName}Service {
-
-		private ${declarationName}DaoImpl dao;
-    
-    	public ${declarationName}ServiceImpl(){
-    		dao = new ${declarationName}DaoImpl();
-    	}
+		@Autowired
+		private ${declarationName}Dao dao;
     	
 	    public boolean add${declarationName}(${declarationName} e){
 	    	return dao.add${declarationName}(e);
