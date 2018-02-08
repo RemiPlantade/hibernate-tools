@@ -3,8 +3,8 @@ package ${apipackage};
 <#if pojo.hasIdentifierProperty() && !pojo.isJavaType(pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5))>
 import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)};
 </#if>
-import api_builder.gen.api.bean.${pojo.getShortName()};
-import api_builder.gen.api.service.impl.${pojo.getShortName()}ServiceImpl;
+import api_builder.bean.${pojo.getShortName()};
+import api_builder.service.${pojo.getShortName()}Service;
 
 
 import java.util.List;
@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import api_builder.gen.jackson.Views;
+import api_builder.jackson.Views;
 
 <#else>
 ${pojo.getPackageDeclaration()}
@@ -37,28 +39,28 @@ ${pojo.getPackageDeclaration()}
  * @see ${pojo.getQualifiedDeclarationName()}
  * @author Hibernate Tools
  */
-@Controller
+@RestController
 @RequestMapping("api_builder")
 public class ${declarationName}Controller {
 
 	@Autowired
-	private ${declarationName}ServiceImpl ${declarationName}Serv;
+	private ${declarationName}Service ${declarationName?lower_case}Serv;
 
 
     <#if pojo.hasIdentifierProperty()>
 	@JsonView(Views.${declarationName}View.class)
 	</#if>
-	@GetMapping("${declarationName}/{id}")
+	@GetMapping("${declarationName?lower_case}/{id}")
     public ResponseEntity<${declarationName}> getArticleById(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id) {
-		${declarationName} instance = ${declarationName}Serv.get${declarationName}ById(id);
+		${declarationName} instance = ${declarationName?lower_case}Serv.get${declarationName}ById(id);
 		return new ResponseEntity<${declarationName}>(instance, HttpStatus.OK);
 	}
 	<#if pojo.hasIdentifierProperty()>
 	@JsonView(Views.${declarationName}View.class)
 	</#if>
-	@GetMapping("${declarationName}/all")
+	@GetMapping("${declarationName?lower_case}/all")
 	public ResponseEntity<List<${declarationName}>> getAllArticles() {
-		List<${declarationName}> list = ${declarationName}Serv.getAll();
+		List<${declarationName}> list = ${declarationName?lower_case}Serv.getAll();
 		return new ResponseEntity<List<${declarationName}>>(list, HttpStatus.OK);
 	}
 	
@@ -66,9 +68,9 @@ public class ${declarationName}Controller {
 	<#if pojo.hasIdentifierProperty()>
 	@JsonView(Views.${declarationName}View.class)
 	</#if>
-	@PostMapping("${declarationName}")
+	@PostMapping("${declarationName?lower_case}/post")
 	public ResponseEntity<Void> add${declarationName}(@RequestBody ${declarationName} instance, UriComponentsBuilder builder) {
-                boolean flag = ${declarationName}Serv.add${declarationName}(instance);
+                boolean flag = ${declarationName?lower_case}Serv.add${declarationName}(instance);
                 if (flag == false) {
         	    return new ResponseEntity<Void>(HttpStatus.CONFLICT);
                 }
@@ -86,18 +88,18 @@ public class ${declarationName}Controller {
 	<#if pojo.hasIdentifierProperty()>
 	@JsonView(Views.${declarationName}View.class)
 	</#if>
-	@PutMapping("${declarationName}")
+	@PutMapping("${declarationName?lower_case}/put")
 	public ResponseEntity<${declarationName}> update${declarationName}(@RequestBody ${declarationName} instance) {
-		${declarationName}Serv.update${declarationName}(instance);
+		${declarationName?lower_case}Serv.update${declarationName}(instance);
 		return new ResponseEntity<${declarationName}>(instance, HttpStatus.OK);
 	}
 	
 	<#if pojo.hasIdentifierProperty()>
 	@JsonView(Views.${declarationName}View.class)
 	</#if>
-	@DeleteMapping("${declarationName}/{id}")
+	@DeleteMapping("${declarationName?lower_case}/delete/{id}")
 	public ResponseEntity<Void> deleteArticle(@RequestBody ${declarationName} instance) {
-		${declarationName}Serv.delete${declarationName}(instance);
+		${declarationName?lower_case}Serv.delete${declarationName}(instance);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
     

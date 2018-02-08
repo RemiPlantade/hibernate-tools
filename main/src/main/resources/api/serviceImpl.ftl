@@ -4,8 +4,8 @@ package ${apipackage};
 import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)};
 </#if>
 import ${pojo.getPackageName()}.${pojo.getShortName()};
-import api_builder.gen.api.service.${pojo.getShortName()}Service;
-import api_builder.gen.api.dao.${pojo.getShortName()}Dao;
+import api_builder.service.${pojo.getShortName()}Service;
+import api_builder.dao.${pojo.getShortName()}Dao;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
