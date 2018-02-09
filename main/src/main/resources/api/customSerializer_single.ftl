@@ -19,7 +19,7 @@ public class CustomBeanSerializerModifier extends BeanSerializerModifier {
 	@Override
 	public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
 		<#list pojo_list as pojo>
-		<#if !pojo.isComponent()>
+		<#if !pojo.isComponent() && pojo.hasIdentifierProperty() && !pojo.getIdentifierProperty().isComposite()>
 		if (beanDesc.getBeanClass() == ${pojo.getDeclarationName()}.class) {
 			${pojo.getDeclarationName()}Serializer ser = new ${pojo.getDeclarationName()?cap_first}Serializer();
 			ser.setDefaultSerializer((JsonSerializer<Object>)serializer);
