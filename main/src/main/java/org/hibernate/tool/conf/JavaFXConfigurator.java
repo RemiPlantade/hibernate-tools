@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.controlsfx.control.CheckListView;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 import javafx.application.Application;
@@ -17,11 +18,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class JavaFXConfigurator extends Application implements Initializable{
 
@@ -86,7 +85,11 @@ public class JavaFXConfigurator extends Application implements Initializable{
 		System.out.println("Set Pojos");
 		ObservableList<POJOClass> items = FXCollections.observableArrayList (pojos);
 		JavaFXConfigurator.this.pojo_list.setItems(items);
-		
+		setListViewFactory(pojos);
+	}
+
+	private void setListViewFactory(List<POJOClass> pojos) {
+		pojo_list.setCellFactory(new POJOClassCellFactory(pojos));
 	}
 
 	@Override
@@ -97,27 +100,29 @@ public class JavaFXConfigurator extends Application implements Initializable{
 			latch1.countDown();
 		});
 		
-		pojo_list.setCellFactory(new POJOClassCellFactory());
-		pojo_list.setCellFactory(new Callback<ListView<POJOClass>, ListCell<POJOClass>>(){
-
-			@Override
-			public ListCell<POJOClass> call(ListView<POJOClass> p) {
-
-				ListCell<POJOClass> cell = new ListCell<POJOClass>(){
-
-					@Override
-					protected void updateItem(POJOClass t, boolean bln) {
-						super.updateItem(t, bln);
-						if (t != null) {
-							setText(t.getDeclarationName());
-						}
-					}
-
-				};
-
-				return cell;
-			}
-		});
+		
+//		pojo_list.setCellFactory(new Callback<ListView<POJOClass>, ListCell<POJOClass>>(){
+//
+//			@Override
+//			public ListCell<POJOClass> call(ListView<POJOClass> p) {
+//
+//				ListCell<POJOClass> cell = new ListCell<POJOClass>(){
+//
+//					@Override
+//					protected void updateItem(POJOClass t, boolean bln) {
+//						super.updateItem(t, bln);
+//						if (t != null) {
+//							setText(t.getDeclarationName());
+//						}
+//					}
+//
+//				};
+//
+//				return cell;
+//			}
+//		});
+		
+		CheckListView test = new CheckListView<>();
 		
 	}
 }

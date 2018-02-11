@@ -21,7 +21,6 @@ import org.hibernate.boot.MappingNotFoundException;
 import org.hibernate.boot.jaxb.Origin;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.hbm2x.conf.TestWindow;
 
 /**
  * @author max
