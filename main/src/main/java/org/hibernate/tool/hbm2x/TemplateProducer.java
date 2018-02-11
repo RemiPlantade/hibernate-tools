@@ -8,8 +8,6 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.hibernate.tool.hbm2x.conf.TestWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

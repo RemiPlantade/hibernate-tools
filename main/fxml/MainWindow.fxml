@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hibernate.tool.ant.JavaFXLauncher">
+   <center>
+      <AnchorPane>
+         <children>
+            <ListView fx:id="pojo_list" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <Button fx:id="btn_launch_gen" mnemonicParsing="false" text="Launch Generation" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

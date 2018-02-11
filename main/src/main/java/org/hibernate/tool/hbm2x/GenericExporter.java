@@ -7,16 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Map.Entry;
-
-import org.eclipse.osgi.internal.loader.ModuleClassLoader.GenerationProtectionDomain;
-import org.hibernate.boot.model.IdGeneratorStrategyInterpreter.GeneratorNameDeterminationContext;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Component;
-import org.hibernate.tool.hbm2x.conf.TestWindow;
+import org.hibernate.tool.conf.JavaFXConfigurator;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-
 
 public class GenericExporter extends AbstractExporter {
 
@@ -56,7 +51,23 @@ public class GenericExporter extends AbstractExporter {
 				iterator = 
 						ge.getCfg2JavaTool().getPOJOIterator(
 								ge.getMetadata().getEntityBindings().iterator());
+				if(!JavaFXConfigurator.running.get()) {
+					new Thread() {
+						@Override
+						public void run() {
+							javafx.application.Application.launch(JavaFXConfigurator.class);
+						}
+					}.start();
 
+					JavaFXConfigurator launcher = JavaFXConfigurator.waitForJavaFXLauncher();
+					launcher.setPOJOs(pojoList);
+					try {
+						launcher.latch1.await();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				while ( iterator.hasNext() ) {			
 					POJOClass element = (POJOClass) iterator.next();
 					System.out.println("================= Exporting Entity : " + element.getDeclarationName());
@@ -97,18 +108,7 @@ public class GenericExporter extends AbstractExporter {
 						ge.getCfg2JavaTool().getPOJOIterator(
 								ge.getMetadata().getEntityBindings().iterator());
 				// Create Singles file
-				String javaFilename = getJavaFileNameFromTemplateName(ge.templateName);
 				ge.exportSingleClasses(additionalContext, iterator,ge.filePattern);
-			}
-
-			private String getJavaFileNameFromTemplateName(String templateName) {
-				int idxStart = templateName.lastIndexOf('/');
-				idxStart = idxStart == -1 ? 0 : idxStart;
-				int idxEnd = templateName.lastIndexOf('_');
-				idxEnd = idxEnd == -1 ? templateName.length()-1 : idxEnd;
-				String filename = templateName.substring(idxStart+1, idxEnd) + ".java";
-				String firstLetter = filename.substring(0, 1);
-				return firstLetter.toUpperCase() + filename.substring(1, filename.length());
 			}
 		});
 	}

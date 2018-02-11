@@ -37,8 +37,8 @@ public class HibernateToolTask extends Task {
 	private List<ExporterTask> generators = new ArrayList<ExporterTask>();
 	private Path classPath;
 	private Path templatePath;
-	private Properties properties = new Properties(); 	
-	
+	private Properties properties = new Properties(); 
+
 	private void checkConfiguration() {
 		if(configurationTask!=null) {
 			throw new BuildException("Only a single configuration is allowed.");

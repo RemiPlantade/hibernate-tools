@@ -4,8 +4,6 @@
  */
 package org.hibernate.tool.hbm2x;
 
-import org.hibernate.tool.hbm2x.conf.TestWindow;
-
 /**
  * @author max
  */
