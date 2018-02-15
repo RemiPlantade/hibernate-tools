@@ -1,6 +1,7 @@
 package org.hibernate.tool.hbm2x.pojo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +40,8 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	protected ImportContext importContext;
 	protected MetaAttributable meta;
 	protected final Cfg2JavaTool c2j;
-	protected final String[] JAVA_TYPES = {"Integer","Double","Float","String","Boolean","Short","Byte","Object"}; 
+	protected final List<String> JAVA_TYPES = Arrays.asList(new String[]{"int","double","float","boolean","short","byte","Integer","Double","Float","String","Boolean","Short","Byte","Object","Date"}); 
+	protected final List<String> JACKSON_NUMERIC_TYPES = Arrays.asList(new String[]{"int","long","double","float","short","Integer","Long","Double","Float","Short","BigInteger","BigDecimal"}); 
 
 	
 	public BasicPOJOClass(MetaAttributable ma, Cfg2JavaTool c2j) {

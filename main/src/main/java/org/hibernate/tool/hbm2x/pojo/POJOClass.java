@@ -111,5 +111,47 @@ public interface POJOClass extends ImportContext {
 	 * Compare typename with List to determine if it's a java type
 	 */
 	public boolean isJavaType(String shortTypeName);
+	
+	/** Aboucorp add
+	 * Compare typename with java types to determine if it's a Binary 
+	 */
+	boolean isPOJOType(Property prop);
+	
+	/** Aboucorp add
+	 * Compare typename with Collection jab=va types to determine if it's a Subclass of collection
+	 */
+	public boolean isJavaCollectionType(String shortTypeName);
+	
+	/** Aboucorp add
+	 * Compare typename with java types to determine if it's a Number 
+	 */
+	public boolean isJacksonNumberType(String shortTypeName);
+	
+	/** Aboucorp add
+	 * Compare typename with java types to determine if it's a String 
+	 */
+	public boolean isJacksonStringType(String shortTypeName);
+	
+	/** Aboucorp add
+	 * Compare typename with java types to determine if it's a Boolean 
+	 */
+	public boolean isJacksonBooleanType(String shortTypeName);
+	
+	/** Aboucorp add
+	 * Compare typename with java types to determine if it's an Array 
+	 */
+	public boolean isJacksonArrayType(String shortTypeName);
+
+	/** Aboucorp add
+	 * Compare typename with java types to determine if it's a Binary 
+	 */
+	public boolean isJacksonBinaryType(String shortTypeName);
+	
+	public boolean isPOJOInList(String typeName, List<POJOClass> pojos);
+
+	public String getGenericType(String shortTypeName);
+
+	boolean isJavaMapType(String shortTypeName);
 		
+	
 }

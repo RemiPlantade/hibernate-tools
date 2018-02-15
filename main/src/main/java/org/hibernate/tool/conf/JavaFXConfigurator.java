@@ -33,6 +33,7 @@ public class JavaFXConfigurator extends Application implements Initializable{
 	public static final CountDownLatch latch1 = new CountDownLatch(1);
 	public static JavaFXConfigurator startUpTest = null;
 	public static AtomicBoolean running = new AtomicBoolean(false);
+	private List<POJOClass> pojos;
 
 
 	private Stage primaryStage;
@@ -51,12 +52,12 @@ public class JavaFXConfigurator extends Application implements Initializable{
 		}
 		return startUpTest;
 	}
-	
+
 	public static void setJavaFXLauncher(JavaFXConfigurator startUpTest0) {
 		startUpTest = startUpTest0;
-		
+
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -70,7 +71,7 @@ public class JavaFXConfigurator extends Application implements Initializable{
 		try {
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/fxml/MainWindow.fxml"));
+			loader.setLocation(getClass().getClassLoader().getResource("fxml/MainWindow.fxml"));
 			rootLayout = (BorderPane) loader.load();
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
@@ -82,47 +83,50 @@ public class JavaFXConfigurator extends Application implements Initializable{
 	}
 
 	public void setPOJOs(List<POJOClass> pojos) {
-		System.out.println("Set Pojos");
-		ObservableList<POJOClass> items = FXCollections.observableArrayList (pojos);
-		JavaFXConfigurator.this.pojo_list.setItems(items);
+		this.pojos = pojos;
 		setListViewFactory(pojos);
+		ObservableList<POJOClass> items = FXCollections.observableArrayList (pojos);
+		System.out.println("Set Pojos to ListView");
+		pojo_list.setItems(items);
+		pojo_list.refresh();
+
 	}
 
 	private void setListViewFactory(List<POJOClass> pojos) {
+		System.out.println("Set POJO factory");
 		pojo_list.setCellFactory(new POJOClassCellFactory(pojos));
+
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		System.out.println("Initialize JavaFXConfigurator");
 		latch.countDown();
 		btn_launch_gen.setOnMouseClicked((event) -> {
-			System.out.println("================================ Test ===============================");
+			pojo_list.setItems( FXCollections.observableArrayList (pojos));
 			latch1.countDown();
 		});
-		
-		
-//		pojo_list.setCellFactory(new Callback<ListView<POJOClass>, ListCell<POJOClass>>(){
-//
-//			@Override
-//			public ListCell<POJOClass> call(ListView<POJOClass> p) {
-//
-//				ListCell<POJOClass> cell = new ListCell<POJOClass>(){
-//
-//					@Override
-//					protected void updateItem(POJOClass t, boolean bln) {
-//						super.updateItem(t, bln);
-//						if (t != null) {
-//							setText(t.getDeclarationName());
-//						}
-//					}
-//
-//				};
-//
-//				return cell;
-//			}
-//		});
-		
-		CheckListView test = new CheckListView<>();
-		
+
+		//pojo_list.setCellFactory(new POJOClassCellFactory());
+		//		pojo_list.setCellFactory(new Callback<ListView<POJOClass>, ListCell<POJOClass>>(){
+		//
+		//			@Override
+		//			public ListCell<POJOClass> call(ListView<POJOClass> p) {
+		//
+		//				ListCell<POJOClass> cell = new ListCell<POJOClass>(){
+		//
+		//					@Override
+		//					protected void updateItem(POJOClass t, boolean bln) {
+		//						super.updateItem(t, bln);
+		//						if (t != null) {
+		//							setText(t.getDeclarationName());
+		//						}
+		//					}
+		//
+		//				};
+		//
+		//				return cell;
+		//			}
+		//		});		
 	}
 }

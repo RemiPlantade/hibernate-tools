@@ -6,23 +6,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.FlowPane?>
 
-
-<FlowPane alignment="CENTER_LEFT" prefWrapLength="580.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hibernate.tool.conf.POJOClassCellController">
+<FlowPane alignment="CENTER_LEFT" prefWrapLength="580.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hibernate.tool.conf.POJOClassCellController">
    <children>
-      <Label prefHeight="0.0" prefWidth="150.0" text="ClassName">
+      <Label fx:id="pojo_label" prefHeight="0.0" prefWidth="150.0" text="ClassName">
          <opaqueInsets>
-            <Insets />
          </opaqueInsets>
          <FlowPane.margin>
             <Insets right="20.0" />
          </FlowPane.margin>
       </Label>
-      <CheckBox mnemonicParsing="false" prefWidth="80.0" text="Link Table" />
-      <ComboBox prefWidth="150.0">
+      <CheckBox fx:id="link_table_chbx" mnemonicParsing="false" prefWidth="80.0" text="Link Table" />
+      <ComboBox fx:id="main_table_cmb" disable="true" prefWidth="150.0">
          <FlowPane.margin>
             <Insets right="20.0" />
          </FlowPane.margin>
       </ComboBox>
-      <ComboBox prefWidth="150.0" />
+      <ComboBox fx:id="second_table_cmb" disable="true" prefWidth="150.0" />
    </children>
 </FlowPane>

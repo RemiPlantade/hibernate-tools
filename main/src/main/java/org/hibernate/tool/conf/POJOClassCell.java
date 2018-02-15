@@ -18,31 +18,45 @@ public class POJOClassCell extends ListCell<POJOClass> {
 	public POJOClassCell(List<POJOClass> pojos) {
 		pojo_list = pojos;
 		try {
-			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/POJOClassCell.fxml"));
+			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/POJOClassCell.fxml"));
 			renderer = fxmlLoader.load();
+			System.out.println("Cell FXML Load");
 			rendererController = (POJOClassCellController) fxmlLoader.getController();
 			rendererController.setPOJOList(pojos);
+			System.out.println("POJO List send to cell controller");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}
 
+	public POJOClassCell() {
+		this(null);
+	}
+
 	@Override
 	public void updateItem(POJOClass item, boolean empty) 
 	{
+		System.out.println("In update item");
 		super.updateItem(item, empty);
-		int index = this.getIndex();
-		String name = null;
-
-		// Format name
-		if (item == null || empty) 
-		{
-		} 
-		else 
-		{
-		}
-		this.setText(null);
-		setGraphic(renderer);
+        String text = null;
+        if (!empty) {
+            if (item == null) {
+                text = "No Table Found";
+                setGraphic(null);
+                setText(text);
+            } else {
+                if (renderer != null) {
+                    System.out.println("Set Pojo to controller");
+                    rendererController.setPojo(item);
+                    setGraphic(renderer);
+                    setText(text);
+                } else {
+                    text = String.valueOf(item.getDeclarationName());
+                    setGraphic(null);
+                    setText(text);
+                }
+            }
+        }
 	}
 
 }

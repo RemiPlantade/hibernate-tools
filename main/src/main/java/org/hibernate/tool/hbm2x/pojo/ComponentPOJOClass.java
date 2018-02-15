@@ -184,12 +184,84 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 
 	@Override
 	public boolean isJavaType(String shortTypeName) {
-		boolean isJavaType = false;
-		for (int i = 0; i < JAVA_TYPES.length; i++) {
-			if(JAVA_TYPES[i].equals(shortTypeName)) {
-				isJavaType = true;
+		return JAVA_TYPES.contains(shortTypeName);
+	}
+	
+	@Override
+	public boolean isJavaCollectionType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.startsWith("Set")
+				|| shortTypeName.startsWith("ArrayList");
+	}
+	
+	@Override
+	public boolean isJavaMapType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.startsWith("Map")
+				|| shortTypeName.startsWith("SortedMap");
+	}
+	
+	@Override
+	public String getGenericType(String genericTypeName) {
+		int idxStart = genericTypeName.indexOf('<');
+		int idxEnd = genericTypeName.indexOf('>');
+		if(idxStart == -1 || idxEnd == -1) {
+			return "Object";
+		}
+		return genericTypeName.substring(idxStart+1,idxEnd);
+	}
+
+	@Override
+	public boolean isJacksonNumberType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return JACKSON_NUMERIC_TYPES.contains(shortTypeName);
+	}
+
+	@Override
+	public boolean isJacksonStringType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.equals("char") 
+				|| shortTypeName.equals("String")
+				|| shortTypeName.equals("SerializableString");
+	}
+
+	@Override
+	public boolean isJacksonBooleanType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.equals("boolean");
+	}
+
+	@Override
+	public boolean isJacksonBinaryType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.equals("byte[]") 
+				||  shortTypeName.equals("InputStream");
+	}
+
+	@Override
+	public boolean isJacksonArrayType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.equals("int[]") 
+				|| shortTypeName.equals("double[]") 
+				|| shortTypeName.equals("long[]") 
+				|| shortTypeName.equals("float[]") 
+				|| shortTypeName.equals("short[]")
+				|| shortTypeName.equals("short[]");
+	}
+
+	@Override
+	public boolean isPOJOType(Property prop) {
+		return c2j.getPOJOClass(prop.getPersistentClass()).getPackageDeclaration().equals(getPackageDeclaration());
+	}
+	
+	@Override
+	public boolean isPOJOInList(String typeName, List<POJOClass> pojos) {
+		boolean present = false;
+		for (POJOClass pojoClass : pojos) {
+			if(typeName.equals(pojoClass.getDeclarationName())) {
+				present = true;
 			}
 		}
-		return isJavaType;
+		return present;
 	}
 }

@@ -39,7 +39,7 @@ import org.hibernate.type.ForeignKeyDirection;
 public class EntityPOJOClass extends BasicPOJOClass {
 
 	private PersistentClass clazz;
-	
+
 	public EntityPOJOClass(PersistentClass clazz, Cfg2JavaTool cfg) {
 		super(clazz, cfg);
 		this.clazz = clazz;
@@ -244,20 +244,20 @@ public class EntityPOJOClass extends BasicPOJOClass {
 					}
 					else if ( "sequence".equals( strategy ) ) {
 						builder.resetAnnotation( importType("javax.persistence.GeneratedValue") )
-							.addAttribute( "strategy", staticImport("javax.persistence.GenerationType", "SEQUENCE" ) )
-						    .addQuotedAttribute( "generator", clazz.getClassName()+"IdGenerator" );
+						.addAttribute( "strategy", staticImport("javax.persistence.GenerationType", "SEQUENCE" ) )
+						.addQuotedAttribute( "generator", clazz.getClassName()+"IdGenerator" );
 						idResult.append(builder.getResult());
 
 						builder.resetAnnotation( importType("javax.persistence.SequenceGenerator") )
-							.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" ) 
-							.addQuotedAttribute( "sequenceName", properties.getProperty(  org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM, null ) );
-							//	TODO HA does not support initialValue and allocationSize
+						.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" ) 
+						.addQuotedAttribute( "sequenceName", properties.getProperty(  org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM, null ) );
+						//	TODO HA does not support initialValue and allocationSize
 						wholeString.append( builder.getResult() );
 					}
 					else if ( TableGenerator.class.getName().equals( strategy ) ) {
 						builder.resetAnnotation( importType("javax.persistence.GeneratedValue") )
 						.addAttribute( "strategy", staticImport("javax.persistence.GenerationType", "TABLE" ) )
-					    .addQuotedAttribute( "generator", "generator" );
+						.addQuotedAttribute( "generator", "generator" );
 						idResult.append(builder.getResult());
 						buildAnnTableGenerator( wholeString, properties );
 					}
@@ -274,8 +274,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			}
 			if ( isGenericGenerator ) {
 				builder.resetAnnotation( importType("org.hibernate.annotations.GenericGenerator") )
-					.addQuotedAttribute( "name", "generator" )
-					.addQuotedAttribute( "strategy", strategy);
+				.addQuotedAttribute( "name", "generator" )
+				.addQuotedAttribute( "strategy", strategy);
 
 				List<AnnotationBuilder> params = new ArrayList<AnnotationBuilder>();
 				//wholeString.append( "parameters = {  " );
@@ -285,8 +285,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 						String propertyName = (String) propNames.nextElement();
 						AnnotationBuilder parameter = AnnotationBuilder.createAnnotation( importType("org.hibernate.annotations.Parameter") )
-									.addQuotedAttribute( "name", propertyName )
-									.addQuotedAttribute( "value", properties.getProperty( propertyName ) );
+								.addQuotedAttribute( "name", propertyName )
+								.addQuotedAttribute( "value", properties.getProperty( propertyName ) );
 						params.add( parameter );
 					}
 				}
@@ -361,8 +361,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 		StringBuffer annotations = new StringBuffer( "    " );
 		if ( span == 1 ) {
-				Selectable selectable = columnIterator.next();
-				buildJoinColumnAnnotation( selectable, null, annotations, insertable, updatable );
+			Selectable selectable = columnIterator.next();
+			buildJoinColumnAnnotation( selectable, null, annotations, insertable, updatable );
 		}
 		else {
 			Iterator<Selectable> columns = columnIterator;
@@ -376,13 +376,13 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	private void buildArrayOfJoinColumnAnnotation(
 			Iterator<Selectable> columns, Iterator<Selectable> referencedColumnsIterator, StringBuffer annotations, boolean insertable,
 			boolean updatable
-	) {
+			) {
 		while ( columns.hasNext() ) {
 			Selectable selectable = columns.next();
-            Selectable referencedColumn = null;
-            if(referencedColumnsIterator!=null) {
-            	referencedColumn = referencedColumnsIterator.next();
-            }
+			Selectable referencedColumn = null;
+			if(referencedColumnsIterator!=null) {
+				referencedColumn = referencedColumnsIterator.next();
+			}
 
 			if ( selectable.isFormula() ) {
 				//TODO formula in multicolumns not supported by annotations
@@ -399,20 +399,20 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 	private void buildJoinColumnAnnotation(
 			Selectable selectable, Selectable referencedColumn, StringBuffer annotations, boolean insertable, boolean updatable
-	) {
+			) {
 		if ( selectable.isFormula() ) {
 			//TODO not supported by HA
 		}
 		else {
 			Column column = (Column) selectable;
 			annotations.append("@").append( importType("javax.persistence.JoinColumn") )
-					.append("(name=\"" ).append( column.getName() ).append( "\"" );
-					//TODO handle referenced column name, this is a hard one
-			        if(referencedColumn!=null) {
-			         annotations.append(", referencedColumnName=\"" ).append( referencedColumn.getText() ).append( "\"" );
-			        }
+			.append("(name=\"" ).append( column.getName() ).append( "\"" );
+			//TODO handle referenced column name, this is a hard one
+			if(referencedColumn!=null) {
+				annotations.append(", referencedColumnName=\"" ).append( referencedColumn.getText() ).append( "\"" );
+			}
 
-					appendCommonColumnInfo(annotations, column, insertable, updatable);
+			appendCommonColumnInfo(annotations, column, insertable, updatable);
 			//TODO support secondary table
 			annotations.append( ")" );
 		}
@@ -476,8 +476,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		boolean pkIsAlsoFk = isSharedPkBasedOneToOne(oneToOne);
 
 		AnnotationBuilder ab = AnnotationBuilder.createAnnotation( importType("javax.persistence.OneToOne") )
-			.addAttribute( "cascade", getCascadeTypes(property))
-			.addAttribute( "fetch", getFetchType(property));
+				.addAttribute( "cascade", getCascadeTypes(property))
+				.addAttribute( "fetch", getFetchType(property));
 
 		if ( oneToOne.getForeignKeyType().equals(ForeignKeyDirection.TO_PARENT) ){
 			ab.addQuotedAttribute("mappedBy", getOneToOneMappedBy(md, oneToOne));
@@ -503,7 +503,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			if ( "all-delete-orphan".equals( element ) ) {
 				if (cascadeType == null) cascadeType = importType( "org.hibernate.annotations.CascadeType");
 				cascade.append( cascadeType ).append(".ALL").append(", ")
-						.append( cascadeType ).append(".DELETE_ORPHAN").append(", ");
+				.append( cascadeType ).append(".DELETE_ORPHAN").append(", ");
 			}
 			else if ( "delete-orphan".equals( element ) ) {
 				if (cascadeType == null) cascadeType = importType( "org.hibernate.annotations.CascadeType");
@@ -616,7 +616,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 							annotation,
 							property.isInsertable(),
 							property.isUpdateable()
-					);
+							);
 					annotation.append( " }");
 					annotation.append( ", inverseJoinColumns = { ");
 					buildArrayOfJoinColumnAnnotation(
@@ -625,7 +625,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 							annotation,
 							property.isInsertable(),
 							property.isUpdateable()
-					);
+							);
 					annotation.append( " }");
 					annotation.append(")");
 				}
@@ -922,19 +922,93 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 	@Override
 	public String getParentPackage(String childPackage) {
-		
+
 		return childPackage.substring(0,childPackage.lastIndexOf('.'));
 	}
 
 	@Override
 	public boolean isJavaType(String shortTypeName) {
-		boolean isJavaType = false;
-		for (int i = 0; i < JAVA_TYPES.length; i++) {
-			if(JAVA_TYPES[i].equals(shortTypeName)) {
-				isJavaType = true;
+		return JAVA_TYPES.contains(shortTypeName);
+	}
+
+	@Override
+	public boolean isJavaCollectionType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.startsWith("Set")
+				|| shortTypeName.startsWith("ArrayList");
+	}
+	
+	@Override
+	public String getGenericType(String genericTypeName) {
+		int idxStart = genericTypeName.indexOf('<');
+		int idxEnd = genericTypeName.indexOf('>');
+		if(idxStart == -1 || idxEnd == -1) {
+			return "Object";
+		}
+		return genericTypeName.substring(idxStart+1,idxEnd);
+	}
+	
+	@Override
+	public boolean isJavaMapType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.startsWith("Map")
+				|| shortTypeName.endsWith("Map");
+	}
+
+	@Override
+	public boolean isJacksonNumberType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return JACKSON_NUMERIC_TYPES.contains(shortTypeName);
+	}
+
+	@Override
+	public boolean isJacksonStringType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.equals("char") 
+				|| shortTypeName.equals("String")
+				|| shortTypeName.equals("SerializableString");
+	}
+
+	@Override
+	public boolean isJacksonBooleanType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.equals("boolean");
+	}
+
+	@Override
+	public boolean isJacksonBinaryType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.equals("byte[]") 
+				||  shortTypeName.equals("InputStream");
+	}
+
+	@Override
+	public boolean isJacksonArrayType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return shortTypeName.equals("int[]") 
+				|| shortTypeName.equals("double[]") 
+				|| shortTypeName.equals("long[]") 
+				|| shortTypeName.equals("float[]") 
+				|| shortTypeName.equals("short[]")
+				|| shortTypeName.equals("short[]");
+	}
+
+	@Override
+	public boolean isPOJOType(Property prop) {
+		return c2j.getPOJOClass(prop.getPersistentClass()).getPackageDeclaration().equals(getPackageDeclaration());
+	}
+
+	@Override
+	public boolean isPOJOInList(String typeName, List<POJOClass> pojos) {
+		boolean present = false;
+		for (POJOClass pojoClass : pojos) {
+			if(typeName.equals(pojoClass.getDeclarationName())) {
+				present = true;
 			}
 		}
-		return isJavaType;
+		return present;
 	}
+	
+	
 
 }

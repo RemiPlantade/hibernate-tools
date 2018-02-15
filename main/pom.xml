@@ -59,16 +59,17 @@
 		<maven.deploy.skip>false</maven.deploy.skip>
 		<maven.install.skip>false</maven.install.skip>
 	</properties>
-	<build>
+<!-- 	<build>
 	 <resources>
       <resource>
-        <directory>src/main/ressources/fxml</directory>
-        <includes>
-          <include>**/*.fxml</include>
-        </includes>
-      </resource>
+            <filtering>false</filtering>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*.fxml</include>
+            </includes>             
+        </resource>
     </resources>
-    </build>
+    </build> -->
 
 	<dependencies>
 		<dependency>
