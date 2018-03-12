@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.controlsfx.control.CheckListView;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 import javafx.application.Application;

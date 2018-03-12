@@ -184,7 +184,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 
 	@Override
 	public boolean isJavaType(String shortTypeName) {
-		return JAVA_TYPES.contains(shortTypeName);
+		return JAVA_COMPLEX_TYPES.contains(shortTypeName);
 	}
 	
 	@Override
@@ -214,7 +214,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	@Override
 	public boolean isJacksonNumberType(String shortTypeName) {
 		// TODO Auto-generated method stub
-		return JACKSON_NUMERIC_TYPES.contains(shortTypeName);
+		return JACKSON_NUMERIC_TYPES.contains(shortTypeName)  || JAVA_COMPLEX_TYPES.contains(shortTypeName);
 	}
 
 	@Override
@@ -263,5 +263,16 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 			}
 		}
 		return present;
+	}
+
+	@Override
+	public boolean isJavaPrimitiveType(String shortTypeName) {
+		return JAVA_PRIMITIVE_TYPES.contains(shortTypeName);
+	}
+	
+	@Override
+	public String getComplexJavaType(String primitiveType) {
+		// TODO Auto-generated method stub
+		return JAVA_MAPPED_TYPES.get(primitiveType);
 	}
 }

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-import api_builder.jackson.Views;
+import api_builder.gen.jackson.Views;
 import ${pojo.getPackageName()}.${pojo.getDeclarationName()};
 import java.util.Iterator;
 

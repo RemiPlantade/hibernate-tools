@@ -3,8 +3,8 @@ package ${apipackage};
 <#if pojo.hasIdentifierProperty() && !pojo.isJavaType(pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5))>
 import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)};
 </#if>
-import api_builder.bean.${pojo.getShortName()};
-import api_builder.service.${pojo.getShortName()}Service;
+import api_builder.gen.bean.${pojo.getShortName()};
+import api_builder.gen.service.${pojo.getShortName()}Service;
 
 
 import java.util.List;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import api_builder.jackson.Views;
+import api_builder.gen.jackson.Views;
 
 <#else>
 ${pojo.getPackageDeclaration()}
@@ -44,62 +44,41 @@ ${pojo.getPackageDeclaration()}
 public class ${declarationName}Controller {
 
 	@Autowired
-	private ${declarationName}Service ${declarationName?lower_case}Serv;
+	private ${declarationName}Service ${declarationName?lower_case}Service;
 
-
-    <#if pojo.hasIdentifierProperty()>
-	@JsonView(Views.${declarationName}View.class)
-	</#if>
 	@GetMapping("${declarationName?lower_case}/{id}")
     public ResponseEntity<${declarationName}> getArticleById(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id) {
-		${declarationName} instance = ${declarationName?lower_case}Serv.get${declarationName}ById(id);
+		${declarationName} instance = ${declarationName?lower_case}Service.find${declarationName}ById(id);
 		return new ResponseEntity<${declarationName}>(instance, HttpStatus.OK);
 	}
-	<#if pojo.hasIdentifierProperty()>
-	@JsonView(Views.${declarationName}View.class)
-	</#if>
+
 	@GetMapping("${declarationName?lower_case}/all")
 	public ResponseEntity<List<${declarationName}>> getAllArticles() {
-		List<${declarationName}> list = ${declarationName?lower_case}Serv.getAll();
+		List<${declarationName}> list = ${declarationName?lower_case}Service.findAll();
 		return new ResponseEntity<List<${declarationName}>>(list, HttpStatus.OK);
 	}
 	
-	
-	<#if pojo.hasIdentifierProperty()>
-	@JsonView(Views.${declarationName}View.class)
-	</#if>
 	@PostMapping("${declarationName?lower_case}/post")
 	public ResponseEntity<Void> add${declarationName}(@RequestBody ${declarationName} instance, UriComponentsBuilder builder) {
-                boolean flag = ${declarationName?lower_case}Serv.add${declarationName}(instance);
-                if (flag == false) {
-        	    return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-                }
-                HttpHeaders headers = new HttpHeaders();
-                
-               <#if pojo.hasIdentifierProperty()>
-               	
-               		headers.setLocation(builder.path("/${declarationName}/{id}").buildAndExpand(instance.${pojo.getGetterSignature(pojo.getIdentifierProperty())}()).toUri());
-               	
-               </#if>
+        ${declarationName?lower_case}Service.save(instance);
+        // return new ResponseEntity<Void>(HttpStatus.CONFLICT); 
+        HttpHeaders headers = new HttpHeaders();
+        <#if pojo.hasIdentifierProperty()>
+        headers.setLocation(builder.path("/${declarationName}/{id}").buildAndExpand(instance.${pojo.getGetterSignature(pojo.getIdentifierProperty())}()).toUri());
+        </#if>
              
-                return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	}
 	
-	<#if pojo.hasIdentifierProperty()>
-	@JsonView(Views.${declarationName}View.class)
-	</#if>
 	@PutMapping("${declarationName?lower_case}/put")
 	public ResponseEntity<${declarationName}> update${declarationName}(@RequestBody ${declarationName} instance) {
-		${declarationName?lower_case}Serv.update${declarationName}(instance);
+		${declarationName?lower_case}Service.save(instance);
 		return new ResponseEntity<${declarationName}>(instance, HttpStatus.OK);
 	}
 	
-	<#if pojo.hasIdentifierProperty()>
-	@JsonView(Views.${declarationName}View.class)
-	</#if>
 	@DeleteMapping("${declarationName?lower_case}/delete/{id}")
-	public ResponseEntity<Void> deleteArticle(@RequestBody ${declarationName} instance) {
-		${declarationName?lower_case}Serv.delete${declarationName}(instance);
+	public ResponseEntity<Void> deleteArticle(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id) {
+		${declarationName?lower_case}Service.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
     

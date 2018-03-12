@@ -3,8 +3,8 @@ package ${apipackage};
 <#if pojo.hasIdentifierProperty() && !pojo.isJavaType(pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5))>
 import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)};
 </#if>
-import api_builder.dao.${pojo.getShortName()}Dao;
-import api_builder.bean.${pojo.getShortName()};
+import api_builder.gen.dao.${pojo.getShortName()}Dao;
+import api_builder.gen.bean.${pojo.getShortName()};
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.EntityExistsException;

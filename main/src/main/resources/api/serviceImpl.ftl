@@ -4,11 +4,12 @@ package ${apipackage};
 import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)};
 </#if>
 import ${pojo.getPackageName()}.${pojo.getShortName()};
-import api_builder.service.${pojo.getShortName()}Service;
-import api_builder.dao.${pojo.getShortName()}Dao;
+import api_builder.gen.service.${pojo.getShortName()}Service;
+import api_builder.gen.dao.${pojo.getShortName()}Dao;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 <#else>
@@ -19,6 +20,7 @@ ${pojo.getPackageDeclaration()}
 
 <#assign classbody>
 @Service
+@Transactional
 <#assign declarationName = pojo.importType(pojo.getDeclarationName())>/**
  * Home object for domain model class ${declarationName}.
  * @see ${pojo.getQualifiedDeclarationName()}
@@ -28,31 +30,24 @@ public class ${declarationName}ServiceImpl implements ${declarationName}Service 
 		@Autowired
 		private ${declarationName}Dao dao;
     	
-	    public boolean add${declarationName}(${declarationName} e){
-	    	return dao.add${declarationName}(e);
+	    public void save(${declarationName} e){
+	    	dao.save(e);
 	    }
 	    
-	    public void update${declarationName}(${declarationName} e){
-	    	dao.update${declarationName}(e);
-	    }
-	    
-		public List<${declarationName}> getAll(){
-			List<${declarationName}> listInstance =  dao.getAll();
-			return listInstance;
+		public List<${declarationName}> findAll(){
+			return (List<${declarationName}>)  dao.findAll();
 		}
 		
-	    public ${declarationName} get${declarationName}ById(<#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id){
-	    	${declarationName} instance = dao.get${declarationName}ById(id);
-	    	return instance;
+	    public ${declarationName} find${declarationName}ById(<#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id){
+	    	return dao.findOne(id);
 	    }
 	    
-	    public List<${declarationName}> get${declarationName}ByAttr(String attrName, String value){
-	    	List<${declarationName}> listInstance = dao.get${declarationName}ByAttr(attrName,value);
-	    	return listInstance;
+	    public List<${declarationName}> find${declarationName}ByAttr(String attrName, String value){
+	    	return dao.findByAttr(attrName,value);
 	    }
 	    
-	    public void delete${declarationName}(${declarationName} e){
-	    	dao.delete${declarationName}(e);
+	    public void delete(<#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> e){
+	    	dao.delete(e);
 	    }
     
 }

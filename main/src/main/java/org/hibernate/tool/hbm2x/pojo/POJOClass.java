@@ -113,6 +113,12 @@ public interface POJOClass extends ImportContext {
 	public boolean isJavaType(String shortTypeName);
 	
 	/** Aboucorp add
+	 * Compare typename with List to determine if it's a java type
+	 */
+	public boolean isJavaPrimitiveType(String shortTypeName);
+	
+	
+	/** Aboucorp add
 	 * Compare typename with java types to determine if it's a Binary 
 	 */
 	boolean isPOJOType(Property prop);
@@ -151,7 +157,7 @@ public interface POJOClass extends ImportContext {
 
 	public String getGenericType(String shortTypeName);
 
-	boolean isJavaMapType(String shortTypeName);
+	public boolean isJavaMapType(String shortTypeName);
 		
-	
+	public String getComplexJavaType(String primitiveType);
 }

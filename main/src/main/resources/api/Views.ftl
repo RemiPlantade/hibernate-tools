@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import api_builder.app.jackson.Views;
+import api_builder.gen.jackson.Views;
 
 <#else>
 ${pojo.getPackageDeclaration()}

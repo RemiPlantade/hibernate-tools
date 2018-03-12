@@ -928,7 +928,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 	@Override
 	public boolean isJavaType(String shortTypeName) {
-		return JAVA_TYPES.contains(shortTypeName);
+		return JAVA_COMPLEX_TYPES.contains(shortTypeName)  || JAVA_PRIMITIVE_TYPES.contains(shortTypeName);
 	}
 
 	@Override
@@ -1008,7 +1008,16 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		}
 		return present;
 	}
-	
-	
 
+	@Override
+	public boolean isJavaPrimitiveType(String shortTypeName) {
+		// TODO Auto-generated method stub
+		return JAVA_PRIMITIVE_TYPES.contains(shortTypeName);
+	}
+
+	@Override
+	public String getComplexJavaType(String primitiveType) {
+		// TODO Auto-generated method stub
+		return JAVA_MAPPED_TYPES.get(primitiveType);
+	}	
 }

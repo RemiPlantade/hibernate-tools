@@ -19,13 +19,12 @@ ${pojo.getPackageDeclaration()}
  */
 public interface ${declarationName}Service {
     
-    public boolean add${declarationName}(${declarationName} e);
-    public void update${declarationName}(${declarationName} e);
-	public List<${declarationName}> getAll();
-    public ${declarationName} get${declarationName}ById(<#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id);
-    public List<${declarationName}> get${declarationName}ByAttr(String attrName, String value);
-    public void delete${declarationName}(${declarationName} e);
-    
+    public void save(${declarationName} e);
+	public List<${declarationName}> findAll();
+    public ${declarationName} find${declarationName}ById(<#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id);
+    public List<${declarationName}> find${declarationName}ByAttr(String attrName, String value);
+    public void delete(<#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> e);
+   
 }
 </#assign>
 
