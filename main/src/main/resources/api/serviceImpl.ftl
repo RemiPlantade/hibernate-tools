@@ -20,7 +20,7 @@ ${pojo.getPackageDeclaration()}
 
 <#assign classbody>
 @Service
-@Transactional
+@Transactional("tm1")
 <#assign declarationName = pojo.importType(pojo.getDeclarationName())>/**
  * Home object for domain model class ${declarationName}.
  * @see ${pojo.getQualifiedDeclarationName()}

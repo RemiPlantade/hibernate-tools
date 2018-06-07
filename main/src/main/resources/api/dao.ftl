@@ -18,7 +18,7 @@ ${pojo.getPackageDeclaration()}
 // Improved by AbouCorp
 
 <#assign classbody>
-@Transactional("tm2")
+@Transactional("tm1")
 @Repository
 <#assign declarationName = pojo.importType(pojo.getDeclarationName())>/**
  * Home object for domain model class ${declarationName}.

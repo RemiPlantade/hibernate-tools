@@ -14,6 +14,13 @@ import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 public class GenericExporter extends AbstractExporter {
+	
+	static ArrayList<String> SPRING_API_TEMPLATES = new ArrayList<String>(){{
+	    add("api/controller.ftl");
+	    add("api/dao.ftl");
+	    add("api/service.ftl");
+	    add("api/serviceImpl.ftl");
+	}};
 
 	static abstract class ModelIterator {		
 		abstract void process(GenericExporter ge);
@@ -70,8 +77,12 @@ public class GenericExporter extends AbstractExporter {
 				}
 				while ( iterator.hasNext() ) {			
 					POJOClass element = (POJOClass) iterator.next();
-					System.out.println("================= Exporting Entity : " + element.getDeclarationName());
-					ge.exportPersistentClass( additionalContext, element );
+					System.out.println("================= Exporting Entity : " + element.getDeclarationName() + " on template : " + ge.templateName);
+					//if(!SPRING_API_TEMPLATES.contains(ge.templateName) ) {
+						ge.exportPersistentClass( additionalContext, element );
+//					}else if(SPRING_API_TEMPLATES.contains(ge.templateName) && element.getIdentifierProperty() != null) {
+//						ge.exportPersistentClass( additionalContext, element );
+//					}
 				}
 			}
 		});
@@ -93,7 +104,9 @@ public class GenericExporter extends AbstractExporter {
 				while ( iterator.hasNext() ) {			
 					Component component = (Component) iterator.next();
 					ComponentPOJOClass element = new ComponentPOJOClass(component,ge.getCfg2JavaTool());
+					if(!SPRING_API_TEMPLATES.contains(ge.templateName)) {
 					ge.exportComponent( additionalContext, element );	
+					}
 				}
 			}
 		});
