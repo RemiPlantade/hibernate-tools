@@ -17,7 +17,6 @@ public class POJOClassCellFactory implements Callback<ListView<POJOClass>, ListC
 
 	@Override
 	public ListCell<POJOClass> call(ListView<POJOClass> param) {
-		System.out.println("Call PojoCell");
 		return new POJOClassCell(pojo_list);
 	}
 

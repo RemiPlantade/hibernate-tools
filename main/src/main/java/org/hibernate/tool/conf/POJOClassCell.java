@@ -20,10 +20,8 @@ public class POJOClassCell extends ListCell<POJOClass> {
 		try {
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/POJOClassCell.fxml"));
 			renderer = fxmlLoader.load();
-			System.out.println("Cell FXML Load");
 			rendererController = (POJOClassCellController) fxmlLoader.getController();
 			rendererController.setPOJOList(pojos);
-			System.out.println("POJO List send to cell controller");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -36,7 +34,6 @@ public class POJOClassCell extends ListCell<POJOClass> {
 	@Override
 	public void updateItem(POJOClass item, boolean empty) 
 	{
-		System.out.println("In update item");
 		super.updateItem(item, empty);
         String text = null;
         if (!empty) {
@@ -46,7 +43,6 @@ public class POJOClassCell extends ListCell<POJOClass> {
                 setText(text);
             } else {
                 if (renderer != null) {
-                    System.out.println("Set Pojo to controller");
                     rendererController.setPojo(item);
                     setGraphic(renderer);
                     setText(text);

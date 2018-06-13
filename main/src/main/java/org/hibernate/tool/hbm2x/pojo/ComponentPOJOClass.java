@@ -7,7 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 
 public class ComponentPOJOClass extends BasicPOJOClass {
@@ -275,4 +278,36 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		// TODO Auto-generated method stub
 		return JAVA_MAPPED_TYPES.get(primitiveType);
 	}
+
+	@Override
+	public boolean isPartOfUnionTable(List<POJOClass> pojos) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public POJOClass getUnionPOJOClass(List<POJOClass> pojos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isBiUnionEntity(POJOClass clazz) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getOtherTypeNameInUnion(POJOClass clazz) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getJavaType(POJOClass pojoClass) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }

@@ -24,7 +24,6 @@ public class TemplateProducer {
 	}
 
 	public void produce(Map<String,Object> additionalContext, String templateName, File destination, String identifier, String fileType, String rootContext) {
-		System.out.println("!!!!!!!!!!!!!!!!!!!! In normal produce");
 		String tempResult = produceToString( additionalContext, templateName, rootContext );
 
 		if(tempResult.trim().length()==0) {

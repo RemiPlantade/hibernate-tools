@@ -9,17 +9,20 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.conf.JavaFXConfigurator;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
+import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 public class GenericExporter extends AbstractExporter {
-	
+
 	static ArrayList<String> SPRING_API_TEMPLATES = new ArrayList<String>(){{
-	    add("api/controller.ftl");
-	    add("api/dao.ftl");
-	    add("api/service.ftl");
-	    add("api/serviceImpl.ftl");
+		add("api/controller.ftl");
+		add("api/dao.ftl");
+		add("api/service.ftl");
+		add("api/serviceImpl.ftl");
+		add("api/serializer.ftl");
 	}};
 
 	static abstract class ModelIterator {		
@@ -55,9 +58,7 @@ public class GenericExporter extends AbstractExporter {
 					pojoList.add((POJOClass) iterator.next());
 				}
 				additionalContext.put("pojo_list", pojoList);
-				iterator = 
-						ge.getCfg2JavaTool().getPOJOIterator(
-								ge.getMetadata().getEntityBindings().iterator());
+				iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getMetadata().getEntityBindings().iterator());
 				if(!JavaFXConfigurator.running.get()) {
 					new Thread() {
 						@Override
@@ -78,11 +79,7 @@ public class GenericExporter extends AbstractExporter {
 				while ( iterator.hasNext() ) {			
 					POJOClass element = (POJOClass) iterator.next();
 					System.out.println("================= Exporting Entity : " + element.getDeclarationName() + " on template : " + ge.templateName);
-					//if(!SPRING_API_TEMPLATES.contains(ge.templateName) ) {
-						ge.exportPersistentClass( additionalContext, element );
-//					}else if(SPRING_API_TEMPLATES.contains(ge.templateName) && element.getIdentifierProperty() != null) {
-//						ge.exportPersistentClass( additionalContext, element );
-//					}
+					ge.exportPersistentClass( additionalContext, element );
 				}
 			}
 		});
@@ -98,14 +95,13 @@ public class GenericExporter extends AbstractExporter {
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
 					ConfigurationNavigator.collectComponents(components, element);	
-
 				}
 				iterator = components.values().iterator();
 				while ( iterator.hasNext() ) {			
 					Component component = (Component) iterator.next();
 					ComponentPOJOClass element = new ComponentPOJOClass(component,ge.getCfg2JavaTool());
 					if(!SPRING_API_TEMPLATES.contains(ge.templateName)) {
-					ge.exportComponent( additionalContext, element );	
+						ge.exportComponent( additionalContext, element );	
 					}
 				}
 			}

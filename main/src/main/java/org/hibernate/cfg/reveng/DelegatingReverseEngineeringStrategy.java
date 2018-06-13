@@ -94,12 +94,10 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 	}
 
 	public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns) {
-		//return delegate==null?false:delegate.excludeForeignKeyAsCollection(keyname, fromTable, fromColumns, referencedTable, referencedColumns);
-		return true;
+		return delegate==null?false:delegate.excludeForeignKeyAsCollection(keyname, fromTable, fromColumns, referencedTable, referencedColumns);
 	}
 
 	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List<?> fromColumns, TableIdentifier referencedTable, List<?> referencedColumns) {
-		//return true;
 		return delegate==null?false:delegate.excludeForeignKeyAsManytoOne(keyname, fromTable, fromColumns, referencedTable, referencedColumns);
 	}
 

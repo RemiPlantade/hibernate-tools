@@ -3,6 +3,7 @@ package org.hibernate.tool.hbm2x.pojo;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 
 /**
@@ -160,4 +161,15 @@ public interface POJOClass extends ImportContext {
 	public boolean isJavaMapType(String shortTypeName);
 		
 	public String getComplexJavaType(String primitiveType);
+	
+	public boolean isPartOfUnionTable(List<POJOClass> pojos);
+		
+	public POJOClass getUnionPOJOClass(List<POJOClass> pojos);
+			
+	public boolean isBiUnionEntity(POJOClass clazz);
+	
+	public String getOtherTypeNameInUnion(POJOClass clazz);
+
+	public String getJavaType(POJOClass pojoClass);
+
 }

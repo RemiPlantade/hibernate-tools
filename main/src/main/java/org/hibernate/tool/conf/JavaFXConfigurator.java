@@ -85,7 +85,6 @@ public class JavaFXConfigurator extends Application implements Initializable{
 		this.pojos = pojos;
 		setListViewFactory(pojos);
 		ObservableList<POJOClass> items = FXCollections.observableArrayList (pojos);
-		System.out.println("Set Pojos to ListView");
 		pojo_list.setItems(items);
 		pojo_list.refresh();
 
@@ -99,7 +98,6 @@ public class JavaFXConfigurator extends Application implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("Initialize JavaFXConfigurator");
 		latch.countDown();
 		btn_launch_gen.setOnMouseClicked((event) -> {
 			pojo_list.setItems( FXCollections.observableArrayList (pojos));

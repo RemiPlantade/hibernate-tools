@@ -3,6 +3,12 @@ package ${apipackage};
 <#if pojo.hasIdentifierProperty() && !pojo.isJavaType(pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5))>
 import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)};
 </#if>
+<#if pojo.isPartOfUnionTable(pojo_list)>
+<#assign unionType = pojo.getUnionPOJOClass(pojo_list)>
+<#assign unionTypeName = pojo.getJavaTypeNameFromPOJOClass(unionType)>
+import api_builder.gen.bean.${unionTypeName};
+import api_builder.gen.service.${unionTypeName?cap_first}Service;
+</#if>
 import api_builder.gen.bean.${pojo.getShortName()};
 import api_builder.gen.service.${pojo.getShortName()}Service;
 
@@ -12,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import api_builder.gen.jackson.Views;
 
 <#else>
 ${pojo.getPackageDeclaration()}
@@ -45,6 +48,10 @@ public class ${declarationName}Controller {
 
 	@Autowired
 	private ${declarationName}Service ${declarationName?lower_case}Service;
+	<#if pojo.isPartOfUnionTable(pojo_list)>
+	@Autowired
+	private ${unionTypeName?cap_first}Service ${unionTypeName?lower_case}Service;
+	</#if>
 
 	@GetMapping("${declarationName?lower_case}/{id}")
     public ResponseEntity<${declarationName}> getArticleById(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id) {
@@ -81,7 +88,22 @@ public class ${declarationName}Controller {
 		${declarationName?lower_case}Service.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
-    
+	<#if pojo.isPartOfUnionTable(pojo_list)>
+	<#if pojo.isBiUnionEntity(unionType)>
+	//${pojo.getJavaTypeNameFromPOJOClass(unionType)}
+	@PostMapping("${declarationName?lower_case}/{id}/${unionTypeName?lower_case}s")
+	public ResponseEntity<Void> add${unionTypeName?cap_first}(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id,@RequestBody ${unionTypeName?cap_first} instance, UriComponentsBuilder builder){
+	 	${unionTypeName?lower_case}Service.save(instance);
+        HttpHeaders headers = new HttpHeaders();
+        <#if pojo.hasIdentifierProperty()>
+        headers.setLocation(builder.path("/${declarationName}/{id}").buildAndExpand(instance.${pojo.getGetterSignature(pojo.getIdentifierProperty())}()).toUri());
+        </#if>
+             
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    }
+    //${pojo.getOtherTypeNameInUnion(unionType)}
+    </#if>
+	</#if>
 }
 </#assign>
 
