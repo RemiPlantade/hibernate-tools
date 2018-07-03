@@ -168,7 +168,7 @@ public interface POJOClass extends ImportContext {
 			
 	public boolean isBiUnionEntity(POJOClass clazz);
 	
-	public String getOtherTypeNameInUnion(POJOClass clazz);
+	public String getOtherTypeNameInBiUnion(POJOClass clazz);
 
 	public String getJavaType(POJOClass pojoClass);
 

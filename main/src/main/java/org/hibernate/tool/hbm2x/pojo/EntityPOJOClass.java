@@ -1031,12 +1031,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			// Check if PojoClass correspond to union Table
 			if(pojoClass.hasIdentifierProperty() && pojoClass.getIdentifierProperty().isComposite() && pojoClass instanceof EntityPOJOClass) {
 				// Check if one of PojoClass properties is a foreignkey on table of this
-				for(Iterator<Property> iter = pojoClass.getAllPropertiesIterator();iter.hasNext();) {
-					System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>> Is union ! " + getJavaTypeName(iter.next(), true) + " And : " + getGeneratedClassName());
-					if(getJavaTypeName(iter.next(), true).equals(getGeneratedClassName())) {
+				Iterator<Property> iter = pojoClass.getAllPropertiesIterator();
+				while(iter.hasNext()) {
+					String propJavaType = getJavaTypeName(iter.next(), true);
+					if(propJavaType.equals(getShortName())) {
 						return true;
 					}
 				}
+
 			}
 		}
 		return false;
@@ -1049,7 +1051,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			if(pojoClass.hasIdentifierProperty() && pojoClass.getIdentifierProperty().isComposite() && pojoClass instanceof EntityPOJOClass) {
 				// Check if one of PojoClass properties is a foreignkey on table of this
 				for(Iterator<Property> iter = pojoClass.getAllPropertiesIterator();iter.hasNext();) {
-					if(getJavaTypeName(iter.next(), true).equals(getGeneratedClassName())) {
+					if(getJavaTypeName(iter.next(), true).equals(getShortName())) {
 						return pojoClass;
 					}
 				}
@@ -1069,21 +1071,19 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 	@Override
-	public String getOtherTypeNameInUnion(POJOClass clazz) {
+	public String getOtherTypeNameInBiUnion(POJOClass clazz) {
 		if(!isBiUnionEntity(clazz)) {
 			return "";
 		}
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>> " + ((BasicPOJOClass) clazz).getGeneratedClassName() );
 		for (Iterator<Property> iter = clazz.getAllPropertiesIterator(); iter.hasNext();) {
 			Property prop = iter.next();
-			System.out.println("Prop name : " + prop.getName());
-			System.out.println("Prop type name : " + prop.getType().getName());
-			System.out.println("Prop java type : " + getJavaTypeName(prop, true));
-			System.out.println("Is javatype : " + isJavaType(getJavaTypeName(prop, true)));
+			if(!prop.isComposite() && !getJavaTypeName(prop, true).equals(getShortName())) {
+				return getJavaTypeName(prop, true);
+			}
 		}
-		return "yolo";
+		return "";
 	}
-	
+
 	@Override
 	public boolean isPOJOInList(String typeName, List<POJOClass> pojos) {
 		boolean present = false;

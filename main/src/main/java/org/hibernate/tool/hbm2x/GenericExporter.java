@@ -48,17 +48,13 @@ public class GenericExporter extends AbstractExporter {
 		});
 		modelIterators.put("entity", new ModelIterator() {		
 			void process(GenericExporter ge) {
-				Iterator<?> iterator = 
-						ge.getCfg2JavaTool().getPOJOIterator(
-								ge.getMetadata().getEntityBindings().iterator());
+				Iterator<?> iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getMetadata().getEntityBindings().iterator());
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
-
 				List<POJOClass> pojoList = new ArrayList<>();
 				while(iterator.hasNext()) {
 					pojoList.add((POJOClass) iterator.next());
 				}
 				additionalContext.put("pojo_list", pojoList);
-				iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getMetadata().getEntityBindings().iterator());
 				if(!JavaFXConfigurator.running.get()) {
 					new Thread() {
 						@Override
@@ -76,6 +72,8 @@ public class GenericExporter extends AbstractExporter {
 						e.printStackTrace();
 					}
 				}
+				
+				iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getMetadata().getEntityBindings().iterator());
 				while ( iterator.hasNext() ) {			
 					POJOClass element = (POJOClass) iterator.next();
 					System.out.println("================= Exporting Entity : " + element.getDeclarationName() + " on template : " + ge.templateName);
@@ -109,11 +107,9 @@ public class GenericExporter extends AbstractExporter {
 		modelIterators.put("single", new ModelIterator() {		
 			void process(GenericExporter ge) {
 				System.out.println("============== Single Generation for template : " + ge.templateName);
-				Iterator<?> iterator = 
-						ge.getCfg2JavaTool().getPOJOIterator(
-								ge.getMetadata().getEntityBindings().iterator());
+
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
-				iterator = 
+				Iterator<?> iterator = 
 						ge.getCfg2JavaTool().getPOJOIterator(
 								ge.getMetadata().getEntityBindings().iterator());
 				// Create Singles file

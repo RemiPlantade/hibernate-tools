@@ -298,7 +298,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	}
 
 	@Override
-	public String getOtherTypeNameInUnion(POJOClass clazz) {
+	public String getOtherTypeNameInBiUnion(POJOClass clazz) {
 		// TODO Auto-generated method stub
 		return null;
 	}

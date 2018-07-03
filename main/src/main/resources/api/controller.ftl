@@ -5,9 +5,13 @@ import ${pojo.getPackageName()}.${pojo.getJavaTypeName(pojo.getIdentifierPropert
 </#if>
 <#if pojo.isPartOfUnionTable(pojo_list)>
 <#assign unionType = pojo.getUnionPOJOClass(pojo_list)>
-<#assign unionTypeName = pojo.getJavaTypeNameFromPOJOClass(unionType)>
+<#assign unionTypeName = unionType.getShortName()>
 import api_builder.gen.bean.${unionTypeName};
 import api_builder.gen.service.${unionTypeName?cap_first}Service;
+<#if pojo.isBiUnionEntity(unionType)>
+import api_builder.gen.bean.${pojo.getOtherTypeNameInBiUnion(unionType)};
+import api_builder.gen.service.${pojo.getOtherTypeNameInBiUnion(unionType)?cap_first}Service;
+</#if>
 </#if>
 import api_builder.gen.bean.${pojo.getShortName()};
 import api_builder.gen.service.${pojo.getShortName()}Service;
@@ -51,6 +55,10 @@ public class ${declarationName}Controller {
 	<#if pojo.isPartOfUnionTable(pojo_list)>
 	@Autowired
 	private ${unionTypeName?cap_first}Service ${unionTypeName?lower_case}Service;
+	<#if pojo.isBiUnionEntity(unionType)>
+	@Autowired
+	private ${pojo.getOtherTypeNameInBiUnion(unionType)?cap_first}Service ${pojo.getOtherTypeNameInBiUnion(unionType)?lower_case}Service;
+	</#if>
 	</#if>
 
 	@GetMapping("${declarationName?lower_case}/{id}")
@@ -88,9 +96,13 @@ public class ${declarationName}Controller {
 		${declarationName?lower_case}Service.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
+	/**
+	 * Si il existe une table d'union sans attribut autres que 2 foreign key dont une qui pointe vers cette table
+	 * Alors on peut faire le lien via cette table de liaison simplement via l'URL (PUT)/entity/id/otherEntityToLink
+	 * Sinon il faut passer par l'url : (PUT)/entity/id/linkerEntity
+	 **/
 	<#if pojo.isPartOfUnionTable(pojo_list)>
-	<#if pojo.isBiUnionEntity(unionType)>
-	//${pojo.getJavaTypeNameFromPOJOClass(unionType)}
+	<#if !pojo.isBiUnionEntity(unionType)>
 	@PostMapping("${declarationName?lower_case}/{id}/${unionTypeName?lower_case}s")
 	public ResponseEntity<Void> add${unionTypeName?cap_first}(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id,@RequestBody ${unionTypeName?cap_first} instance, UriComponentsBuilder builder){
 	 	${unionTypeName?lower_case}Service.save(instance);
@@ -101,7 +113,18 @@ public class ${declarationName}Controller {
              
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
-    //${pojo.getOtherTypeNameInUnion(unionType)}
+    
+    <#else>
+    @PostMapping("${declarationName?lower_case}/{id}/${pojo.getOtherTypeNameInBiUnion(unionType)}s")
+	public ResponseEntity<Void> add${pojo.getOtherTypeNameInBiUnion(unionType)}(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id,@RequestBody ${pojo.getOtherTypeNameInBiUnion(unionType)} instance, UriComponentsBuilder builder){
+	 	${pojo.getOtherTypeNameInBiUnion(unionType)?lower_case}Service.save(instance);
+        HttpHeaders headers = new HttpHeaders();
+        <#if pojo.hasIdentifierProperty()>
+        headers.setLocation(builder.path("/${declarationName}/{id}").buildAndExpand(instance.${pojo.getGetterSignature(pojo.getIdentifierProperty())}()).toUri());
+        </#if>
+             
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    }
     </#if>
 	</#if>
 }
