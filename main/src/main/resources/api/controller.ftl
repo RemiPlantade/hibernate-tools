@@ -115,15 +115,21 @@ public class ${declarationName}Controller {
     }
     
     <#else>
-    @PostMapping("${declarationName?lower_case}/{id}/${pojo.getOtherTypeNameInBiUnion(unionType)}s")
-	public ResponseEntity<Void> add${pojo.getOtherTypeNameInBiUnion(unionType)}(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id,@RequestBody ${pojo.getOtherTypeNameInBiUnion(unionType)} instance, UriComponentsBuilder builder){
-	 	${pojo.getOtherTypeNameInBiUnion(unionType)?lower_case}Service.save(instance);
+    @PostMapping("${declarationName?lower_case}/{id}/${pojo.getOtherTypeNameInBiUnion(unionType)?lower_case}s")
+	public ResponseEntity<String[]> add${pojo.getOtherTypeNameInBiUnion(unionType)}(@PathVariable("id") <#if pojo.hasIdentifierProperty()>${pojo.getJavaTypeName(pojo.getIdentifierProperty(), jdk5)}<#else>int</#if> id,@RequestBody List<${pojo.getOtherTypeNameInBiUnion(unionType)}> instances, UriComponentsBuilder builder){
+	 	String[] ids = new String[instances.size()];
+	 	for(int i = 0 ; i < instances.size();i++){
+	 		${pojo.getOtherTypeNameInBiUnion(unionType)?lower_case}Service.save(instances.get(i));
+	 		<#if unionType.hasIdentifierProperty()>
+	 		ids[i] = instances.get(i).${unionType.getGetterSignature(unionType.getIdentifierProperty())}().toString();
+	 		</#if>
+	 	}
         HttpHeaders headers = new HttpHeaders();
         <#if pojo.hasIdentifierProperty()>
-        headers.setLocation(builder.path("/${declarationName}/{id}").buildAndExpand(instance.${pojo.getGetterSignature(pojo.getIdentifierProperty())}()).toUri());
+        headers.setLocation(builder.path("/${declarationName}/{id}/${pojo.getOtherTypeNameInBiUnion(unionType)?lower_case}s").buildAndExpand(id).toUri());
         </#if>
              
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<String[]>(ids,headers, HttpStatus.CREATED);
     }
     </#if>
 	</#if>
