@@ -91,7 +91,9 @@ public class JavaFXConfigurator extends Application implements Initializable{
 	}
 
 	private void setListViewFactory(List<POJOClass> pojos) {
-		System.out.println("Set POJO factory");
+		POJOClassCellFactory factory = new POJOClassCellFactory(pojos);
+		List<POJOClassCellController> cellControllerList = factory.getRendererControllerList();
+		System.out.println("Controller list size" + cellControllerList.size());
 		pojo_list.setCellFactory(new POJOClassCellFactory(pojos));
 
 	}
@@ -100,30 +102,8 @@ public class JavaFXConfigurator extends Application implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		latch.countDown();
 		btn_launch_gen.setOnMouseClicked((event) -> {
-			pojo_list.setItems( FXCollections.observableArrayList (pojos));
+			
 			latch1.countDown();
 		});
-
-		//pojo_list.setCellFactory(new POJOClassCellFactory());
-		//		pojo_list.setCellFactory(new Callback<ListView<POJOClass>, ListCell<POJOClass>>(){
-		//
-		//			@Override
-		//			public ListCell<POJOClass> call(ListView<POJOClass> p) {
-		//
-		//				ListCell<POJOClass> cell = new ListCell<POJOClass>(){
-		//
-		//					@Override
-		//					protected void updateItem(POJOClass t, boolean bln) {
-		//						super.updateItem(t, bln);
-		//						if (t != null) {
-		//							setText(t.getDeclarationName());
-		//						}
-		//					}
-		//
-		//				};
-		//
-		//				return cell;
-		//			}
-		//		});		
 	}
 }

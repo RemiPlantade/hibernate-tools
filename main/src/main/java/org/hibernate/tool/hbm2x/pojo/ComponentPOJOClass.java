@@ -335,5 +335,33 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		}
 		return false;
 	}
+	
+	@Override
+	public POJOClass getPOJOClassFromName(String name, List<POJOClass> pojos) {
+		System.out.println("ABOUCIPU : PropTypeName : " + name);
+		for (POJOClass pojoClass : pojos) {
+			System.out.println("Pojo class declaration name : " + pojoClass.getDeclarationName());
+			if(pojoClass.getDeclarationName().equals(name)) {
+				return pojoClass;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Property> getAllNonCompositeProperties(List<POJOClass> pojos) {
+		ArrayList<Property> props = new ArrayList<>();
+		for(Iterator<Property> iter = getAllPropertiesIterator();iter.hasNext();) {
+			Property prop = iter.next();
+			String pojoTypeName = c2j.getJavaTypeName(prop, true);
+			POJOClass pojoProp = getPOJOClassFromName(getDeclarationName(),pojos);
+			System.out.println("Pojo Prop name : " + prop.getName() + " pojoprop type : " + pojoProp);
+			System.out.println("Has id : " + pojoProp.hasIdentifierProperty());
+			if(isJavaType(pojoTypeName) || (pojoProp != null && pojoProp.hasIdentifierProperty() && !pojoProp.getIdentifierProperty().isComposite())) {
+				props.add(prop);
+			}
+		}
+		return props;
+	}
 
 }

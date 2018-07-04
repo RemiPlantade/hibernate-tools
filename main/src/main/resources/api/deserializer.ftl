@@ -10,10 +10,12 @@ import api_builder.gen.jackson.Views;
 import ${pojo.getPackageName()}.${pojo.getDeclarationName()};
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator; 
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -46,9 +48,40 @@ public class ${declarationName}Deserializer extends StdDeserializer<${declaratio
 	}
 	
 	@Override
-	public ${declarationName} deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		// TODO Auto-generated method stub
-		return null;
+	public ${declarationName} deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+		JsonNode node = parser.getCodec().readTree(parser);
+	    <#list pojo.getAllNonCompositeProperties(pojo_list) as prop>
+	    	<#assign propTypeName = pojo.getJavaTypeName(prop, jdk5) >
+		${propTypeName} ${prop.getName()?lower_case} = null;
+		if(node.get("${prop.getName()}") != null) {
+			<#if pojo.isJacksonNumberType(propTypeName)>
+			${prop.getName()?lower_case} = (${propTypeName}) node.get("${prop.getName()}").numberValue();
+			<#elseif pojo.isJacksonStringType(propTypeName)>
+			${prop.getName()?lower_case} = (${propTypeName}) node.get("${prop.getName()}").asText();
+			<#elseif pojo.isJacksonBooleanType(propTypeName)>
+			${prop.getName()?lower_case} = (${propTypeName}) node.get("${prop.getName()}").asBoolean()
+			<#elseif pojo.isJacksonBinaryType(propTypeName)>
+		    ${prop.getName()?lower_case} = (${propTypeName}) node.get("${prop.getName()}").asText();
+			<#elseif pojo.isJacksonArrayType(propTypeName)>  
+			// ArrayList
+			<#elseif propTypeName == "Date">
+			if(!node.get("${prop.getName()?lower_case}").asText().toLowerCase().equals("null")) {
+			try {
+				${prop.getName()?lower_case} = format.parse(node.get("${prop.getName()?lower_case}").asText());
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return null;
+			}
+			</#if>
+		}  	 
+	    </#list>
+	    return new Conducteur(
+		<#list pojo.getAllNonCompositeProperties(pojo_list) as prop>
+		${prop.getName()?lower_case}<#if prop?has_next>,</#if>
+		</#list>
+		);
+		
+		
 	}
 
 }

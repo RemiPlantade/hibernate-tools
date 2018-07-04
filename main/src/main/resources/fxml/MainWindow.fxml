@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="350.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hibernate.tool.conf.JavaFXConfigurator">
+<BorderPane prefHeight="400.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hibernate.tool.conf.JavaFXConfigurator">
    <center>
       <AnchorPane>
          <children>
-            <ListView fx:id="pojo_list" prefHeight="400.0" prefWidth="600.0" />
+            <ListView fx:id="pojo_list" prefHeight="400.0" prefWidth="800.0" />
          </children>
       </AnchorPane>
    </center>

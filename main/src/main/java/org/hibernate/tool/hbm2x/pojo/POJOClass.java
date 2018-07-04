@@ -201,4 +201,8 @@ public interface POJOClass extends ImportContext {
 	
 	public boolean containDateProp();
 	
+	public POJOClass getPOJOClassFromName(String name, List<POJOClass> pojos);
+	
+	public List<Property> getAllNonCompositeProperties(List<POJOClass> pojos);
+	
 }

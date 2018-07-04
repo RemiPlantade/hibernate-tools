@@ -11,24 +11,17 @@ import javafx.scene.control.ListCell;
 
 public class POJOClassCell extends ListCell<POJOClass> {
 
-	private List<POJOClass> pojo_list;
 	private POJOClassCellController rendererController;
 	private Node renderer;
 
 	public POJOClassCell(List<POJOClass> pojos) {
-		pojo_list = pojos;
-		try {
-			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/POJOClassCell.fxml"));
-			renderer = fxmlLoader.load();
-			rendererController = (POJOClassCellController) fxmlLoader.getController();
-			rendererController.setPOJOList(pojos);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		
 	}
 
-	public POJOClassCell() {
+	public POJOClassCell(List<POJOClass> pojo_list, POJOClassCellController rendererController, Node renderer) {
 		this(null);
+		this.rendererController = rendererController;
+		this.renderer = renderer;
 	}
 
 	@Override
@@ -47,7 +40,7 @@ public class POJOClassCell extends ListCell<POJOClass> {
                     setGraphic(renderer);
                     setText(text);
                 } else {
-                    text = String.valueOf(item.getDeclarationName());
+                    text = String.valueOf(item.getShortName());
                     setGraphic(null);
                     setText(text);
                 }
