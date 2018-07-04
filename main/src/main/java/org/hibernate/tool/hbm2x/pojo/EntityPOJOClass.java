@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.commons.collections.iterators.ArrayListIterator;
 import org.hibernate.boot.Metadata;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.id.enhanced.TableGenerator;
@@ -1093,5 +1094,32 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			}
 		}
 		return present;
+	}
+
+	@Override
+	public List<String> getAllEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos) {
+		ArrayList<String> pojoClasses = new ArrayList<>();
+		for (Iterator<Property> iter = clazz.getAllPropertiesIterator(); iter.hasNext();) {
+			Property prop = iter.next();			
+			String pojoTypeName = getJavaTypeName(prop, true);
+			for (POJOClass pojo : pojos) {
+				if(!pojo.isComponent() && pojo.getDeclarationName().equals(pojoTypeName)){
+					pojoClasses.add(pojoTypeName);
+				}
+			}
+		}
+		return pojoClasses;
+	}
+
+	@Override
+	public boolean containDateProp() {
+		for (Iterator<Property> iter = getAllPropertiesIterator(); iter.hasNext();) {
+			Property prop = iter.next();
+			String pojoTypeName = getJavaTypeName(prop, true);
+			if(pojoTypeName.equals("Date")) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

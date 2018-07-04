@@ -187,23 +187,23 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 
 	@Override
 	public boolean isJavaType(String shortTypeName) {
-		return JAVA_COMPLEX_TYPES.contains(shortTypeName);
+		return JAVA_COMPLEX_TYPES.contains(shortTypeName) || JAVA_PRIMITIVE_TYPES.contains(shortTypeName);
 	}
-	
+
 	@Override
 	public boolean isJavaCollectionType(String shortTypeName) {
 		// TODO Auto-generated method stub
 		return shortTypeName.startsWith("Set")
 				|| shortTypeName.startsWith("ArrayList");
 	}
-	
+
 	@Override
 	public boolean isJavaMapType(String shortTypeName) {
 		// TODO Auto-generated method stub
 		return shortTypeName.startsWith("Map")
 				|| shortTypeName.startsWith("SortedMap");
 	}
-	
+
 	@Override
 	public String getGenericType(String genericTypeName) {
 		int idxStart = genericTypeName.indexOf('<');
@@ -256,7 +256,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	public boolean isPOJOType(Property prop) {
 		return c2j.getPOJOClass(prop.getPersistentClass()).getPackageDeclaration().equals(getPackageDeclaration());
 	}
-	
+
 	@Override
 	public boolean isPOJOInList(String typeName, List<POJOClass> pojos) {
 		boolean present = false;
@@ -272,7 +272,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	public boolean isJavaPrimitiveType(String shortTypeName) {
 		return JAVA_PRIMITIVE_TYPES.contains(shortTypeName);
 	}
-	
+
 	@Override
 	public String getComplexJavaType(String primitiveType) {
 		// TODO Auto-generated method stub
@@ -309,5 +309,31 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		return null;
 	}
 
+	@Override
+	public List<String> getAllEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos) {
+		ArrayList<String> pojoClasses = new ArrayList<>();
+		for (Iterator<Property> iter = clazz.getAllPropertiesIterator(); iter.hasNext();) {
+			Property prop = iter.next();			
+			String pojoTypeName = getJavaTypeName(prop, true);
+			for (POJOClass pojo : pojos) {
+				if(!pojo.isComponent() && pojo.getDeclarationName().equals(pojoTypeName)){
+					pojoClasses.add(pojoTypeName);
+				}
+			}
+		}
+		return pojoClasses;
+	}
+	
+	@Override
+	public boolean containDateProp() {
+		for (Iterator<Property> iter = getAllPropertiesIterator(); iter.hasNext();) {
+			Property prop = iter.next();
+			String pojoTypeName = getJavaTypeName(prop, true);
+			if(pojoTypeName.equals("Date")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

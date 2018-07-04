@@ -1,5 +1,6 @@
 package org.hibernate.tool.hbm2x.pojo;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -108,68 +109,96 @@ public interface POJOClass extends ImportContext {
 	public boolean hasVersionProperty();
 	public Property getVersionProperty();
 	
-	/** Aboucorp add
+	/** 
+	 * Aboucorp add
 	 * Compare typename with List to determine if it's a java type
 	 */
 	public boolean isJavaType(String shortTypeName);
 	
-	/** Aboucorp add
-	 * Compare typename with List to determine if it's a java type
+	/** 
+	 * Aboucorp add
+	 * Compare typename with List to determine if it's a java primitive type
 	 */
 	public boolean isJavaPrimitiveType(String shortTypeName);
 	
 	
-	/** Aboucorp add
+	/** 
+	 * Aboucorp add
 	 * Compare typename with java types to determine if it's a Binary 
 	 */
 	boolean isPOJOType(Property prop);
 	
-	/** Aboucorp add
+	/** 
+	 * Aboucorp add
 	 * Compare typename with Collection jab=va types to determine if it's a Subclass of collection
 	 */
 	public boolean isJavaCollectionType(String shortTypeName);
 	
-	/** Aboucorp add
+	/** 
+	 * Aboucorp add
 	 * Compare typename with java types to determine if it's a Number 
 	 */
 	public boolean isJacksonNumberType(String shortTypeName);
 	
-	/** Aboucorp add
+	/** 
+	 * Aboucorp add
 	 * Compare typename with java types to determine if it's a String 
 	 */
 	public boolean isJacksonStringType(String shortTypeName);
 	
-	/** Aboucorp add
+	/** 
+	 * Aboucorp add
 	 * Compare typename with java types to determine if it's a Boolean 
 	 */
 	public boolean isJacksonBooleanType(String shortTypeName);
 	
-	/** Aboucorp add
+	/** 
+	 * Aboucorp add
 	 * Compare typename with java types to determine if it's an Array 
 	 */
 	public boolean isJacksonArrayType(String shortTypeName);
 
-	/** Aboucorp add
+	/** 
+	 * Aboucorp add
 	 * Compare typename with java types to determine if it's a Binary 
 	 */
 	public boolean isJacksonBinaryType(String shortTypeName);
 	
+	/** 
+	 * Aboucorp add
+	 * Check if the pojo with this name is in the list in arg 
+	 */
 	public boolean isPOJOInList(String typeName, List<POJOClass> pojos);
-
+	/** 
+	 * Aboucorp add
+	 * Get Generic Type form Java generic Type name
+	 */
 	public String getGenericType(String shortTypeName);
 
+	/** 
+	 * Aboucorp add
+	 * Check if this type name is Map type
+	 */
 	public boolean isJavaMapType(String shortTypeName);
 		
+	/** 
+	 * Aboucorp add
+	 * Get java complex wrapper type name from the java primitive type name in arg
+	 */
 	public String getComplexJavaType(String primitiveType);
 	
 	public boolean isPartOfUnionTable(List<POJOClass> pojos);
 		
 	public POJOClass getUnionPOJOClass(List<POJOClass> pojos);
-			
+		
 	public boolean isBiUnionEntity(POJOClass clazz);
 	
 	public String getOtherTypeNameInBiUnion(POJOClass clazz);
 
 	public String getJavaType(POJOClass pojoClass);
-
+	
+	public List<String> getAllEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos);
+	
+	public boolean containDateProp();
+	
 }

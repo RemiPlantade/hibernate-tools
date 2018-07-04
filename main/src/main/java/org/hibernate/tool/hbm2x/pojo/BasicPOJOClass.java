@@ -40,8 +40,8 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	protected ImportContext importContext;
 	protected MetaAttributable meta;
 	protected final Cfg2JavaTool c2j;
-	protected final List<String> JAVA_COMPLEX_TYPES = Arrays.asList(new String[]{"Integer","Double","Float","String","Boolean","Short","Byte","Object","Date"}); 
-	protected final List<String> JAVA_PRIMITIVE_TYPES = Arrays.asList(new String[]{"int","double","float","boolean","short","byte"});
+	protected final List<String> JAVA_COMPLEX_TYPES = Arrays.asList(new String[]{"Integer","Long","Double","Float","String","Boolean","Short","Byte","Object","Date"}); 
+	protected final List<String> JAVA_PRIMITIVE_TYPES = Arrays.asList(new String[]{"int","long","double","float","boolean","short","byte"});
 	protected HashMap<String,String> JAVA_MAPPED_TYPES;
 	protected final List<String> JACKSON_NUMERIC_TYPES = Arrays.asList(new String[]{"int","long","double","float","short","Integer","Long","Double","Float","Short","BigInteger","BigDecimal"}); 
 
@@ -56,6 +56,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		JAVA_MAPPED_TYPES.put("boolean", "Boolean");
 		JAVA_MAPPED_TYPES.put("short", "Short");
 		JAVA_MAPPED_TYPES.put("byte", "Byte");
+		JAVA_MAPPED_TYPES.put("long", "Long");
 		if(this.meta==null) {
 			throw new IllegalArgumentException("class Argument must be not null");
 		}

@@ -23,6 +23,7 @@ public class GenericExporter extends AbstractExporter {
 		add("api/service.ftl");
 		add("api/serviceImpl.ftl");
 		add("api/serializer.ftl");
+		add("api/deserializer.ftl");
 	}};
 
 	static abstract class ModelIterator {		
