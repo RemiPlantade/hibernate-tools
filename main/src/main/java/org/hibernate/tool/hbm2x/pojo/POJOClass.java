@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 
 /**
@@ -203,6 +202,19 @@ public interface POJOClass extends ImportContext {
 	
 	public POJOClass getPOJOClassFromName(String name, List<POJOClass> pojos);
 	
-	public List<Property> getAllNonCompositeProperties(List<POJOClass> pojos);
+	public List<Property> getAllJavaProp(List<POJOClass> pojos);
 	
+	public boolean isUnionEntity();
+
+	public void setUnionEntity(boolean isUnionEntity);
+
+	public ArrayList<EntityPOJOClass> getLinkedEntities();
+
+	public void setLinkedEntities(ArrayList<EntityPOJOClass> linkedEntities);
+	
+	public List<EntityPOJOClass> getLinkerEntities();
+
+	public void setLinkerEntities(List<EntityPOJOClass> linkerEntities);
+	
+	public String test();
 }

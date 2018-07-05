@@ -7,6 +7,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.management.BadAttributeValueExpException;
+
+import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 import javafx.application.Application;
@@ -16,6 +19,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
@@ -24,16 +29,18 @@ import javafx.stage.Stage;
 public class JavaFXConfigurator extends Application implements Initializable{
 
 	@FXML
-	private ListView<POJOClass> pojo_list;
+	private ListView<EntityPOJOClass> pojo_list_view;
 	@FXML 
 	private Button btn_launch_gen;
 
 	public static final CountDownLatch latch = new CountDownLatch(1);
 	public static final CountDownLatch latch1 = new CountDownLatch(1);
+	
 	public static JavaFXConfigurator startUpTest = null;
+	
 	public static AtomicBoolean running = new AtomicBoolean(false);
-	private List<POJOClass> pojos;
-
+	
+	private List<EntityPOJOClass> pojos;
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
@@ -81,29 +88,52 @@ public class JavaFXConfigurator extends Application implements Initializable{
 		}
 	}
 
-	public void setPOJOs(List<POJOClass> pojos) {
+	public void setPOJOs(List<EntityPOJOClass> pojos) {
 		this.pojos = pojos;
 		setListViewFactory(pojos);
-		ObservableList<POJOClass> items = FXCollections.observableArrayList (pojos);
-		pojo_list.setItems(items);
-		pojo_list.refresh();
+		ObservableList<EntityPOJOClass> items = FXCollections.observableArrayList (pojos);
+		pojo_list_view.setItems(items);
+		pojo_list_view.refresh();
 
 	}
 
-	private void setListViewFactory(List<POJOClass> pojos) {
-		POJOClassCellFactory factory = new POJOClassCellFactory(pojos);
-		List<POJOClassCellController> cellControllerList = factory.getRendererControllerList();
-		System.out.println("Controller list size" + cellControllerList.size());
-		pojo_list.setCellFactory(new POJOClassCellFactory(pojos));
-
+	private void setListViewFactory(List<EntityPOJOClass> pojos) {
+		pojo_list_view.setCellFactory(new POJOClassCellFactory(pojos));
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		latch.countDown();
 		btn_launch_gen.setOnMouseClicked((event) -> {
+			 try {
+				updateAllEntities();
+				for (EntityPOJOClass entityPOJOClass : pojos) {
+					System.out.println("Linked netities.size()" + entityPOJOClass.getLinkedEntities().size());
+					System.out.println("Linker netities.size()" + entityPOJOClass.getLinkerEntities().size());
+				}
+				latch1.countDown();
+			} catch (BadAttributeValueExpException e) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error dialog");
+				alert.setHeaderText("Some problem occurs");
+				alert.setContentText("You must set all linked entities for each linker.");
+				alert.showAndWait();
+			}
 			
-			latch1.countDown();
 		});
+	}
+	
+	public void updateAllEntities() throws BadAttributeValueExpException{
+		POJOClassCellFactory factory = ((POJOClassCellFactory)pojo_list_view.getCellFactory());
+		
+		for (POJOClassCell cell : factory.getCells()) {
+			if(cell.getItem() != null && cell.getItem() instanceof EntityPOJOClass) {
+				try {
+					cell.getRendererController().updatePojoFromFields();
+				}catch(Exception e){
+					throw new BadAttributeValueExpException(e.getMessage());
+				}
+			}
+		}
 	}
 }

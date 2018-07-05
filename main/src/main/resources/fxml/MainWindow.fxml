@@ -9,7 +9,7 @@
    <center>
       <AnchorPane>
          <children>
-            <ListView fx:id="pojo_list" prefHeight="400.0" prefWidth="800.0" />
+            <ListView fx:id="pojo_list_view" prefHeight="400.0" prefWidth="800.0" />
          </children>
       </AnchorPane>
    </center>

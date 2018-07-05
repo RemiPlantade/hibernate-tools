@@ -16,6 +16,9 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 public class ComponentPOJOClass extends BasicPOJOClass {
 
 	private Component clazz;
+	private boolean isUnionEntity;
+	private ArrayList<EntityPOJOClass> linkedEntities = new ArrayList<>();
+	private List<EntityPOJOClass> linkerEntities = new ArrayList<>();
 
 	public ComponentPOJOClass(Component component, Cfg2JavaTool cfg) {
 		super(component, cfg);
@@ -338,9 +341,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	
 	@Override
 	public POJOClass getPOJOClassFromName(String name, List<POJOClass> pojos) {
-		System.out.println("ABOUCIPU : PropTypeName : " + name);
 		for (POJOClass pojoClass : pojos) {
-			System.out.println("Pojo class declaration name : " + pojoClass.getDeclarationName());
 			if(pojoClass.getDeclarationName().equals(name)) {
 				return pojoClass;
 			}
@@ -349,19 +350,43 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	}
 	
 	@Override
-	public List<Property> getAllNonCompositeProperties(List<POJOClass> pojos) {
+	public List<Property> getAllJavaProp(List<POJOClass> pojos) {
 		ArrayList<Property> props = new ArrayList<>();
 		for(Iterator<Property> iter = getAllPropertiesIterator();iter.hasNext();) {
 			Property prop = iter.next();
 			String pojoTypeName = c2j.getJavaTypeName(prop, true);
-			POJOClass pojoProp = getPOJOClassFromName(getDeclarationName(),pojos);
-			System.out.println("Pojo Prop name : " + prop.getName() + " pojoprop type : " + pojoProp);
-			System.out.println("Has id : " + pojoProp.hasIdentifierProperty());
-			if(isJavaType(pojoTypeName) || (pojoProp != null && pojoProp.hasIdentifierProperty() && !pojoProp.getIdentifierProperty().isComposite())) {
+			POJOClass pojoProp = getPOJOClassFromName(pojoTypeName,pojos);
+			if(pojoProp == null || !pojoProp.isUnionEntity()) {
 				props.add(prop);
 			}
 		}
 		return props;
 	}
-
+	public String test() {
+		return getShortName() +  " isAbstractUnionTable " + this.clazz.getTable().isAbstractUnionTable();
+	}
+	@Override
+	public boolean isUnionEntity() {
+		return isUnionEntity;
+	}
+	@Override
+	public void setUnionEntity(boolean isUnionEntity) {
+		this.isUnionEntity = isUnionEntity;
+	}
+	@Override
+	public ArrayList<EntityPOJOClass> getLinkedEntities() {
+		return linkedEntities;
+	}
+	@Override
+	public void setLinkedEntities(ArrayList<EntityPOJOClass> linkedEntities) {
+		this.linkedEntities = linkedEntities;
+	}
+	@Override
+	public List<EntityPOJOClass> getLinkerEntities() {
+		return linkerEntities;
+	}
+	@Override
+	public void setLinkerEntities(List<EntityPOJOClass> linkerEntities) {
+		this.linkerEntities = linkerEntities;
+	}
 }

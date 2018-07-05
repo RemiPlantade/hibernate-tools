@@ -50,7 +50,7 @@ public class ${declarationName}Deserializer extends StdDeserializer<${declaratio
 	@Override
 	public ${declarationName} deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
 		JsonNode node = parser.getCodec().readTree(parser);
-	    <#list pojo.getAllNonCompositeProperties(pojo_list) as prop>
+	    <#list pojo.getAllJavaProp(pojo_list) as prop>
 	    	<#assign propTypeName = pojo.getJavaTypeName(prop, jdk5) >
 		${propTypeName} ${prop.getName()?lower_case} = null;
 		if(node.get("${prop.getName()}") != null) {
@@ -75,15 +75,24 @@ public class ${declarationName}Deserializer extends StdDeserializer<${declaratio
 			</#if>
 		}  	 
 	    </#list>
-	    return new Conducteur(
-		<#list pojo.getAllNonCompositeProperties(pojo_list) as prop>
+	    return new ${declarationName}(
+		<#list pojo.getAllJavaProp(pojo_list) as prop>
 		${prop.getName()?lower_case}<#if prop?has_next>,</#if>
 		</#list>
-		);
+		);	
 		
+		<#list pojo_list as pojojo>
+		// ${pojojo.getShortName()}
+		// ${pojojo.isUnionEntity()?string('yes', 'no')}
+			<#list pojojo.getLinkerEntities() as p >
+			// ${p.getShortName()}
+			</#list>
+			<#list pojojo.getLinkedEntities() as f >
+			// ${f.getShortName()}
+			</#list>
+		</#list>
 		
 	}
-
 }
 </#assign>
 ${pojo.generateImports()}
