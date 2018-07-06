@@ -2,7 +2,7 @@
 <#if apipackage??>
 package ${apipackage};
 </#if>
-<#list pojo.getAllEntitiesPropClassName(pojo,pojo_list) as pojoTypeName>
+<#list pojo.getOnlyEntitiesPropClassName(pojo,pojo_list) as pojoTypeName>
 import api_builder.gen.service.${pojoTypeName?cap_first}Service;
 import api_builder.gen.bean.${pojoTypeName?cap_first};
 </#list>
@@ -31,9 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Hibernate Tools
  */
 public class ${declarationName}Deserializer extends StdDeserializer<${declarationName}>{
-<#list pojo.getAllEntitiesPropClassName(pojo,pojo_list) as pojoTypeName>
+<#list pojo.getOnlyEntitiesPropClassName(pojo,pojo_list) as propClassName>
 	@Autowired
-	private ${pojoTypeName?cap_first}Service ${pojoTypeName?lower_case}Service; 
+	private ${propClassName?cap_first}Service ${propClassName?lower_case}Service; 
 </#list>
 	<#if pojo.containDateProp()>
 	private SimpleDateFormat format = new SimpleDateFormat("<#if dateFormat??>${dateFormat}<#else>dd.MM.YYYY</#if>");
@@ -49,8 +49,10 @@ public class ${declarationName}Deserializer extends StdDeserializer<${declaratio
 	
 	@Override
 	public ${declarationName} deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+	    ${declarationName} ${declarationName?lower_case} = new ${declarationName}();
 		JsonNode node = parser.getCodec().readTree(parser);
 	    <#list pojo.getAllJavaProp(pojo_list) as prop>
+	    <#if prop.getName() != pojo.getIdentifierProperty().getName()>
 	    	<#assign propTypeName = pojo.getJavaTypeName(prop, jdk5) >
 		${propTypeName} ${prop.getName()?lower_case} = null;
 		if(node.get("${prop.getName()}") != null) {
@@ -66,32 +68,25 @@ public class ${declarationName}Deserializer extends StdDeserializer<${declaratio
 			// ArrayList
 			<#elseif propTypeName == "Date">
 			if(!node.get("${prop.getName()?lower_case}").asText().toLowerCase().equals("null")) {
-			try {
-				${prop.getName()?lower_case} = format.parse(node.get("${prop.getName()?lower_case}").asText());
-			} catch (ParseException e) {
-				e.printStackTrace();
-				return null;
+				try {
+					${prop.getName()?lower_case} = format.parse(node.get("${prop.getName()?lower_case}").asText());
+				} catch (ParseException e) {
+					e.printStackTrace();
+					return null;
+				}
 			}
+			<#else>
+				// User entity
+				int ${prop.getName()?lower_case}_id = node.get("${prop.getName()}").asInt();
+				${propTypeName?lower_case} = ${propTypeName?lower_case}Service.find${propTypeName}ById(${prop.getName()?lower_case}_id);
 			</#if>
-		}  	 
-	    </#list>
-	    return new ${declarationName}(
+		}</#if></#list>
 		<#list pojo.getAllJavaProp(pojo_list) as prop>
-		${prop.getName()?lower_case}<#if prop?has_next>,</#if>
+			<#if prop.getName() != pojo.getIdentifierProperty().getName()>
+		${declarationName?lower_case}.set${prop.getName()?cap_first}(${prop.getName()?lower_case});
+			</#if>
 		</#list>
-		);	
-		
-		<#list pojo_list as pojojo>
-		// ${pojojo.getShortName()}
-		// ${pojojo.isUnionEntity()?string('yes', 'no')}
-			<#list pojojo.getLinkerEntities() as p >
-			// ${p.getShortName()}
-			</#list>
-			<#list pojojo.getLinkedEntities() as f >
-			// ${f.getShortName()}
-			</#list>
-		</#list>
-		
+		return ${declarationName?lower_case};
 	}
 }
 </#assign>

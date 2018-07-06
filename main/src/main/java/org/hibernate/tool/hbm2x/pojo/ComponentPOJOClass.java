@@ -313,7 +313,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	}
 
 	@Override
-	public List<String> getAllEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos) {
+	public List<String> getOnlyEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos) {
 		ArrayList<String> pojoClasses = new ArrayList<>();
 		for (Iterator<Property> iter = clazz.getAllPropertiesIterator(); iter.hasNext();) {
 			Property prop = iter.next();			

@@ -196,7 +196,7 @@ public interface POJOClass extends ImportContext {
 
 	public String getJavaType(POJOClass pojoClass);
 	
-	public List<String> getAllEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos);
+	public List<String> getOnlyEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos);
 	
 	public boolean containDateProp();
 	

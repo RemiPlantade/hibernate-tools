@@ -1104,7 +1104,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 	@Override
-	public List<String> getAllEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos) {
+	public List<String> getOnlyEntitiesPropClassName(POJOClass clazz,List<POJOClass> pojos) {
 		ArrayList<String> pojoClasses = new ArrayList<>();
 		for (Iterator<Property> iter = clazz.getAllPropertiesIterator(); iter.hasNext();) {
 			Property prop = iter.next();			
@@ -1133,7 +1133,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	@Override
 	public POJOClass getPOJOClassFromName(String name, List<POJOClass> pojos) {
 		for (POJOClass pojoClass : pojos) {
-			if(name.contains(pojoClass.getDeclarationName())) {
+			if(name.equals(pojoClass.getDeclarationName())) {
 				return pojoClass;
 			}
 		}
@@ -1145,8 +1145,10 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		ArrayList<Property> props = new ArrayList<>();
 		for(Iterator<Property> iter = getAllPropertiesIterator();iter.hasNext();) {
 			Property prop = iter.next();
-			String pojoTypeName = c2j.getJavaTypeName(prop, true);
-			if(isJavaType(pojoTypeName.substring(pojoTypeName.lastIndexOf('.')+1,pojoTypeName.length()))) {
+			String pojoTypeName = getJavaTypeName(prop, true);
+			POJOClass pojoClass = getPOJOClassFromName(pojoTypeName, pojos);
+			if(isJavaType(pojoTypeName) && !isJavaCollectionType(pojoTypeName) 
+					|| (pojoClass !=null && !pojoClass.isUnionEntity())) {
 				props.add(prop);
 			}
 		}
