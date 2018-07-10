@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Import" />
+            <MenuItem mnemonicParsing="false" text="Save" />
+            <MenuItem mnemonicParsing="false" text="Previous" />
+            <MenuItem mnemonicParsing="false" text="Next" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About APIBuilder" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+      <FlowPane alignment="CENTER">
+         <children>
+            <ImageView fitHeight="98.0" fitWidth="249.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/logo.png" />
+               </image>
+            </ImageView>
+         </children>
+         <VBox.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </VBox.margin>
+      </FlowPane>
+      <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label prefHeight="163.0" prefWidth="479.0" text="Vous êtes sur le point de configurer votre future API. Une fois configuré l'application ApiBuilder lancera la génération de votre API REST.  Certains des paramètres définis ici ne pourront plus être modifié ultérieurement à moins de relancer le processus de configuration.Veillez donc a prendrez le temps de bien configurer votre API avant de valider l'étape finale. Les paramètres non modifiables utlérieurement seront marqué par une * rouge." textAlignment="JUSTIFY" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" minHeight="40.0" mnemonicParsing="false" prefWidth="100.0" text="Begin" />
+         </children>
+      </FlowPane>
+  </children>
+</VBox>
