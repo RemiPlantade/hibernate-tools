@@ -59,17 +59,9 @@
 		<maven.deploy.skip>false</maven.deploy.skip>
 		<maven.install.skip>false</maven.install.skip>
 	</properties>
-<!-- 	<build>
-	 <resources>
-      <resource>
-            <filtering>false</filtering>
-            <directory>src/main/resources</directory>
-            <includes>
-                <include>**/*.fxml</include>
-            </includes>             
-        </resource>
-    </resources>
-    </build> -->
+	<!-- <build> <resources> <resource> <filtering>false</filtering> <directory>src/main/resources</directory> 
+		<includes> <include>**/*.fxml</include> </includes> </resource> </resources> 
+		</build> -->
 
 	<dependencies>
 		<dependency>
@@ -135,20 +127,23 @@
 			<artifactId>controlsfx-samples</artifactId>
 			<version>8.40.14</version>
 		</dependency>
-
-
+		<dependency>
+			<groupId>fr.aboucorp</groupId>
+			<artifactId>api_conf</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>
 		<repository>
 			<id>global</id>
 			<name>Global Repository</name>
-			<url>http://maven.aboucipu.fr/repository/global</url>
+			<url>http://maven.aboucipu.fr:8080/repository/global</url>
 		</repository>
 		<snapshotRepository>
 			<id>global</id>
 			<name>Global Repository</name>
-			<url>http://maven.aboucipu.fr/repository/global</url>
+			<url>http://maven.aboucipu.fr:8080/repository/global</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
