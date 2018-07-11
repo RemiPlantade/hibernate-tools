@@ -2,9 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.CredentialsController">
+<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.HTTPSQuotaController">
   <children>
       <FlowPane alignment="CENTER" prefWidth="200.0">
          <children>
@@ -32,7 +31,7 @@
       </FlowPane>
       <FlowPane alignment="CENTER">
          <children>
-            <Label text="Identifiants" wrapText="true">
+            <Label text="HTTPS et Quota" wrapText="true">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -41,19 +40,17 @@
       </FlowPane>
       <FlowPane alignment="CENTER" style="-fx-background-color: E1E8FB;">
          <children>
-            <Label prefHeight="112.0" prefWidth="304.0" text="Votre API sera administrable via une interface web. Saisissez ici vos informations de connexion" textAlignment="CENTER" wrapText="true" />
+            <Label prefHeight="112.0" prefWidth="322.0" text="Vous pouvez définir ici si vous souhaitez forcer l'utilisation d'HTTPS pour les requêtes sur l'API. Vous pouvez également choisir d'activer le système de gestion des quotas." textAlignment="JUSTIFY" wrapText="true" />
          </children>
       </FlowPane>
       <FlowPane alignment="TOP_CENTER" prefHeight="800.0" prefWidth="200.0">
          <children>
-            <VBox alignment="TOP_CENTER" spacing="5.0">
+            <VBox alignment="TOP_CENTER" spacing="20.0">
                <children>
-                  <Label text="Identifiant" />
-                  <TextField fx:id="txt_ident" />
-                  <Label text="Mot de passe" />
-                  <PasswordField fx:id="txt_mdp" />
-                  <Label text="Confirmation" />
-                  <PasswordField fx:id="txt_confirm" />
+                  <Label text="Forcer HTTPS ?" />
+                  <CheckBox fx:id="chkbx_https" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0" />
+                  <Label text="Activer les quota ?" />
+                  <CheckBox fx:id="chkbx_quota" mnemonicParsing="false" />
                </children>
                <FlowPane.margin>
                   <Insets top="20.0" />
@@ -82,11 +79,11 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Label text="Etape 1 / 6" />
-                  <HBox>
+                  <Label text="Etape 3 / 6" />
+                   <HBox>
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="40.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="200.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="120.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="120.0" />
                      </children>
                   </HBox>
                </children>

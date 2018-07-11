@@ -1,4 +1,4 @@
-package org.hibernate.tool.conf;
+package fr.aboucorp.conf.ihm;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.CredentialsController">
+<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.SSLController">
   <children>
       <FlowPane alignment="CENTER" prefWidth="200.0">
          <children>
@@ -32,7 +34,7 @@
       </FlowPane>
       <FlowPane alignment="CENTER">
          <children>
-            <Label text="Identifiants" wrapText="true">
+            <Label text="SSL certificat" wrapText="true">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -41,19 +43,31 @@
       </FlowPane>
       <FlowPane alignment="CENTER" style="-fx-background-color: E1E8FB;">
          <children>
-            <Label prefHeight="112.0" prefWidth="304.0" text="Votre API sera administrable via une interface web. Saisissez ici vos informations de connexion" textAlignment="CENTER" wrapText="true" />
+            <VBox alignment="CENTER">
+               <children>
+                  <Label prefHeight="42.0" prefWidth="225.0" text="Pour activer le protocole HTTPS vous devez fournir un certificat SSL valide." textAlignment="CENTER" wrapText="true" />
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label text="Si vous n'en possédez pas, vous pouvez en obtenir un gratuitement sur " textAlignment="CENTER" wrapText="true" />
+                        <Hyperlink text="letsencrypt.org" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </FlowPane>
       <FlowPane alignment="TOP_CENTER" prefHeight="800.0" prefWidth="200.0">
          <children>
-            <VBox alignment="TOP_CENTER" spacing="5.0">
+            <VBox alignment="TOP_CENTER" spacing="8.0">
                <children>
-                  <Label text="Identifiant" />
-                  <TextField fx:id="txt_ident" />
-                  <Label text="Mot de passe" />
-                  <PasswordField fx:id="txt_mdp" />
-                  <Label text="Confirmation" />
-                  <PasswordField fx:id="txt_confirm" />
+                  <Label text="Fichier KeyStore" />
+                  <Button fx:id="btn_keystore_file" mnemonicParsing="false" text="Parcourir" />
+                  <Label text="Type de KeyStore" />
+                  <ComboBox fx:id="cmb_type_keystore" prefWidth="150.0" />
+                  <Label text="Mot de passe KeyStore" />
+                  <PasswordField fx:id="mdp_keystore" />
+                  <Label text="Alias de la clé SSL" />
+                  <TextField fx:id="alias_keystore" />
                </children>
                <FlowPane.margin>
                   <Insets top="20.0" />
@@ -82,11 +96,11 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Label text="Etape 1 / 6" />
-                  <HBox>
+                  <Label text="Etape 4 / 6" />
+                   <HBox>
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="40.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="200.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="160.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="80.0" />
                      </children>
                   </HBox>
                </children>

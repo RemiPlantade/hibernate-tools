@@ -1,4 +1,4 @@
-package org.hibernate.tool.conf;
+package fr.aboucorp.conf.ihm;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
+import fr.aboucorp.conf.controller.POJOClassCellController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;

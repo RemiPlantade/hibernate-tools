@@ -1,4 +1,4 @@
-package org.hibernate.tool.conf;
+package fr.aboucorp.conf.controller;
 
 import java.net.URL;
 import java.util.ArrayList;

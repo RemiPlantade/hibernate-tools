@@ -10,10 +10,11 @@ import java.util.StringTokenizer;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
-import org.hibernate.tool.conf.JavaFXConfigurator;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+
+import fr.aboucorp.conf.controller.MainController;
 
 public class GenericExporter extends AbstractExporter {
 
@@ -64,15 +65,15 @@ public class GenericExporter extends AbstractExporter {
 				iterator = pojos.iterator();
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				additionalContext.put("pojo_list", pojos);
-				if(!JavaFXConfigurator.running.get()) {
+				if(!MainController.running.get()) {
 					new Thread() {
 						@Override
 						public void run() {
-							javafx.application.Application.launch(JavaFXConfigurator.class);
+							javafx.application.Application.launch(MainController.class);
 						}
 					}.start();
 
-					JavaFXConfigurator launcher = JavaFXConfigurator.waitForJavaFXLauncher();
+					MainController launcher = MainController.waitForJavaFXLauncher();
 					launcher.setPOJOs(pojos);
 					try {
 						launcher.latch1.await();
