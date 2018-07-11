@@ -15,8 +15,9 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
 
-<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -72,9 +73,9 @@
                <children>
                   <Label text="URL de base" />
                   <TextField />
-                  <Label text="Mot de passe" />
-                  <PasswordField />
-                  <Label text="Confirmation" />
+                  <Label text="Port HTTP" />
+                  <CustomTextField />
+                  <Label text="Port HTTPS" />
                   <PasswordField />
                </children>
                <FlowPane.margin>
