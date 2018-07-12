@@ -12,6 +12,9 @@ import javax.transaction.Transactional.TxType;
 import api_conf.conf.model.ApiConf;
 import api_conf.conf.model.ApiParamCat;
 import api_conf.conf.model.ApiParamType;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.adapter.JavaBeanStringProperty;
+import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -41,10 +44,29 @@ public class CredentialsController extends AbstractController implements Initial
 	
 	private ApiConf admin_username;
 	private ApiConf admin_pwd;
+	
+	private JavaBeanStringProperty ident = null;
+	private JavaBeanStringProperty pwd = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initConf();
+		try {
+			ident = new JavaBeanStringPropertyBuilder()
+			        .bean(admin_username)
+			        .name("paramValue")
+			        .build();
+			pwd = new JavaBeanStringPropertyBuilder()
+			        .bean(admin_pwd)
+			        .name("paramValue")
+			        .build();
+			txt_ident.textProperty().bindBidirectional(ident);
+			txt_ident.textProperty().bindBidirectional(pwd);
+			
+		} catch (NoSuchMethodException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		btn_prev.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				getMainCtrl().onPreviousPage();
@@ -55,9 +77,12 @@ public class CredentialsController extends AbstractController implements Initial
 			@Override public void handle(ActionEvent event) {
 				try {
 					checkInfo();
-					updateValues();
+//					updateValues();
+					System.out.println("Yololo" + admin_username.getParamValue());
 					getMainCtrl().onNextPage();
 				}catch(IllegalArgumentException e) {
+					ident.set("");
+					pwd.set("");
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Error Dialog");
 					alert.setHeaderText("Erreur de saisie");
