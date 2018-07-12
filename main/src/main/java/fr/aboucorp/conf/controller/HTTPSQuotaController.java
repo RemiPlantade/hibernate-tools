@@ -1,10 +1,15 @@
 package fr.aboucorp.conf.controller;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import api_conf.conf.model.ApiConf;
+import fr.aboucorp.conf.PropertyBindingException;
+import javafx.beans.property.adapter.JavaBeanBooleanProperty;
+import javafx.beans.property.adapter.JavaBeanBooleanPropertyBuilder;
+import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,10 +30,15 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 
 	@FXML
 	private Button btn_next;
+	
+	private ApiConf httpsEnabled;
+	private ApiConf quotaEnabled;
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		super.initialize(btn_prev, btn_next);
+		
 		btn_prev.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				getMainCtrl().onPreviousPage();
@@ -39,7 +49,6 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 			@Override public void handle(ActionEvent event) {
 				try {
 					checkInfo();
-					updateValues();
 					getMainCtrl().onNextPage();
 				}catch(Exception e) {
 					
@@ -49,10 +58,7 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 	}
 
 	@Override
-	public void checkInfo() {
-		// TODO Auto-generated method stub
-
-	}
+	public void checkInfo() {}
 
 	@Override
 	public List<ApiConf> getAllApiConf() {
@@ -61,8 +67,21 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 	}
 
 	@Override
-	public void updateValues() {
-		// TODO Auto-generated method stub
-
+	public void bindProps() throws PropertyBindingException {
+		try {
+			httpsEnabled = confDao.getEntityFromParamKey("server.ssl.enabled");
+			quotaEnabled = confDao.getEntityFromParamKey("api.quota.managed");
+			JavaBeanBooleanProperty quotaEnabledProp = new JavaBeanBooleanPropertyBuilder()
+			        .bean(quotaEnabled)
+			        .name("paramValue")
+			        .build(); 
+			JavaBeanBooleanProperty httpsEnabledProp = new JavaBeanBooleanPropertyBuilder()
+			        .bean(httpsEnabled)
+			        .name("paramValue")
+			        .build();
+		} catch (SQLException | NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			throw new PropertyBindingException(e.getMessage());
+		}	
 	}
 }

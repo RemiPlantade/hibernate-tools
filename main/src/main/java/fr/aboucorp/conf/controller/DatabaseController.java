@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import api_conf.conf.model.ApiConf;
+import fr.aboucorp.conf.PropertyBindingException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -66,7 +67,7 @@ public class DatabaseController extends AbstractController implements Initializa
 	}
 
 	@Override
-	public void updateValues() {
+	public void bindProps() throws PropertyBindingException {
 		// TODO Auto-generated method stub
 		
 	}

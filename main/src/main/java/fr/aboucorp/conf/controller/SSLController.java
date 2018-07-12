@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import api_conf.conf.model.ApiConf;
+import fr.aboucorp.conf.PropertyBindingException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,42 +19,32 @@ public class SSLController extends AbstractController implements Initializable {
 
 	@FXML
 	private PasswordField mdp_keystore;
-	
+
 	@FXML
 	private Button btn_keystore_file;
-	
+
 	@FXML 
 	private ComboBox<String> cmb_type_keystore;
-	
+
 	@FXML
 	private TextField alias_keystore;
-	
+
 	@FXML
 	private Button btn_prev;
-	
+
 	@FXML
 	private Button btn_next;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		btn_prev.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-			      getMainCtrl().onPreviousPage();
-			    }
-			});
-		
-		btn_next.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-			      getMainCtrl().onNextPage();
-			    }
-			});
-		
+		super.initialize(btn_prev, btn_next);
+
 	}
 
 	@Override
 	public void checkInfo() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -63,8 +54,8 @@ public class SSLController extends AbstractController implements Initializable {
 	}
 
 	@Override
-	public void updateValues() {
+	public void bindProps() throws PropertyBindingException {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
