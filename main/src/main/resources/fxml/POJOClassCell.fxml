@@ -2,23 +2,87 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
 
-<FlowPane alignment="CENTER_LEFT" prefWrapLength="700" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hibernate.tool.conf.POJOClassCellController">
+<FlowPane alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hibernate.tool.conf.POJOClassCellController">
    <children>
-      <Label fx:id="pojo_label" prefHeight="0.0" prefWidth="150.0" text="ClassName">
-         <opaqueInsets>
-         </opaqueInsets>
-         <FlowPane.margin>
-            <Insets right="20.0" />
-         </FlowPane.margin>
-      </Label>
-      <CheckBox fx:id="link_table_chbx" mnemonicParsing="false" prefWidth="80.0" text="Link Table" />
-      <ComboBox fx:id="select_nb_assoc"  prefWidth="50" />
-      <FlowPane fx:id="cmb_container">
-      </FlowPane>
+      <VBox>
+         <children>
+            <BorderPane minWidth="400.0" prefHeight="30.0">
+               <left>
+                  <Label prefWidth="80.0" text="Entity name :" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="5.0" right="15.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </left>
+               <center>
+                  <Label fx:id="lbl_entity_name" text="lbl_entity_name" BorderPane.alignment="CENTER_LEFT">
+                     <BorderPane.margin>
+                        <Insets left="5.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </center>
+               <right>
+                  <FlowPane alignment="CENTER_LEFT" prefWidth="160.0" BorderPane.alignment="CENTER_RIGHT">
+                     <children>
+                        <Label prefWidth="70.0" text="Is Union ?">
+                           <FlowPane.margin>
+                              <Insets right="5.0" />
+                           </FlowPane.margin>
+                        </Label>
+                        <CheckBox fx:id="chkbx_union" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" />
+                     </children>
+                  </FlowPane>
+               </right>
+            </BorderPane>
+            <BorderPane minWidth="400.0" prefHeight="30.0">
+               <left>
+                  <Label prefWidth="80.0" text="URL name :" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="5.0" right="15.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </left>
+               <center>
+                  <Label fx:id="lbl_entity_name1" text="entity_url_name" BorderPane.alignment="CENTER_LEFT">
+                     <BorderPane.margin>
+                        <Insets left="5.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </center>
+               <right>
+                  <FlowPane alignment="CENTER_LEFT" prefWidth="160.0" BorderPane.alignment="CENTER_RIGHT">
+                     <children>
+                        <Label prefWidth="70.0" text="FK number : ">
+                           <FlowPane.margin>
+                              <Insets right="5.0" />
+                           </FlowPane.margin>
+                        </Label>
+                        <Spinner fx:id="spin_nb_fk" prefWidth="80.0" />
+                     </children>
+                  </FlowPane>
+               </right>
+            </BorderPane>
+            <BorderPane minWidth="400.0" prefHeight="30.0">
+               <left>
+                  <Label prefWidth="80.0" text="URL preview :" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="5.0" right="15.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </left>
+               <center>
+                  <Hyperlink fx:id="lbl_url_prev" prefHeight="23.0" text="address:port/entity_url_hyperlink" BorderPane.alignment="CENTER_LEFT" />
+               </center>
+            </BorderPane>
+         </children>
+      </VBox>
 <!--       <ComboBox fx:id="main_table_cmb" disable="true" prefWidth="150.0">
          <FlowPane.margin>
             <Insets right="20.0" />
