@@ -15,8 +15,11 @@ import javafx.beans.property.adapter.JavaBeanIntegerProperty;
 import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
 import javafx.beans.property.adapter.JavaBeanStringProperty;
 import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -24,6 +27,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
+import javafx.util.StringConverter;
 import javafx.scene.control.Alert.AlertType;
 
 public class WebController extends AbstractController implements Initializable{
@@ -50,15 +55,43 @@ public class WebController extends AbstractController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		SpinnerValueFactory<Integer> spin_http_port_facto = //
-				new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 80);
+				new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 65535, 80);
 		spin_http_port.setValueFactory(spin_http_port_facto);
+		spin_http_port.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if(newValue.length() > 0) {
+					String value = oldValue;
+					try {
+						spin_http_port.getValueFactory().getConverter().fromString(newValue);
+						value = newValue;
+					}catch(NumberFormatException e) {}
+					spin_http_port.getEditor().textProperty().set(value);
+					httpPort.setParamValue(value);
+				}
+			}
+		});
 
 		SpinnerValueFactory<Integer> spin_https_port_facto = //
-				new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 443);
+				new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 65535, 443);
 		spin_https_port.setValueFactory(spin_https_port_facto);
+		spin_https_port.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if(newValue.length() > 0) {
+					String value = oldValue;
+					try {
+						spin_http_port.getValueFactory().getConverter().fromString(newValue);
+						value = newValue;
+					}catch(NumberFormatException e) {}
+					spin_http_port.getEditor().textProperty().set(value);
+					httpsPort.setParamValue(value);
+				}
+			}
+		});
 		super.initialize(btn_prev, btn_next);
 	}
-	
+
 	@Override
 	public void checkInfo() {
 		if(containsIllegals(txt_base_url.getText())) {
@@ -78,30 +111,17 @@ public class WebController extends AbstractController implements Initializable{
 	}
 
 	@Override
-	public void bindProps() throws PropertyBindingException {
-		try {
-			baseUrl = confDao.getEntityFromParamKey("api.base.url");
-			httpPort =  confDao.getEntityFromParamKey("api.port.http");
-			httpsPort =  confDao.getEntityFromParamKey("api.port.https");
-			JavaBeanStringProperty baseUrlProp = new JavaBeanStringPropertyBuilder()
-			        .bean(baseUrl)
-			        .name("paramValue")
-			        .build();
-			JavaBeanIntegerProperty httpPortProp = new JavaBeanIntegerPropertyBuilder()
-			        .bean(httpPort)
-			        .name("paramValue")
-			        .build();
-			JavaBeanIntegerProperty httpsPortProp = new JavaBeanIntegerPropertyBuilder()
-			        .bean(httpsPort)
-			        .name("paramValue")
-			        .build();
-			txt_base_url.textProperty().bindBidirectional(baseUrlProp);
-			spin_http_port.getValueFactory().valueProperty().bindBidirectional(httpPortProp.asObject());
-			spin_https_port.getValueFactory().valueProperty().bindBidirectional(httpsPortProp.asObject());
-		} catch (SQLException | NoSuchMethodException e) {
-			throw new PropertyBindingException(e.getMessage());
-		}
-		
+	public void getProps() throws SQLException {
+		baseUrl = confDao.getEntityFromParamKey("api.base.url");
+		httpPort =  confDao.getEntityFromParamKey("api.port.http");
+		httpsPort =  confDao.getEntityFromParamKey("api.port.https");
+	}
+
+	@Override
+	public void updateConf() {
+		baseUrl.setParamValue(txt_base_url.getText());
+		httpPort.setParamValue(spin_http_port.getEditor().textProperty().get());
+		httpsPort.setParamValue(spin_https_port.getEditor().textProperty().get());
 		
 	}
 }

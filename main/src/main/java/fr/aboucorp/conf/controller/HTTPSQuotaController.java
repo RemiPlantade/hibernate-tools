@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.ToggleSwitch;
+
 import api_conf.conf.model.ApiConf;
 import fr.aboucorp.conf.PropertyBindingException;
 import javafx.beans.property.adapter.JavaBeanBooleanProperty;
@@ -20,17 +22,17 @@ import javafx.scene.control.CheckBox;
 public class HTTPSQuotaController  extends AbstractController implements Initializable {
 
 	@FXML 
-	private CheckBox chkbx_https;
+	private ToggleSwitch chkbx_https;
 
 	@FXML 
-	private CheckBox chkbx_quota;
+	private ToggleSwitch chkbx_quota;
 
 	@FXML
 	private Button btn_prev;
 
 	@FXML
 	private Button btn_next;
-	
+
 	private ApiConf httpsEnabled;
 	private ApiConf quotaEnabled;
 
@@ -38,27 +40,12 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize(btn_prev, btn_next);
-		
-		btn_prev.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
-				getMainCtrl().onPreviousPage();
-			}
-		});
-
-		btn_next.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent event) {
-				try {
-					checkInfo();
-					getMainCtrl().onNextPage();
-				}catch(Exception e) {
-					
-				}
-			}
-		});
 	}
 
 	@Override
-	public void checkInfo() {}
+	public void checkInfo() {
+		getMainCtrl().hideSSL = !chkbx_https.isSelected();
+	}
 
 	@Override
 	public List<ApiConf> getAllApiConf() {
@@ -67,21 +54,14 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 	}
 
 	@Override
-	public void bindProps() throws PropertyBindingException {
-		try {
-			httpsEnabled = confDao.getEntityFromParamKey("server.ssl.enabled");
-			quotaEnabled = confDao.getEntityFromParamKey("api.quota.managed");
-			JavaBeanBooleanProperty quotaEnabledProp = new JavaBeanBooleanPropertyBuilder()
-			        .bean(quotaEnabled)
-			        .name("paramValue")
-			        .build(); 
-			JavaBeanBooleanProperty httpsEnabledProp = new JavaBeanBooleanPropertyBuilder()
-			        .bean(httpsEnabled)
-			        .name("paramValue")
-			        .build();
-		} catch (SQLException | NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			throw new PropertyBindingException(e.getMessage());
-		}	
+	public void getProps() throws SQLException {
+		httpsEnabled = confDao.getEntityFromParamKey("server.ssl.enabled");
+		quotaEnabled = confDao.getEntityFromParamKey("api.quota.managed");
+	}
+
+	@Override
+	public void updateConf() {
+		httpsEnabled.setParamValue(chkbx_https.isSelected()?"true":"false");
+		quotaEnabled.setParamValue(chkbx_quota.isSelected()?"true":"false");
 	}
 }

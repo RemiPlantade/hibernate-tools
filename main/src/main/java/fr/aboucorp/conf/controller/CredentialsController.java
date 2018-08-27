@@ -41,9 +41,7 @@ public class CredentialsController extends AbstractController implements Initial
 	
 	private ApiConf admin_username;
 	private ApiConf admin_pwd;
-	
-	private JavaBeanStringProperty ident = null;
-	private JavaBeanStringProperty pwd = null;
+
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -67,23 +65,20 @@ public class CredentialsController extends AbstractController implements Initial
 	}
 
 	@Override
-	public void bindProps() throws PropertyBindingException {
+	public void getProps() throws SQLException {
 		try {
 			admin_username = confDao.getEntityFromParamKey("api.admin.username");
 			admin_pwd = confDao.getEntityFromParamKey("api.admin.password");
-			ident = new JavaBeanStringPropertyBuilder()
-			        .bean(admin_username)
-			        .name("paramValue")
-			        .build();
-			pwd = new JavaBeanStringPropertyBuilder()
-			        .bean(admin_pwd)
-			        .name("paramValue")
-			        .build();
-			txt_ident.textProperty().bindBidirectional(ident);
-			txt_mdp.textProperty().bindBidirectional(pwd);
-		} catch (SQLException | NoSuchMethodException e) {
-			throw new PropertyBindingException(e.getMessage());
+		} catch (SQLException e) {
+			throw new SQLException(e.getMessage());
 		}
+		
+	}
+
+	@Override
+	public void updateConf() {
+		admin_username.setParamValue(txt_ident.getText());
+		admin_pwd.setParamValue(txt_mdp.getText());
 		
 	}
 }

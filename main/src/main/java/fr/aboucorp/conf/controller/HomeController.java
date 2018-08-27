@@ -2,6 +2,7 @@ package fr.aboucorp.conf.controller;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,16 +42,22 @@ public class HomeController extends AbstractController implements Initializable{
 	}
 
 	@Override
-	public void checkInfo() {}
+	public void checkInfo() throws IllegalArgumentException{}
 
 	@Override
 	public List<ApiConf> getAllApiConf() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override
-	public void bindProps() throws PropertyBindingException {}
+	public void getProps() throws SQLException {}
+
+	@Override
+	public void updateConf() {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

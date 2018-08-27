@@ -8,12 +8,12 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.WebController">
+<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.WebController">
   <children>
       <FlowPane alignment="CENTER" prefWidth="200.0">
          <children>
@@ -41,18 +41,18 @@
       </FlowPane>
       <FlowPane alignment="CENTER" style="-fx-background-color: E1E8FB;">
          <children>
-            <Label prefHeight="112.0" prefWidth="304.0" text="Pour publier votre API sur le web vous devez décider sur quel port et à quelle adresse elle sera disponible" textAlignment="CENTER" wrapText="true" />
+            <Label prefHeight="112.0" prefWidth="304.0" text="To publish your API on web you must provide various settings below." textAlignment="CENTER" wrapText="true" />
          </children>
       </FlowPane>
       <FlowPane alignment="TOP_CENTER" prefHeight="800.0" prefWidth="200.0">
          <children>
             <VBox alignment="TOP_CENTER" spacing="5.0">
                <children>
-                  <Label text="URL de base" />
+                  <Label text="API URL prefix" />
                   <TextField fx:id="txt_base_url" prefWidth="130.0" />
-                  <Label text="Port HTTP" />
+                  <Label text="HTTP port" />
                   <Spinner fx:id="spin_http_port" editable="true" />
-                  <Label text="Port HTTPS" />
+                  <Label text="HTTPS port" />
                   <Spinner fx:id="spin_https_port" editable="true" />
                </children>
                <FlowPane.margin>
@@ -63,12 +63,12 @@
       </FlowPane>
       <FlowPane alignment="CENTER" prefHeight="200.0" style="-fx-background-color: E1E8FB;">
          <children>
-            <Button fx:id="btn_prev" mnemonicParsing="false" prefWidth="80.0" text="Précédent">
+            <Button fx:id="btn_prev" mnemonicParsing="false" prefWidth="80.0" text="Previous">
                <FlowPane.margin>
                   <Insets right="150.0" />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btn_next" mnemonicParsing="false" prefWidth="80.0" text="Suivant">
+            <Button fx:id="btn_next" mnemonicParsing="false" prefWidth="80.0" text="Next">
                <FlowPane.margin>
                   <Insets left="150.0" />
                </FlowPane.margin>
@@ -82,7 +82,7 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Label text="Etape 2 / 6" />
+                  <Label text="Step 2 / 6" />
                   <HBox>
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="80.0" />

@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.DatabaseController">
+<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.DatabaseController">
   <children>
       <FlowPane alignment="CENTER" prefWidth="200.0">
          <children>
@@ -33,7 +33,7 @@
       </FlowPane>
       <FlowPane alignment="CENTER">
          <children>
-            <Label text="Base de données" wrapText="true">
+            <Label text="Database" wrapText="true">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -42,7 +42,7 @@
       </FlowPane>
       <FlowPane alignment="CENTER" style="-fx-background-color: E1E8FB;">
          <children>
-            <Label prefHeight="112.0" prefWidth="304.0" text="Spécifiez ici les options d'accès à votre base de données." textAlignment="CENTER" wrapText="true" />
+            <Label prefHeight="112.0" prefWidth="304.0" text="You can specify here your database access and credentials." textAlignment="CENTER" wrapText="true" />
          </children>
       </FlowPane>
       <FlowPane alignment="TOP_CENTER" prefHeight="800.0" prefWidth="200.0">
@@ -53,36 +53,38 @@
                      <children>
                         <VBox alignment="TOP_CENTER" spacing="5.0">
                            <children>
-                              <Label text="Nom de la base" />
+                              <Label text="Database name" />
                               <TextField fx:id="txt_name_bd" />
-                              <Label text="Driver JDBC" />
+                              <Label text="JDBC driver" />
                               <TextField fx:id="txt_jdbc" />
+                              <Label text="Databse URL" />
+                              <TextField fx:id="txt_database_url" />
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" spacing="5.0">
                            <children>
-                              <Label text="Identifiant" />
+                              <Label text="Database login" />
                               <TextField fx:id="txt_ident_bd" />
-                              <Label text="Mot de passe" />
+                              <Label text="Database password" />
                               <PasswordField fx:id="txt_mdp_bd" />
+                              <Label text="Database Type" />
+                              <ComboBox fx:id="cmd_type_bd" prefWidth="150.0" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <Label text="Type de base de données" />
-                  <ComboBox fx:id="cmd_type_bd" prefWidth="150.0" />
                </children>
             </VBox>
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" prefHeight="200.0" style="-fx-background-color: E1E8FB;">
          <children>
-            <Button fx:id="btn_prev" mnemonicParsing="false" prefWidth="80.0" text="Précédent">
+            <Button fx:id="btn_prev" mnemonicParsing="false" prefWidth="80.0" text="Previous">
                <FlowPane.margin>
                   <Insets right="150.0" />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btn_next" mnemonicParsing="false" prefWidth="80.0" text="Suivant">
+            <Button fx:id="btn_next" mnemonicParsing="false" prefWidth="80.0" text="Next">
                <FlowPane.margin>
                   <Insets left="150.0" />
                </FlowPane.margin>
@@ -96,7 +98,7 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Label text="Etape 5 / 6" />
+                  <Label text="Step 5 / 6" />
                   <HBox>
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="200.0" />

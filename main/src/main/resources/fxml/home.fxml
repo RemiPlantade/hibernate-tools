@@ -7,10 +7,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.HomeController">
+<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.HomeController">
   <children>
       <FlowPane alignment="CENTER">
          <children>
@@ -26,7 +25,7 @@
       </FlowPane>
       <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label prefHeight="163.0" prefWidth="479.0" text="Vous êtes sur le point de configurer votre future API. Une fois configuré l'application ApiBuilder lancera la génération de votre API REST.  Certains des paramètres définis ici ne pourront plus être modifié ultérieurement à moins de relancer le processus de configuration.Veillez donc a prendrez le temps de bien configurer votre API avant de valider l'étape finale. Les paramètres non modifiables utlérieurement seront marqué par une * rouge." textAlignment="JUSTIFY" wrapText="true">
+            <Label prefHeight="163.0" prefWidth="479.0" text="You are about to configure your future API. Once configured the ApiBuilder application will launch the generation of your REST API. Some of the parameters defined here can not be changed later unless you restart the configuration process. So please take the time to properly configure your API before validating the final step. Parameters not modifiable later will be marked with a * red." textAlignment="JUSTIFY" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>

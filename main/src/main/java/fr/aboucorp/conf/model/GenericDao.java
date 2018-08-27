@@ -47,10 +47,14 @@ public class GenericDao<T> {
 	public T getEntityFromParamKey(String value) throws SQLException {
 		QueryBuilder<T, String> queryBuilder = dao.queryBuilder();
 		// the 'password' field must be equal to "qwerty"
-		queryBuilder.limit(1L).where().eq("param_key", value);
+		queryBuilder.where().eq("param_key", value);
 		// prepare our sql statement
 		PreparedQuery<T> preparedQuery = queryBuilder.prepare();
 		// query for all accounts that have "qwerty" as a password
 		return dao.queryForFirst(preparedQuery);
+	}
+	
+	public boolean updateEntity(T object) throws SQLException {
+		return dao.update(object) == 1;
 	}
 }

@@ -29,11 +29,13 @@ public abstract class AbstractController {
 		this.mainCtrl = mainCtrl;
 	}
 	
-	public abstract void checkInfo();
+	public abstract void checkInfo() throws IllegalArgumentException;
+	
+	public abstract void updateConf();
 	
 	public abstract List<ApiConf> getAllApiConf();
 		
-	public abstract void bindProps() throws PropertyBindingException;
+	public abstract void getProps() throws SQLException;
 	
 	protected static GenericDao<ApiConf> confDao;
 	
@@ -41,7 +43,7 @@ public abstract class AbstractController {
 
 	public void initialize(Button btn_prev, Button btn_next) {
 		try {
-			bindProps();
+			getProps();
 			btn_prev.setOnAction(new EventHandler<ActionEvent>() {
 				@Override public void handle(ActionEvent e) {
 					getMainCtrl().onPreviousPage();
@@ -52,6 +54,7 @@ public abstract class AbstractController {
 				@Override public void handle(ActionEvent event) {
 					try {
 						checkInfo();
+						updateConf();
 						getMainCtrl().onNextPage();
 					}catch(IllegalArgumentException e) {
 						Alert alert = new Alert(AlertType.ERROR);
@@ -59,10 +62,16 @@ public abstract class AbstractController {
 						alert.setHeaderText("Erreur de saisie");
 						alert.setContentText(e.getMessage());
 						alert.showAndWait();
+					}catch(Exception e1) {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Error Dialog");
+						alert.setHeaderText("Unexpected error");
+						alert.setContentText(e1.getMessage());
+						alert.showAndWait();
 					}
 				}
 			});
-		} catch (PropertyBindingException e1) {
+		} catch (SQLException e1) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Binding error");
@@ -71,5 +80,11 @@ public abstract class AbstractController {
 		}
 	}
 	
+	public GenericDao<ApiConf> getConfDao(){
+		return confDao;
+	}
 	
+	public GenericDao<ApiBean> getBeanDao(){
+		return beanDao;
+	}
 }

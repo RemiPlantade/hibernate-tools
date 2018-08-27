@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.SSLController">
+<VBox prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.SSLController">
   <children>
       <FlowPane alignment="CENTER" prefWidth="200.0">
          <children>
@@ -45,10 +45,10 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Label prefHeight="42.0" prefWidth="225.0" text="Pour activer le protocole HTTPS vous devez fournir un certificat SSL valide." textAlignment="CENTER" wrapText="true" />
+                  <Label prefHeight="42.0" prefWidth="350.0" text="HTTPS protocol is active, so you need to provide a valid SSL certificate throught the Java Keystore mecanism." textAlignment="CENTER" wrapText="true" />
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <Label text="Si vous n'en possédez pas, vous pouvez en obtenir un gratuitement sur " textAlignment="CENTER" wrapText="true" />
+                        <Label text="If you haven't any SSL certificate you can get one free at : " textAlignment="CENTER" wrapText="true" />
                         <Hyperlink text="letsencrypt.org" />
                      </children>
                   </HBox>
@@ -60,14 +60,15 @@
          <children>
             <VBox alignment="TOP_CENTER" spacing="8.0">
                <children>
-                  <Label text="Fichier KeyStore" />
+                  <Label text="Keystore File (leave free to use default certificat)" />
                   <Button fx:id="btn_keystore_file" mnemonicParsing="false" text="Parcourir" />
-                  <Label text="Type de KeyStore" />
+                  <Label fx:id="lbl_file_path" text="File path" />
+                  <Label text="Keystore type" />
                   <ComboBox fx:id="cmb_type_keystore" prefWidth="150.0" />
-                  <Label text="Mot de passe KeyStore" />
-                  <PasswordField fx:id="mdp_keystore" />
-                  <Label text="Alias de la clé SSL" />
-                  <TextField fx:id="alias_keystore" />
+                  <Label text="Keystore password" />
+                  <PasswordField fx:id="mdp_keystore" maxWidth="200.0" />
+                  <Label text="SSL key alias" />
+                  <TextField fx:id="alias_keystore" maxWidth="200.0" />
                </children>
                <FlowPane.margin>
                   <Insets top="20.0" />
@@ -77,12 +78,12 @@
       </FlowPane>
       <FlowPane alignment="CENTER" prefHeight="200.0" style="-fx-background-color: E1E8FB;">
          <children>
-            <Button fx:id="btn_prev" mnemonicParsing="false" prefWidth="80.0" text="Précédent">
+            <Button fx:id="btn_prev" mnemonicParsing="false" prefWidth="80.0" text="Previous">
                <FlowPane.margin>
                   <Insets right="150.0" />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btn_next" mnemonicParsing="false" prefWidth="80.0" text="Suivant">
+            <Button fx:id="btn_next" mnemonicParsing="false" prefWidth="80.0" text="Next">
                <FlowPane.margin>
                   <Insets left="150.0" />
                </FlowPane.margin>
@@ -96,7 +97,7 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Label text="Etape 4 / 6" />
+                  <Label text="Step 4 / 6" />
                    <HBox>
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="160.0" />
