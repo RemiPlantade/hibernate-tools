@@ -35,12 +35,6 @@ public class SSLController extends AbstractController implements Initializable {
 
 	@FXML
 	private TextField alias_keystore;
-
-	@FXML
-	private Button btn_prev;
-
-	@FXML
-	private Button btn_next;
 	
 	@FXML
 	private Label lbl_file_path;
@@ -54,7 +48,8 @@ public class SSLController extends AbstractController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize(btn_prev, btn_next);
+		super.initialize();
+		temp_keystore_path ="C:\\Program Files\\Java\\jdk1.8.0_161\\jre\\lib\\security\\cacerts";
 		cmb_type_keystore.itemsProperty().set(FXCollections.observableArrayList(
 		        "JKS",
 		        "JCEKS",

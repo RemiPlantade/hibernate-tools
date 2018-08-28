@@ -42,12 +42,6 @@ public class WebController extends AbstractController implements Initializable{
 	@FXML
 	private Spinner<Integer> spin_https_port;
 
-	@FXML
-	private Button btn_prev;
-
-	@FXML
-	private Button btn_next;
-
 	private ApiConf baseUrl;
 	private ApiConf httpPort;
 	private ApiConf httpsPort; 
@@ -89,7 +83,7 @@ public class WebController extends AbstractController implements Initializable{
 				}
 			}
 		});
-		super.initialize(btn_prev, btn_next);
+		super.initialize();
 	}
 
 	@Override

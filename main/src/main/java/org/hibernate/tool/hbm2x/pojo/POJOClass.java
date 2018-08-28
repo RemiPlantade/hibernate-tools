@@ -208,7 +208,7 @@ public interface POJOClass extends ImportContext {
 
 	public void setUnionEntity(boolean isUnionEntity);
 
-	public ArrayList<EntityPOJOClass> getLinkedEntities();
+	public List<EntityPOJOClass> getLinkedEntities();
 
 	public void setLinkedEntities(ArrayList<EntityPOJOClass> linkedEntities);
 	

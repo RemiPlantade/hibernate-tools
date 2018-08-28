@@ -6,22 +6,23 @@ import java.util.List;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
+import fr.aboucorp.conf.controller.EntitiesController;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
 
 public class POJOClassCellFactory implements Callback<ListView<EntityPOJOClass>, ListCell<EntityPOJOClass>> {
 
-	private List<EntityPOJOClass> pojo_list;
 	private List<POJOClassCell> cells = new ArrayList<>();
+	private EntitiesController entitiesController;
 
-	public POJOClassCellFactory(List<EntityPOJOClass> pojos) {
-		pojo_list = pojos;
+	public POJOClassCellFactory(EntitiesController entitiesController) {
+		this.entitiesController = entitiesController;
 	}
 
 	@Override
 	public ListCell<EntityPOJOClass> call(ListView<EntityPOJOClass> param) {
-		POJOClassCell cell = new POJOClassCell(pojo_list);
+		POJOClassCell cell = new POJOClassCell(entitiesController);
 		cells.add(cell);
 		return cell;
 	}

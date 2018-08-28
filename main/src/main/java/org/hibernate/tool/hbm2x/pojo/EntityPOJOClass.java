@@ -42,10 +42,10 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 	private PersistentClass clazz;
 	private boolean isUnionEntity;
-	private ArrayList<EntityPOJOClass> linkedEntities = new ArrayList<>();
+	private List<EntityPOJOClass> linkedEntities = new ArrayList<>();
 	private List<EntityPOJOClass> linkerEntities = new ArrayList<>();
-
-	
+	private String urlEntityName;
+	private String url;
 
 	public EntityPOJOClass(PersistentClass clazz, Cfg2JavaTool cfg) {
 		super(clazz, cfg);
@@ -1167,7 +1167,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		this.isUnionEntity = isUnionEntity;
 	}
 	@Override
-	public ArrayList<EntityPOJOClass> getLinkedEntities() {
+	public List<EntityPOJOClass> getLinkedEntities() {
 		return linkedEntities;
 	}
 	@Override

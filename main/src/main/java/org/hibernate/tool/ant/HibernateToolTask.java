@@ -22,6 +22,8 @@ import org.hibernate.boot.jaxb.Origin;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 
+import fr.aboucorp.conf.controller.MainController;
+
 /**
  * @author max
  *
@@ -156,6 +158,10 @@ public class HibernateToolTask extends Task {
 			throw new BuildException("No configuration specified. <" + getTaskName() + "> must have one of the following: <configuration>, <jpaconfiguration>, <annotationconfiguration> or <jdbcconfiguration>");
 		}
 		log("Executing Hibernate Tool with a " + configurationTask.getDescription() );
+		if(configurationTask instanceof JDBCConfigurationTask) {
+			configureJDBCProps();
+		}
+		
 		validateParameters();
 		Iterator<ExporterTask> iterator = generators.iterator();
 		
@@ -181,6 +187,35 @@ public class HibernateToolTask extends Task {
 				loader.cleanup();
 			}            
 		}
+	}
+
+	private void configureJDBCProps() {
+		configurationTask.setPropertyFile(null);
+		/** 
+		 * Aboucorp
+	     * Starting configuration
+		 */
+		if(!MainController.running.get()) {
+			new Thread() {
+				@Override
+				public void run() {
+					javafx.application.Application.launch(MainController.class);
+				}
+			}.start();
+
+			MainController launcher = MainController.waitForBasicConfiguration();
+			try {
+				System.out.println("Hibernate Task latch1 await");
+				launcher.latch1.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			configurationTask.manualProps = launcher.getProperties();
+		}
+		/**
+		 * Ending Configuration
+		 */
+		
 	}
 
 	private void reportException(Throwable re, int count, ExporterTask generatorTask) {

@@ -15,6 +15,7 @@ import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 import fr.aboucorp.conf.controller.MainController;
+import javafx.application.Platform;
 
 public class GenericExporter extends AbstractExporter {
 
@@ -56,7 +57,7 @@ public class GenericExporter extends AbstractExporter {
 			void process(GenericExporter ge) {
 				Iterator<?> iterator;
 				if(pojos == null) {
-					pojos = new ArrayList();
+					pojos = new ArrayList<EntityPOJOClass>();
 					iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getMetadata().getEntityBindings().iterator());
 					while(iterator.hasNext()) {
 						pojos.add((EntityPOJOClass) iterator.next());
@@ -65,21 +66,19 @@ public class GenericExporter extends AbstractExporter {
 				iterator = pojos.iterator();
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				additionalContext.put("pojo_list", pojos);
-				if(!MainController.running.get()) {
-					new Thread() {
-						@Override
-						public void run() {
-							javafx.application.Application.launch(MainController.class);
-						}
-					}.start();
-
-					MainController launcher = MainController.waitForJavaFXLauncher();
-					launcher.setPOJOs(pojos);
-					try {
-						launcher.latch1.await();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+				
+				MainController launcher = MainController.controller;
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						launcher.injectPOJOs(pojos);
 					}
+				});
+				try {
+					System.out.println("Generic Task latch3 await");
+					launcher.latch3.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 				
 				iterator = pojos.iterator();

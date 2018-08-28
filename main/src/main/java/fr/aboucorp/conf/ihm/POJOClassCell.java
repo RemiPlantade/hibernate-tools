@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
+import fr.aboucorp.conf.controller.EntitiesController;
 import fr.aboucorp.conf.controller.POJOClassCellController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,13 +17,12 @@ public class POJOClassCell extends ListCell<EntityPOJOClass> {
 	private POJOClassCellController rendererController;
 	private Node renderer;
 	
-	public POJOClassCell(List<EntityPOJOClass> pojo_list) {
+	public POJOClassCell(EntitiesController entitiesController) {
 		try {
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/POJOClassCell.fxml"));
 			renderer = fxmlLoader.load();
 			rendererController = (POJOClassCellController) fxmlLoader.getController();
-			rendererController.setPOJOList(pojo_list);
-			//rendererController.setPojo(getItem());
+			rendererController.setRootController(entitiesController);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -41,7 +41,10 @@ public class POJOClassCell extends ListCell<EntityPOJOClass> {
                 setText(text);
             } else {
                 if (renderer != null) {
+                	if(item != null) {
+                		System.err.println("Yolo ! set item in update !");
                     rendererController.setPojo(item);
+                	}
                     setGraphic(renderer);
                     setText(text);
                 } else {

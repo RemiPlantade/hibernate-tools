@@ -32,12 +32,6 @@ public class CredentialsController extends AbstractController implements Initial
 
 	@FXML
 	private TextField txt_ident;
-
-	@FXML
-	protected Button btn_prev;
-
-	@FXML
-	protected Button btn_next;
 	
 	private ApiConf admin_username;
 	private ApiConf admin_pwd;
@@ -45,18 +39,19 @@ public class CredentialsController extends AbstractController implements Initial
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize(btn_prev, btn_next);
+		super.initialize();
 	}
 
 	@Override
 	public void checkInfo() {
+		if(txt_ident.getText().length() <= 0 ) {
+			throw new IllegalArgumentException("Le champ identifiant ne peut pas être vide");
+		}
 		if(!txt_mdp.getText().equals(txt_confirm.getText())) {
 			throw new IllegalArgumentException("Les mots de passe ne correspondent pas");
 		}else if(txt_mdp.getText().length() <=4) {
 			throw new IllegalArgumentException("Votre mot de passe doit contenir au moins 5 caractères");
-		}else if(txt_ident.getText().length() <= 0 ) {
-			throw new IllegalArgumentException("Le champ identifiant ne peut pas être vide");
-		}
+		} 
 	}
 
 	@Override

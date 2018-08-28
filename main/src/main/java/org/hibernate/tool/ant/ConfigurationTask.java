@@ -32,6 +32,7 @@ public class ConfigurationTask extends Task {
 	private File configurationFile;
 	private File propertyFile;
 	protected String entityResolver;
+	protected Properties manualProps;
 	
 	public ConfigurationTask() {
 		setDescription("Standard Configuration");
@@ -82,7 +83,9 @@ public class ConfigurationTask extends Task {
 					}
 				}
 			}
-		} else {
+		} else if(manualProps != null){
+			return manualProps;
+		}else {
 			return null;
 		}
 	}

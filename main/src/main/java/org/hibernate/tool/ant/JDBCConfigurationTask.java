@@ -26,16 +26,16 @@ import org.hibernate.tool.util.ReflectHelper;
  */
 public class JDBCConfigurationTask extends ConfigurationTask {
 	//not expfosed here.
-    private boolean preferBasicCompositeIds = true;
-    
-    private String reverseEngineeringStrategyClass;
-    private String packageName;
+	private boolean preferBasicCompositeIds = true;
+
+	private String reverseEngineeringStrategyClass;
+	private String packageName;
 	private Path revengFiles;
 
 	private boolean detectOneToOne = true;
 	private boolean detectManyToMany = true;
 	private boolean detectOptimisticLock = true;
-    
+
 	public JDBCConfigurationTask() {
 		setDescription("JDBC Configuration (for reverse engineering)");
 	}
@@ -48,75 +48,75 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 						properties, 
 						preferBasicCompositeIds);
 	}
-	
+
 	private ReverseEngineeringStrategy createReverseEngineeringStrategy() {
 		DefaultReverseEngineeringStrategy defaultStrategy = new DefaultReverseEngineeringStrategy();
-		
+
 		ReverseEngineeringStrategy strategy = defaultStrategy;
-				
+
 		if(revengFiles!=null) {
 			OverrideRepository or = new OverrideRepository();
-			
+
 			String[] fileNames = revengFiles.list();
 			for (int i = 0; i < fileNames.length; i++) {
 				or.addFile(new File(fileNames[i]) );
 			}
 			strategy = or.getReverseEngineeringStrategy(defaultStrategy);			
 		}
-		
+
 		if(reverseEngineeringStrategyClass!=null) {
 			strategy = loadreverseEngineeringStrategy(reverseEngineeringStrategyClass, strategy);			
 		}
-		
+
 		ReverseEngineeringSettings qqsettings = 
-			new ReverseEngineeringSettings(strategy).setDefaultPackageName(packageName)
-			.setDetectManyToMany( detectManyToMany )
-			.setDetectOneToOne( detectOneToOne )
-			.setDetectOptimisticLock( detectOptimisticLock );
-	
+				new ReverseEngineeringSettings(strategy).setDefaultPackageName(packageName)
+				.setDetectManyToMany( detectManyToMany )
+				.setDetectOneToOne( detectOneToOne )
+				.setDetectOptimisticLock( detectOptimisticLock );
+
 		defaultStrategy.setSettings(qqsettings);
 		strategy.setSettings(qqsettings);
-		
+
 		return strategy;
 	}
 
-    
-    public void setPackageName(String pkgName) {
-        packageName = pkgName;
-    }
-    
-    public void setReverseStrategy(String fqn) {
-        reverseEngineeringStrategyClass = fqn;
-    }
-    
+
+	public void setPackageName(String pkgName) {
+		packageName = pkgName;
+	}
+
+	public void setReverseStrategy(String fqn) {
+		reverseEngineeringStrategyClass = fqn;
+	}
+
 	public void setRevEngFile(Path p) {
 		revengFiles = p;		
 	}
-	
+
 	public void setPreferBasicCompositeIds(boolean b) {
 		preferBasicCompositeIds = b;
 	}
-	
+
 	public void setDetectOneToOne(boolean b) {
 		detectOneToOne = b;
 	}
-	
+
 	public void setDetectManyToMany(boolean b) {
 		detectManyToMany = b;
 	}
-	
+
 	public void setDetectOptimisticLock(boolean b) {
 		detectOptimisticLock = b;
 	}
-	
-    private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) 
-    throws BuildException {
-        try {
-            Class<?> clazz = ReflectHelper.classForName(className);			
+
+	private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) 
+			throws BuildException {
+		try {
+			Class<?> clazz = ReflectHelper.classForName(className);			
 			Constructor<?> constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
-            return (ReverseEngineeringStrategy) constructor.newInstance(new Object[] { delegate }); 
-        } 
-        catch (NoSuchMethodException e) {
+			return (ReverseEngineeringStrategy) constructor.newInstance(new Object[] { delegate }); 
+		} 
+		catch (NoSuchMethodException e) {
 			try {
 				getProject().log("Could not find public " + className + "(ReverseEngineeringStrategy delegate) constructor on ReverseEngineeringStrategy. Trying no-arg version.",Project.MSG_VERBOSE);			
 				Class<?> clazz = ReflectHelper.classForName(className);						
@@ -128,8 +128,11 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 				throw new BuildException("Could not create or find " + className + " with default no-arg constructor", eq);
 			}
 		} 
-        catch (Exception e) {
+		catch (Exception e) {
 			throw new BuildException("Could not create or find " + className + " with one argument delegate constructor", e);
 		} 
-    }
+	}
+	public void setHibernateProperties(Properties hibernateProp) {
+		manualProps = hibernateProp;
+	}
 }

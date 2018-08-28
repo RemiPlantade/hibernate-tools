@@ -19,6 +19,8 @@ import javafx.scene.control.Alert.AlertType;
 
 public abstract class AbstractController {
 	
+	private String id;
+	
 	private MainController mainCtrl;
 	
 	public MainController getMainCtrl() {
@@ -41,36 +43,9 @@ public abstract class AbstractController {
 	
 	protected static GenericDao<ApiBean> beanDao;
 
-	public void initialize(Button btn_prev, Button btn_next) {
+	public void initialize() {
 		try {
 			getProps();
-			btn_prev.setOnAction(new EventHandler<ActionEvent>() {
-				@Override public void handle(ActionEvent e) {
-					getMainCtrl().onPreviousPage();
-				}
-			});
-
-			btn_next.setOnAction(new EventHandler<ActionEvent>() {
-				@Override public void handle(ActionEvent event) {
-					try {
-						checkInfo();
-						updateConf();
-						getMainCtrl().onNextPage();
-					}catch(IllegalArgumentException e) {
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.setTitle("Error Dialog");
-						alert.setHeaderText("Erreur de saisie");
-						alert.setContentText(e.getMessage());
-						alert.showAndWait();
-					}catch(Exception e1) {
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.setTitle("Error Dialog");
-						alert.setHeaderText("Unexpected error");
-						alert.setContentText(e1.getMessage());
-						alert.showAndWait();
-					}
-				}
-			});
 		} catch (SQLException e1) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
@@ -86,5 +61,13 @@ public abstract class AbstractController {
 	
 	public GenericDao<ApiBean> getBeanDao(){
 		return beanDao;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

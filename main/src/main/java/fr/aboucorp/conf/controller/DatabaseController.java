@@ -1,26 +1,27 @@
 package fr.aboucorp.conf.controller;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import api_conf.conf.model.ApiConf;
 import api_conf.conf.model.hibernate.Dialect;
-import fr.aboucorp.conf.PropertyBindingException;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class DatabaseController extends AbstractController implements Initializable{
-	
+
 	@FXML
 	private TextField txt_name_bd;
 	@FXML
@@ -33,11 +34,8 @@ public class DatabaseController extends AbstractController implements Initializa
 	private PasswordField txt_mdp_bd;
 	@FXML
 	private TextField txt_database_url;
-	@FXML
-	private Button btn_prev;
-	@FXML
-	private Button btn_next;
-	
+
+
 	private ApiConf bdName;
 	private ApiConf bdIdent;
 	private ApiConf jdbcDriver;
@@ -45,9 +43,17 @@ public class DatabaseController extends AbstractController implements Initializa
 	private ApiConf bdURL;
 	private ApiConf bdType;
 	
+	private ApiConf h_bdName = new ApiConf();
+	private ApiConf h_bdIdent = new ApiConf();
+	private ApiConf h_jdbcDriver = new ApiConf();
+	private ApiConf h_bdPwd = new ApiConf();
+	private ApiConf h_bdURL = new ApiConf();
+	private ApiConf h_bdType = new ApiConf();
+
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize(btn_prev, btn_next);
+		super.initialize();
 		cmd_type_bd.setItems(FXCollections.observableArrayList(Arrays.asList(
 				new Dialect().setName("DB2").setPath("org.hibernate.dialect.DB2Dialect"),
 				new Dialect().setName("DB2 AS/400").setPath("org.hibernate.dialect.DB2400Dialect"),
@@ -77,19 +83,48 @@ public class DatabaseController extends AbstractController implements Initializa
 
 	@Override
 	public void checkInfo() throws IllegalArgumentException {
+		System.out.println("!!!!!!!!!!!!! Check infos !");
 		if(txt_name_bd.getText().length() <= 0) {
 			throw new IllegalArgumentException("Database name cannot be empty");
 		}else if(txt_ident_bd.getText().length() <= 0) {
 			throw new IllegalArgumentException("Database login cannot be empty");
 		} else if(txt_jdbc.getText().length() <= 0) {
 			throw new IllegalArgumentException("Jdbc driver class cannot be empty");
-		}		
+		}	
+		
+		Connection conn = null;
+        try {
+            Class.forName(txt_jdbc.getText());
+            conn = DriverManager.getConnection(txt_database_url.getText()+"?useSSL=false", txt_ident_bd.getText(), txt_mdp_bd.getText());
+            if (conn != null) {
+            	System.out.println("!!!!!! Connexion is not null");
+            	Alert alert = new Alert(AlertType.INFORMATION);
+    			alert.setTitle("EDatabase connection");
+    			alert.setHeaderText("Database connection established");
+    			alert.showAndWait();
+            }else {
+            	System.out.println("!!!!!! Connexion is null");
+            }
+        } catch (ClassNotFoundException ex) {
+        	throw new IllegalArgumentException("Could not find database driver class");
+        } catch (SQLException ex) {
+        	throw new IllegalArgumentException("An error occurred. Maybe user/password is invalid");
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                	throw new IllegalArgumentException(ex.getMessage());
+                }
+            }
+        }
 	}
 
 	@Override
 	public List<ApiConf> getAllApiConf() {
 		// TODO Auto-generated method stub
-		return null;
+		updateConf();
+		return new ArrayList<>(Arrays.asList(bdName,bdIdent,jdbcDriver,bdPwd,bdType,bdURL,h_bdIdent,h_bdName,h_bdPwd,h_bdType,h_bdURL,h_jdbcDriver));
 	}
 
 	@Override
@@ -110,5 +145,18 @@ public class DatabaseController extends AbstractController implements Initializa
 		jdbcDriver.setParamValue(txt_jdbc.getText());
 		bdPwd.setParamValue(txt_mdp_bd.getText());
 		bdType.setParamValue(cmd_type_bd.getSelectionModel().getSelectedItem().getPath());
+		
+		h_bdIdent.setParamKey("hibernate.connection.username");
+		h_bdIdent.setParamValue(bdIdent.getParamValue());
+		h_bdName.setParamKey("hibernate.default_catalog");
+		h_bdName.setParamValue(bdName.getParamValue());
+		h_bdPwd.setParamKey("hibernate.connection.password");
+		h_bdPwd.setParamValue(bdPwd.getParamValue());
+		h_bdType.setParamKey("hibernate.dialect");
+		h_bdType.setParamValue(bdType.getParamValue());
+		h_bdURL.setParamKey("hibernate.connection.url");
+		h_bdURL.setParamValue(bdURL.getParamValue());
+		h_jdbcDriver.setParamKey("hibernate.connection.driver_class");
+		h_jdbcDriver.setParamValue(jdbcDriver.getParamValue());
 	}
 }

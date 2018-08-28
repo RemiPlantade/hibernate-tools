@@ -4,54 +4,76 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.management.BadAttributeValueExpException;
-
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 
 import api_conf.conf.model.ApiConf;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class MainController extends Application implements Initializable{
 
 	public static final CountDownLatch latch = new CountDownLatch(1);
 	public static final CountDownLatch latch1 = new CountDownLatch(1);
+	public static final CountDownLatch latch3 = new CountDownLatch(1);
 
 	public static MainController controller = null;
 
 	public static AtomicBoolean running = new AtomicBoolean(false);
 
-	public AtomicInteger pageIdx = new AtomicInteger(0);
+	public static AtomicBoolean waitForGen = new AtomicBoolean(false);
 
-	private List<EntityPOJOClass> pojos;
+	public AtomicInteger pageIdx = new AtomicInteger(0);
 
 	private Stage primaryStage;
 
 	private BorderPane rootLayout = null;
 
-	private LinkedList<SimpleEntry<String,VBox>> pages;
+	private LinkedList<SimpleEntry<AbstractController,VBox>> pages;
 
-	private List<AbstractController> controllers = new ArrayList<>();
+	private Properties props = new Properties();;
 
-	public Boolean hideSSL = false;
 
 	@FXML
 	private FlowPane contentPane;
+	@FXML
+	private VBox bottom_pane;
+	@FXML
+	private Button btn_prev;
+	@FXML
+	private Button btn_next;
+	@FXML
+	private Label lbl_step;
+	@FXML
+	private Rectangle rect_blue;
+	@FXML
+	private Rectangle rect_white;
+	@FXML
+	private FlowPane nav_button_bar;
+
+	private int step_number = 0;
 
 	public MainController() {
 		pages = new LinkedList<>();
@@ -59,12 +81,17 @@ public class MainController extends Application implements Initializable{
 		running.set(true);
 	}
 
-	public static MainController waitForJavaFXLauncher() {
+	public static MainController waitForBasicConfiguration() {
 		try {
+			System.out.println("Yolo latch wait");
 			latch.await();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return controller;
+	}
+
+	public static MainController waitForEntityConfiguration() {
 		return controller;
 	}
 
@@ -97,113 +124,242 @@ public class MainController extends Application implements Initializable{
 		}
 	}
 
-	public void setPOJOs(List<EntityPOJOClass> pojos) {
-		this.pojos = pojos;
+	public void injectPOJOs(List<EntityPOJOClass> pojos) {
+		EntitiesController entitiesCtrl = (EntitiesController) getControllerByID("entities");
+		entitiesCtrl.setPojos(pojos);
+		onNextPage();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		System.out.println("Yolo latch countdwon initialize");
 		latch.countDown();
 		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("fxml/home.fxml"));
-			VBox home = (VBox) loader.load();
-			pages.add(new SimpleEntry<String, VBox>("home",home));
-			HomeController homectrl =  loader.getController();
-			homectrl.setMainCtrl(this);
+			loadLayouts();
+			displayBottomPane(false);
+			btn_prev.setOnAction(new EventHandler<ActionEvent>() {
+				@Override public void handle(ActionEvent e) {
+					onPreviousPage();
+				}
+			});
 
-			loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("fxml/credentials.fxml"));
-			VBox credential = (VBox) loader.load();
-			pages.add(new SimpleEntry<String, VBox>("credential",credential));
-			CredentialsController credentctrl = loader.getController();
-			credentctrl.setMainCtrl(this);
-			controllers.add(credentctrl);
-
-			loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("fxml/web.fxml"));
-			VBox web = (VBox) loader.load();
-			pages.add(new SimpleEntry<String, VBox>("web",web));
-			WebController webctrl = loader.getController();
-			webctrl.setMainCtrl(this);
-			controllers.add(webctrl);
-
-			loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("fxml/https_quota.fxml"));
-			VBox https_quota = (VBox) loader.load();
-			pages.add(new SimpleEntry<String, VBox>("https_quota",https_quota));
-			HTTPSQuotaController httpsctrl = loader.getController();
-			httpsctrl.setMainCtrl(this);
-			controllers.add(httpsctrl);
-
-			loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("fxml/ssl.fxml"));
-			VBox ssl = (VBox) loader.load();
-			pages.add(new SimpleEntry<String, VBox>("ssl",ssl));
-			SSLController sslctrl = loader.getController();
-			sslctrl.setMainCtrl(this);
-			controllers.add(sslctrl);
-
-			loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("fxml/database.fxml"));
-			VBox database = (VBox) loader.load();
-			pages.add(new SimpleEntry<String, VBox>("database",database));
-			DatabaseController databasectrl = loader.getController();
-			databasectrl.setMainCtrl(this);
-			controllers.add(databasectrl);
-
-			contentPane.getChildren().add(home);
+			btn_next.setOnAction(new EventHandler<ActionEvent>() {
+				@Override public void handle(ActionEvent event) {
+					if(step_number == 5) {
+						updateDatabaseConf();	
+						System.out.println("Yolo latch 1 countdown");
+						latch1.countDown();
+					}else if(step_number == 6) {
+						validate();
+						System.out.println("Yolo latch 3 countdown");
+						latch3.countDown();
+						Platform.exit();
+					}else {
+						onNextPage();
+					}
+				}
+			});
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void onNextPage() {
-		contentPane.getChildren().clear();
-		SimpleEntry<String, VBox> actual = pages.removeFirst();
-		pages.addLast(actual);
-		if(hideSSL && pages.getFirst().getKey().equals("ssl")) {
-			SimpleEntry<String, VBox> ssl = pages.removeFirst();
-			pages.addLast(ssl);
+	private void updateDatabaseConf() {
+		System.out.println("On updateDatabaseConf");
+		for (java.util.Iterator<SimpleEntry<AbstractController, VBox>> iter = pages.iterator(); iter.hasNext();) {
+			SimpleEntry<AbstractController, VBox> entry = iter.next();
+			if(entry.getKey().getId().equals("database")) {
+				List<ApiConf> confList = entry.getKey().getAllApiConf();
+				if(confList != null) {
+					for (ApiConf conf : confList) {
+						if(conf != null && conf.getParamKey() != null) {
+							if(conf.getParamKey().startsWith("hibernate.")){
+								props.setProperty(conf.getParamKey(), conf.getParamValue());
+							}
+						}
+					}
+				}
+			}
 		}
-		contentPane.getChildren().add(pages.getFirst().getValue());
-		;
+	}
+
+	public void validate() {
+		System.out.println("On validate");
+		try {
+			updateAllEntities();
+		} catch (SQLException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Erreur lors de la mise à jour de la configuration");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+		}	
+	}
+
+	public void loadLayouts() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("fxml/home.fxml"));
+		VBox home = (VBox) loader.load();
+		HomeController homectrl =  loader.getController();
+		homectrl.setId("home");
+		pages.add(new SimpleEntry<>(homectrl,home));
+
+		homectrl.setMainCtrl(this);
+
+		loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("fxml/credentials.fxml"));
+		VBox credential = (VBox) loader.load();
+		CredentialsController credentctrl = loader.getController();
+		pages.add(new SimpleEntry<>(credentctrl,credential));
+		credentctrl.setId("credential");
+		credentctrl.setMainCtrl(this);
+
+		loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("fxml/web.fxml"));
+		VBox web = (VBox) loader.load();
+		WebController webctrl = loader.getController();
+		pages.add(new SimpleEntry<>(webctrl,web));
+		webctrl.setId("web");
+		webctrl.setMainCtrl(this);
+
+		loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("fxml/https_quota.fxml"));
+		VBox https_quota = (VBox) loader.load();
+		HTTPSQuotaController httpsctrl = loader.getController();
+		pages.add(new SimpleEntry<>(httpsctrl,https_quota));
+		httpsctrl.setId("https_quota");
+		httpsctrl.setMainCtrl(this);
+
+		loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("fxml/ssl.fxml"));
+		VBox ssl = (VBox) loader.load();
+		SSLController sslctrl = loader.getController();
+		pages.add(new SimpleEntry<>(sslctrl,ssl));
+		sslctrl.setId("ssl");
+		sslctrl.setMainCtrl(this);
+
+		loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("fxml/database.fxml"));
+		VBox database = (VBox) loader.load();
+		DatabaseController databasectrl = loader.getController();
+		pages.add(new SimpleEntry<>(databasectrl,database));
+		databasectrl.setId("database");
+		databasectrl.setMainCtrl(this);
+
+		loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("fxml/entities.fxml"));
+		VBox entities;
+		entities = (VBox) loader.load();
+		EntitiesController entitiesctrl = loader.getController();
+		pages.add(new SimpleEntry<>(entitiesctrl,entities));
+		entitiesctrl.setId("entities");
+		entitiesctrl.setMainCtrl(this);
+
+		contentPane.getChildren().add(home);
+	}
+
+	public AbstractController getControllerByID(String id) {
+		for (java.util.Iterator<SimpleEntry<AbstractController, VBox>> iter = pages.iterator(); iter.hasNext();) {
+			SimpleEntry<AbstractController, VBox> entry = iter.next();
+			if(entry.getKey().getId().equals(id)) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	public void onNextPage() {
+		SimpleEntry<AbstractController,VBox> actual = pages.getFirst();
+		try {
+			System.out.println(actual.getKey().getId());
+			actual.getKey().checkInfo();
+			pages.removeFirst();
+			step_number++;
+			contentPane.getChildren().clear();
+			pages.addLast(actual);
+			switch(step_number) {
+			case 5 :
+				btn_next.setText("Next");
+				break;
+			case 6:
+				btn_next.setText("Finish");
+				nav_button_bar.getChildren().remove(btn_prev);
+				break;
+			default:
+				btn_next.setText("Next");
+				break;
+			}
+			contentPane.getChildren().add(pages.getFirst().getValue());
+			refreshStepState();
+		}catch(IllegalArgumentException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Erreur de saisie");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+		}catch(Exception e1) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Unexpected error");
+			alert.setContentText(e1.getMessage());
+			alert.showAndWait();
+			e1.printStackTrace();
+		}
+
 	}
 
 	public void onPreviousPage() {
+		step_number--;
+		btn_next.setText("Next");
 		contentPane.getChildren().clear();
-		SimpleEntry<String, VBox> future = pages.removeLast();
+		SimpleEntry<AbstractController,VBox> future = pages.removeLast();
 		pages.addFirst(future);
-		if(hideSSL && pages.getFirst().getKey().equals("ssl")) {
-			SimpleEntry<String, VBox> ssl = pages.removeLast();
-			pages.addFirst(ssl);
+		switch(step_number) {
+		case 0 :
+			bottom_pane.setVisible(false);
+			break;
+		case 5:
+			btn_next.setText("Next");
+			break;
+		default:
+			btn_next.setText("Next");
+			break;
 		}
 		contentPane.getChildren().add(pages.getFirst().getValue());
+		refreshStepState();
+	}
+
+	public void refreshStepState() {
+		lbl_step.setText(step_number + " / 6");
+		rect_blue.setWidth(40*step_number);
+		rect_white.setWidth(240-(40*step_number));
 	}
 
 	public void updateAllEntities() throws SQLException{
-		for (AbstractController absCtrl : controllers) {
-			for (ApiConf conf : absCtrl.getAllApiConf()) {
-				absCtrl.getConfDao().updateEntity(conf);
+		for (java.util.Iterator<SimpleEntry<AbstractController, VBox>> iter = pages.iterator(); iter.hasNext();) {
+			SimpleEntry<AbstractController, VBox> entry = iter.next();
+			List<ApiConf> confList = entry.getKey().getAllApiConf();
+			if(confList != null) {
+				for (ApiConf conf : confList) {
+					if(conf != null && conf.getParamKey() != null) {
+						entry.getKey().getConfDao().updateEntity(conf);
+					}
+				}
 			}
 		}
-		//		POJOClassCellFactory factory = ((POJOClassCellFactory)pojo_list_view.getCellFactory());
-		//		
-		//		for (POJOClassCell cell : factory.getCells()) {
-		//			if(cell.getItem() != null && cell.getItem() instanceof EntityPOJOClass) {
-		//				try {
-		//					cell.getRendererController().updatePojoFromFields();
-		//				}catch(Exception e){
-		//					throw new BadAttributeValueExpException(e.getMessage());
-		//				}
-		//			}
-		//		}
+	}
+
+	public void displayBottomPane(boolean displayed) {
+		bottom_pane.setVisible(displayed);
 	}
 
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
 
+	public Properties getProperties() {
+		// TODO Auto-generated method stub
+		return props;
+	}
 
 }

@@ -27,24 +27,17 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 	@FXML 
 	private ToggleSwitch chkbx_quota;
 
-	@FXML
-	private Button btn_prev;
-
-	@FXML
-	private Button btn_next;
-
 	private ApiConf httpsEnabled;
 	private ApiConf quotaEnabled;
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize(btn_prev, btn_next);
+		super.initialize();
 	}
 
 	@Override
 	public void checkInfo() {
-		getMainCtrl().hideSSL = !chkbx_https.isSelected();
 	}
 
 	@Override

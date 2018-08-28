@@ -5,11 +5,12 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<FlowPane alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hibernate.tool.conf.POJOClassCellController">
+<FlowPane alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.POJOClassCellController">
    <children>
       <VBox>
          <children>
@@ -41,7 +42,7 @@
                   </FlowPane>
                </right>
             </BorderPane>
-            <BorderPane minWidth="400.0" prefHeight="30.0">
+            <BorderPane minWidth="700.0" prefHeight="30.0">
                <left>
                   <Label prefWidth="80.0" text="URL name :" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
@@ -49,13 +50,6 @@
                      </BorderPane.margin>
                   </Label>
                </left>
-               <center>
-                  <Label fx:id="lbl_entity_name1" text="entity_url_name" BorderPane.alignment="CENTER_LEFT">
-                     <BorderPane.margin>
-                        <Insets left="5.0" />
-                     </BorderPane.margin>
-                  </Label>
-               </center>
                <right>
                   <FlowPane alignment="CENTER_LEFT" prefWidth="160.0" BorderPane.alignment="CENTER_RIGHT">
                      <children>
@@ -64,10 +58,13 @@
                               <Insets right="5.0" />
                            </FlowPane.margin>
                         </Label>
-                        <Spinner fx:id="spin_nb_fk" prefWidth="80.0" />
+                        <Spinner fx:id="spin_nb_fk" disable="true" prefWidth="80.0" />
                      </children>
                   </FlowPane>
                </right>
+               <center>
+                  <TextField fx:id="txt_entity_name" maxWidth="200.0" BorderPane.alignment="CENTER_LEFT" />
+               </center>
             </BorderPane>
             <BorderPane minWidth="400.0" prefHeight="30.0">
                <left>

@@ -37,6 +37,7 @@ public class HomeController extends AbstractController implements Initializable{
 		btn_begin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				getMainCtrl().onNextPage();
+				getMainCtrl().displayBottomPane(true);
 			}
 		});
 	}
