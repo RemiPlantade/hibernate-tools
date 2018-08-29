@@ -129,7 +129,7 @@ public class DatabaseController extends AbstractController implements Initializa
 
 	@Override
 	public void getProps() throws SQLException {
-		bdName = confDao.getEntityFromParamKey("spring.api.driver-class-name");
+		bdName = confDao.getEntityFromParamKey("spring.datasource.base.name");
 		bdIdent = confDao.getEntityFromParamKey("spring.api.username");
 		jdbcDriver = confDao.getEntityFromParamKey("spring.api.driver-class-name");
 		bdPwd = confDao.getEntityFromParamKey("spring.api.password");
@@ -139,6 +139,8 @@ public class DatabaseController extends AbstractController implements Initializa
 
 	@Override
 	public void updateConf() {
+		System.out.println("BDName === null : " + (bdName == null));
+		System.out.println("txt_name_bd === null : " + (txt_name_bd == null));
 		bdName.setParamValue(txt_name_bd.getText());
 		bdIdent.setParamValue(txt_ident_bd.getText());
 		bdURL.setParamValue(txt_database_url.getText());

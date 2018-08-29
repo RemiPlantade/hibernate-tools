@@ -55,7 +55,6 @@ public class MainController extends Application implements Initializable{
 
 	private Properties props = new Properties();;
 
-
 	@FXML
 	private FlowPane contentPane;
 	@FXML
@@ -145,18 +144,7 @@ public class MainController extends Application implements Initializable{
 
 			btn_next.setOnAction(new EventHandler<ActionEvent>() {
 				@Override public void handle(ActionEvent event) {
-					if(step_number == 5) {
-						updateDatabaseConf();	
-						System.out.println("Yolo latch 1 countdown");
-						latch1.countDown();
-					}else if(step_number == 6) {
-						validate();
-						System.out.println("Yolo latch 3 countdown");
-						latch3.countDown();
-						Platform.exit();
-					}else {
-						onNextPage();
-					}
+					onNextPage();
 				}
 			});
 		} catch (IOException e) {
@@ -268,10 +256,9 @@ public class MainController extends Application implements Initializable{
 		return null;
 	}
 
-	public void onNextPage() {
+	public void onNextPage()  {
 		SimpleEntry<AbstractController,VBox> actual = pages.getFirst();
 		try {
-			System.out.println(actual.getKey().getId());
 			actual.getKey().checkInfo();
 			pages.removeFirst();
 			step_number++;
@@ -280,10 +267,15 @@ public class MainController extends Application implements Initializable{
 			switch(step_number) {
 			case 5 :
 				btn_next.setText("Next");
+				updateDatabaseConf();	
+				latch1.countDown();
 				break;
 			case 6:
 				btn_next.setText("Finish");
 				nav_button_bar.getChildren().remove(btn_prev);
+				validate();
+				latch3.countDown();
+				Platform.exit();
 				break;
 			default:
 				btn_next.setText("Next");
@@ -297,15 +289,14 @@ public class MainController extends Application implements Initializable{
 			alert.setHeaderText("Erreur de saisie");
 			alert.setContentText(e.getMessage());
 			alert.showAndWait();
+
 		}catch(Exception e1) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Unexpected error");
 			alert.setContentText(e1.getMessage());
 			alert.showAndWait();
-			e1.printStackTrace();
 		}
-
 	}
 
 	public void onPreviousPage() {

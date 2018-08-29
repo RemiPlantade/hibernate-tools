@@ -44,6 +44,7 @@ public class CredentialsController extends AbstractController implements Initial
 
 	@Override
 	public void checkInfo() {
+		System.out.println("!!!!!!!!!!!!! Credential Check infos !");
 		if(txt_ident.getText().length() <= 0 ) {
 			throw new IllegalArgumentException("Le champ identifiant ne peut pas être vide");
 		}

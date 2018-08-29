@@ -1,20 +1,11 @@
 package fr.aboucorp.conf.controller;
 
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import api_conf.conf.model.ApiBean;
 import api_conf.conf.model.ApiConf;
-import fr.aboucorp.conf.PropertyBindingException;
 import fr.aboucorp.conf.model.GenericDao;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 
 public abstract class AbstractController {
