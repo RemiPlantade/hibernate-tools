@@ -29,6 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -43,9 +44,9 @@ public class EntitiesController extends AbstractController implements Initializa
 	private ListView<EntityPOJOClass> list_view_entities;
 	
 	@FXML
-	private ListView<EntityPOJOClass> list_view_foreign_entities;
+	private ListView<ComboBox<EntityPOJOClass>> list_view_foreign_entities;
 
-	private List<EntityPOJOClass> pojos;
+	private List<EntityPOJOClass> pojos; 
 	
 	private ApiConf baseUrl;
 	private ApiConf httpPort;
@@ -81,7 +82,6 @@ public class EntitiesController extends AbstractController implements Initializa
 	@Override
 	public void updateConf() {
 		
-		
 	}
 
 	public void removeForeignEntity(int steps, EntityPOJOClass pojo) {
@@ -96,12 +96,12 @@ public class EntitiesController extends AbstractController implements Initializa
 	}
 
 	public void addForeignEntity(int steps, EntityPOJOClass pojo) {
-		// TODO Auto-generated method stub
-		
+		for(int i = 0 ; i < steps;i++) {
+			
+		}
 	}
 
-	public void setPojos(List<EntityPOJOClass> pojos) {
-		System.err.println("EntitiesController : " + pojos);
+	public void injectPojos(List<EntityPOJOClass> pojos) {
 		this.pojos = pojos;
 		ObservableList<EntityPOJOClass> items = FXCollections.observableArrayList (pojos);
 		list_view_entities.setItems(items);
@@ -111,18 +111,13 @@ public class EntitiesController extends AbstractController implements Initializa
 	public ApiConf getBaseUrl() {
 		return baseUrl;
 	}
-
 	public ApiConf getHttpPort() {
 		return httpPort;
 	}
-
 	public ApiConf getHttpsPort() {
 		return httpsPort;
 	}
-
 	public ApiConf getHttpsEnabled() {
 		return httpsEnabled;
 	}
-	
-	
 }

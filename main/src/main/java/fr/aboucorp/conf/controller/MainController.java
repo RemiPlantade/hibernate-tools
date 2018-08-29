@@ -125,7 +125,7 @@ public class MainController extends Application implements Initializable{
 
 	public void injectPOJOs(List<EntityPOJOClass> pojos) {
 		EntitiesController entitiesCtrl = (EntitiesController) getControllerByID("entities");
-		entitiesCtrl.setPojos(pojos);
+		entitiesCtrl.injectPojos(pojos);
 		onNextPage();
 	}
 
