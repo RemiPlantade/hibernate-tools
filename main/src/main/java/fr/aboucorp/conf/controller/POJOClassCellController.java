@@ -13,9 +13,12 @@ import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 import api_conf.conf.model.ApiConf;
+import fr.aboucorp.conf.ihm.POJOClassCell;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -28,6 +31,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.util.Callback;
 
@@ -47,6 +51,8 @@ public class POJOClassCellController implements Initializable{
 	private EntityPOJOClass pojo;
 
 	private EntitiesController rootController;
+	
+	private POJOClassCell cell;
 
 	public POJOClassCellController() {}
 
@@ -63,6 +69,7 @@ public class POJOClassCellController implements Initializable{
 		chkbx_union.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				rootController.selectItemInList(cell.getIndex());
 				if(newValue) {
 					spin_nb_fk.setDisable(false);
 					spin_nb_fk.getValueFactory().setValue(0);
@@ -137,6 +144,10 @@ public class POJOClassCellController implements Initializable{
 				":" + (rootController.getHttpsEnabled().getParamValue().equals("yes") ? rootController.getHttpsPort().getParamValue() : rootController.getHttpPort().getParamValue()) +
 				"/" + pojo.getShortName();
 		lbl_url_prev.setText(url);
+	}
+
+	public void setCell(POJOClassCell pojoClassCell) {
+		this.cell = pojoClassCell;
 	}
 
 }

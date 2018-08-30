@@ -13,6 +13,7 @@ import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 
 import api_conf.conf.model.ApiConf;
 import fr.aboucorp.conf.PropertyBindingException;
+import fr.aboucorp.conf.ihm.POJOClassCell;
 import fr.aboucorp.conf.ihm.POJOClassCellFactory;
 import javafx.beans.property.adapter.JavaBeanIntegerProperty;
 import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
@@ -23,6 +24,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
@@ -31,6 +33,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
@@ -39,30 +42,43 @@ import javafx.util.StringConverter;
 import javafx.scene.control.Alert.AlertType;
 
 public class EntitiesController extends AbstractController implements Initializable{
-	
+
 	@FXML
 	private ListView<EntityPOJOClass> list_view_entities;
-	
+
 	@FXML
 	private ListView<ComboBox<EntityPOJOClass>> list_view_foreign_entities;
 
 	private List<EntityPOJOClass> pojos; 
-	
+
 	private ApiConf baseUrl;
 	private ApiConf httpPort;
 	private ApiConf httpsPort;
 	private ApiConf httpsEnabled;
-	
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize();
+		list_view_entities.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<EntityPOJOClass>() {
+			@Override
+			public void changed(ObservableValue<? extends EntityPOJOClass> observable, EntityPOJOClass oldValue, EntityPOJOClass newValue) {
+			}
+		});
 		
+		list_view_entities.setOnMouseClicked(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				System.out.println("Event : " + event.getEventType().getName());
+				
+			}
+		});
 	}
 
 	@Override
 	public void checkInfo() {
-		
+
 	}
 
 	@Override
@@ -81,7 +97,7 @@ public class EntitiesController extends AbstractController implements Initializa
 
 	@Override
 	public void updateConf() {
-		
+
 	}
 
 	public void removeForeignEntity(int steps, EntityPOJOClass pojo) {
@@ -92,12 +108,12 @@ public class EntitiesController extends AbstractController implements Initializa
 		//								cmb.setCellFactory(cmbbx_factory);
 		//								cmb_container.getChildren().add(cmb);
 		//							}
-		
+
 	}
 
 	public void addForeignEntity(int steps, EntityPOJOClass pojo) {
 		for(int i = 0 ; i < steps;i++) {
-			
+
 		}
 	}
 
@@ -106,6 +122,11 @@ public class EntitiesController extends AbstractController implements Initializa
 		ObservableList<EntityPOJOClass> items = FXCollections.observableArrayList (pojos);
 		list_view_entities.setItems(items);
 		list_view_entities.setCellFactory(new POJOClassCellFactory(this));
+	}
+	
+	public void selectItemInList(int index) {
+		list_view_entities.getSelectionModel().select(index);
+		list_view_entities.getFocusModel().focus(index);
 	}
 
 	public ApiConf getBaseUrl() {

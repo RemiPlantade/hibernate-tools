@@ -41,11 +41,11 @@
             <Label prefHeight="34.0" text="Please configure how Api Builder must consider your entities." textAlignment="CENTER" wrapText="true" />
          </children>
       </FlowPane>
-      <FlowPane alignment="TOP_CENTER" prefHeight="800.0" prefWidth="200.0">
+      <FlowPane alignment="TOP_CENTER" prefHeight="700" prefWidth="850.0">
          <children>
             <HBox alignment="CENTER">
                <children>
-                  <ListView fx:id="list_view_entities" minWidth="700.0" prefWidth="700.0" />
+                  <ListView fx:id="list_view_entities" minWidth="650.0" prefWidth="650.0" />
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/icon-arrow-right-b-128.png" />

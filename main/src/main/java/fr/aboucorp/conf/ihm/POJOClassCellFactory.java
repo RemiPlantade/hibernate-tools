@@ -13,7 +13,6 @@ import javafx.util.Callback;
 
 public class POJOClassCellFactory implements Callback<ListView<EntityPOJOClass>, ListCell<EntityPOJOClass>> {
 
-	private List<POJOClassCell> cells = new ArrayList<>();
 	private EntitiesController entitiesController;
 
 	public POJOClassCellFactory(EntitiesController entitiesController) {
@@ -23,12 +22,9 @@ public class POJOClassCellFactory implements Callback<ListView<EntityPOJOClass>,
 	@Override
 	public ListCell<EntityPOJOClass> call(ListView<EntityPOJOClass> param) {
 		POJOClassCell cell = new POJOClassCell(entitiesController);
-		cells.add(cell);
 		return cell;
 	}
 
-	public List<POJOClassCell> getCells() {
-		return cells;
-	}
 
+	
 }

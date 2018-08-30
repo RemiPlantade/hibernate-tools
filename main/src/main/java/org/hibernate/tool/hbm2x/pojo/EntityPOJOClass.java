@@ -1182,4 +1182,12 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	public void setLinkerEntities(List<EntityPOJOClass> linkerEntities) {
 		this.linkerEntities = linkerEntities;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return obj instanceof EntityPOJOClass && ((EntityPOJOClass)obj).getDeclarationName().equals(getDeclarationName());
+	}
+	
+	
 }

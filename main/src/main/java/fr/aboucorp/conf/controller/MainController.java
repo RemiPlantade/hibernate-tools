@@ -82,7 +82,7 @@ public class MainController extends Application implements Initializable{
 
 	public static MainController waitForBasicConfiguration() {
 		try {
-			System.out.println("Yolo latch wait");
+			System.out.println("latch wait");
 			latch.await();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -126,7 +126,6 @@ public class MainController extends Application implements Initializable{
 	public void injectPOJOs(List<EntityPOJOClass> pojos) {
 		EntitiesController entitiesCtrl = (EntitiesController) getControllerByID("entities");
 		entitiesCtrl.injectPojos(pojos);
-		onNextPage();
 	}
 
 	@Override
@@ -172,7 +171,6 @@ public class MainController extends Application implements Initializable{
 	}
 
 	public void validate() {
-		System.out.println("On validate");
 		try {
 			updateAllEntities();
 		} catch (SQLException e) {
@@ -257,31 +255,28 @@ public class MainController extends Application implements Initializable{
 	}
 
 	public void onNextPage()  {
+		System.out.println("On Next Page step : " + step_number);
 		SimpleEntry<AbstractController,VBox> actual = pages.getFirst();
 		try {
 			actual.getKey().checkInfo();
 			pages.removeFirst();
-			step_number++;
 			contentPane.getChildren().clear();
 			pages.addLast(actual);
 			switch(step_number) {
 			case 5 :
-				btn_next.setText("Next");
 				updateDatabaseConf();	
+				btn_next.setText("Finish");
 				latch1.countDown();
 				break;
 			case 6:
-				btn_next.setText("Finish");
 				nav_button_bar.getChildren().remove(btn_prev);
 				validate();
 				latch3.countDown();
 				Platform.exit();
 				break;
-			default:
-				btn_next.setText("Next");
-				break;
 			}
 			contentPane.getChildren().add(pages.getFirst().getValue());
+			step_number++;
 			refreshStepState();
 		}catch(IllegalArgumentException e) {
 			Alert alert = new Alert(AlertType.ERROR);

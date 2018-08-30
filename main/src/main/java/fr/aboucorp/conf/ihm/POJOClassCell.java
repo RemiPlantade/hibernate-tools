@@ -16,13 +16,14 @@ public class POJOClassCell extends ListCell<EntityPOJOClass> {
 
 	private POJOClassCellController rendererController;
 	private Node renderer;
-	
+
 	public POJOClassCell(EntitiesController entitiesController) {
 		try {
 			final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/POJOClassCell.fxml"));
 			renderer = fxmlLoader.load();
 			rendererController = (POJOClassCellController) fxmlLoader.getController();
 			rendererController.setRootController(entitiesController);
+			rendererController.setCell(this);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -33,28 +34,30 @@ public class POJOClassCell extends ListCell<EntityPOJOClass> {
 	public void updateItem(EntityPOJOClass item, boolean empty) 
 	{
 		super.updateItem(item, empty);
-        String text = null;
-        if (!empty) {
-            if (item == null) {
-                text = "No Table Found";
-                setGraphic(null);
-                setText(text);
-            } else {
-                if (renderer != null) {
-                	if(item != null) {
-                		System.err.println("Yolo ! set item in update !");
-                    rendererController.setPojo(item);
-                	}
-                    setGraphic(renderer);
-                    setText(text);
-                } else {
-                    text = String.valueOf(item.getShortName());
-                    setGraphic(null);
-                    setText(text);
-                }
-            }
-        }
+		String text = null;
+		if (!empty) {
+			if (item == null) {
+				text = "No Table Found";
+				setGraphic(null);
+				setText(text);
+			} else {
+				if (renderer != null) {
+					if(item != null) {
+						rendererController.setPojo(item);
+					}
+					requestFocus();
+					setGraphic(renderer);
+					setText(text);
+				} else {
+					text = String.valueOf(item.getShortName());
+					setGraphic(null);
+					setText(text);
+				}
+			}
+		}
 	}
+
+
 	public POJOClassCellController getRendererController() {
 		return rendererController;
 	}

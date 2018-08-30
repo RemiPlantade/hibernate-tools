@@ -35,7 +35,7 @@
 		</MenuBar>
 	</top>
 	<center>
-		<FlowPane fx:id="contentPane" alignment="CENTER" prefHeight="500.0" prefWidth="700" BorderPane.alignment="CENTER" />
+		<FlowPane fx:id="contentPane" alignment="CENTER" prefHeight="500.0" prefWidth="950" BorderPane.alignment="CENTER" />
 	</center>
 	<bottom>
 		

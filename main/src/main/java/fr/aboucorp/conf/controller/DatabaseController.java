@@ -83,7 +83,6 @@ public class DatabaseController extends AbstractController implements Initializa
 
 	@Override
 	public void checkInfo() throws IllegalArgumentException {
-		System.out.println("!!!!!!!!!!!!! Check infos !");
 		if(txt_name_bd.getText().length() <= 0) {
 			throw new IllegalArgumentException("Database name cannot be empty");
 		}else if(txt_ident_bd.getText().length() <= 0) {
