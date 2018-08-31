@@ -82,7 +82,6 @@ public class MainController extends Application implements Initializable{
 
 	public static MainController waitForBasicConfiguration() {
 		try {
-			System.out.println("latch wait");
 			latch.await();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -130,7 +129,6 @@ public class MainController extends Application implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("Yolo latch countdwon initialize");
 		latch.countDown();
 		try {
 			loadLayouts();
@@ -151,21 +149,24 @@ public class MainController extends Application implements Initializable{
 		}
 	}
 
-	private void updateDatabaseConf() {
-		System.out.println("On updateDatabaseConf");
+	private void updateDatabaseConf() throws SQLException {
 		for (java.util.Iterator<SimpleEntry<AbstractController, VBox>> iter = pages.iterator(); iter.hasNext();) {
 			SimpleEntry<AbstractController, VBox> entry = iter.next();
-			if(entry.getKey().getId().equals("database")) {
-				List<ApiConf> confList = entry.getKey().getAllApiConf();
-				if(confList != null) {
-					for (ApiConf conf : confList) {
-						if(conf != null && conf.getParamKey() != null) {
-							if(conf.getParamKey().startsWith("hibernate.")){
-								props.setProperty(conf.getParamKey(), conf.getParamValue());
-							}
+			List<ApiConf> confList = entry.getKey().getAllApiConf();
+			if(confList != null) {
+				for (ApiConf conf : confList) {
+					if(conf != null && conf.getParamKey() != null) {
+						System.out.println("Updating param : " + conf.getParamKey());
+						if(conf.getParamKey().startsWith("hibernate.")){
+							props.setProperty(conf.getParamKey(), conf.getParamValue());
+						}else {
+							entry.getKey().getConfDao().updateEntity(conf);
+
 						}
+
 					}
 				}
+
 			}
 		}
 	}
@@ -255,7 +256,6 @@ public class MainController extends Application implements Initializable{
 	}
 
 	public void onNextPage()  {
-		System.out.println("On Next Page step : " + step_number);
 		SimpleEntry<AbstractController,VBox> actual = pages.getFirst();
 		try {
 			actual.getKey().checkInfo();
@@ -344,7 +344,6 @@ public class MainController extends Application implements Initializable{
 	}
 
 	public Properties getProperties() {
-		// TODO Auto-generated method stub
 		return props;
 	}
 

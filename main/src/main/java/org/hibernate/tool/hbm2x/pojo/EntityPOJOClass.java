@@ -1183,6 +1183,22 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		this.linkerEntities = linkerEntities;
 	}
 
+	public String getUrlEntityName() {
+		return urlEntityName;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setUrlEntityName(String urlEntityName) {
+		this.urlEntityName = urlEntityName;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub

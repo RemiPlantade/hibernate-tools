@@ -12,6 +12,7 @@ import javax.transaction.Transactional.TxType;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
+import api_conf.conf.exception.BadURLException;
 import api_conf.conf.model.ApiConf;
 import fr.aboucorp.conf.ihm.POJOClassCell;
 import javafx.beans.value.ChangeListener;
@@ -51,7 +52,7 @@ public class POJOClassCellController implements Initializable{
 	private EntityPOJOClass pojo;
 
 	private EntitiesController rootController;
-	
+
 	private POJOClassCell cell;
 
 	public POJOClassCellController() {}
@@ -74,6 +75,7 @@ public class POJOClassCellController implements Initializable{
 					spin_nb_fk.setDisable(false);
 					spin_nb_fk.getValueFactory().setValue(0);
 				}else {
+					rootController.removeAllLinkedEntities(pojo);
 					spin_nb_fk.setDisable(true);
 					spin_nb_fk.getValueFactory().setValue(0);
 				}
@@ -84,9 +86,11 @@ public class POJOClassCellController implements Initializable{
 			@Override
 			public void decrement(int steps) {
 				Integer current = this.getValue();
-				Integer newValue = current - steps >= 0 ? current - steps : 0;
-				this.setValue(newValue);
-				rootController.removeForeignEntity(steps,pojo);
+				if(current != 0) {
+					Integer newValue = current - steps >= 0 ? current - steps : 0;
+					this.setValue(newValue);
+					rootController.removeForeignEntity(steps,pojo);
+				}
 			}
 
 			@Override
@@ -97,35 +101,42 @@ public class POJOClassCellController implements Initializable{
 			}
 		};
 		spin_nb_fk.setValueFactory(valueFactory);
-		
+
 		txt_entity_name.textProperty().addListener((observable, oldValue, newValue) -> {
+
 			String url = rootController.getBaseUrl().getParamValue() +
 					":" + (rootController.getHttpsEnabled().getParamValue().equals("yes") ? rootController.getHttpsPort().getParamValue() : rootController.getHttpPort().getParamValue()) +
 					"/"  + newValue;
-			lbl_url_prev.setText(url);
+
+			try {
+				rootController.checkURLValidity(newValue,pojo);
+				lbl_url_prev.setText(url);
+			}catch(BadURLException e) {
+
+			}
 		});
 	}
 
-//	public void updatePojoFromFields() throws BadAttributeValueExpException{
-//		if(link_table_chbx.isSelected()) {
-//			Integer nbLinkedEntities = select_nb_assoc.getSelectionModel().getSelectedItem();
-//			List<Node> nodes = cmb_container.getChildren();
-//			if(nbLinkedEntities != null && nodes.size() == nbLinkedEntities) {
-//				pojo.setUnionEntity(true);
-//				for (Node node : nodes) {
-//					if(node instanceof ComboBox) {
-//						EntityPOJOClass linkedEntity = ((ComboBox<EntityPOJOClass>) node).getSelectionModel().getSelectedItem();
-//						linkedEntity.getLinkerEntities().add((EntityPOJOClass) pojo);
-//						pojo.getLinkedEntities().add(linkedEntity);
-//					}
-//				}
-//			}else {
-//				throw new BadAttributeValueExpException("You must select the linked entity for each union entity");
-//			}
-//		}else {
-//			pojo.setUnionEntity(false);
-//		}
-//	}
+	//	public void updatePojoFromFields() throws BadAttributeValueExpException{
+	//		if(link_table_chbx.isSelected()) {
+	//			Integer nbLinkedEntities = select_nb_assoc.getSelectionModel().getSelectedItem();
+	//			List<Node> nodes = cmb_container.getChildren();
+	//			if(nbLinkedEntities != null && nodes.size() == nbLinkedEntities) {
+	//				pojo.setUnionEntity(true);
+	//				for (Node node : nodes) {
+	//					if(node instanceof ComboBox) {
+	//						EntityPOJOClass linkedEntity = ((ComboBox<EntityPOJOClass>) node).getSelectionModel().getSelectedItem();
+	//						linkedEntity.getLinkerEntities().add((EntityPOJOClass) pojo);
+	//						pojo.getLinkedEntities().add(linkedEntity);
+	//					}
+	//				}
+	//			}else {
+	//				throw new BadAttributeValueExpException("You must select the linked entity for each union entity");
+	//			}
+	//		}else {
+	//			pojo.setUnionEntity(false);
+	//		}
+	//	}
 
 	public void setRootController(EntitiesController rootController) {
 		this.rootController = rootController;
@@ -140,9 +151,7 @@ public class POJOClassCellController implements Initializable{
 	private void setEntityInfos() {
 		lbl_entity_name.setText(pojo.getShortName());
 		txt_entity_name.setPromptText(pojo.getShortName());
-		String url = rootController.getBaseUrl().getParamValue() +
-				":" + (rootController.getHttpsEnabled().getParamValue().equals("yes") ? rootController.getHttpsPort().getParamValue() : rootController.getHttpPort().getParamValue()) +
-				"/" + pojo.getShortName();
+		String url = rootController.getStartURL() + pojo.getShortName();
 		lbl_url_prev.setText(url);
 	}
 

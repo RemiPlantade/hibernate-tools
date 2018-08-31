@@ -65,6 +65,17 @@ public class WebController extends AbstractController implements Initializable{
 				}
 			}
 		});
+		txt_base_url.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if(containsIllegals(newValue)) {
+					newValue = oldValue;
+				}else {
+					baseUrl.setParamValue(newValue);
+				}
+				
+			}
+		});
 
 		SpinnerValueFactory<Integer> spin_https_port_facto = //
 				new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 65535, 443);
