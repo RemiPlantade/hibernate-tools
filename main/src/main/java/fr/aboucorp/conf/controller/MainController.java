@@ -14,7 +14,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 
+import api_conf.conf.model.ApiBean;
 import api_conf.conf.model.ApiConf;
+import fr.aboucorp.conf.model.GenericDao;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -53,7 +55,13 @@ public class MainController extends Application implements Initializable{
 
 	private LinkedList<SimpleEntry<AbstractController,VBox>> pages;
 
-	private Properties props = new Properties();;
+	private Properties props = new Properties();
+
+	private List<ApiConf> allConf;
+
+	protected static GenericDao<ApiConf> confDao;
+
+	protected static GenericDao<ApiBean> beanDao;
 
 	@FXML
 	private FlowPane contentPane;
@@ -131,6 +139,17 @@ public class MainController extends Application implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		latch.countDown();
 		try {
+			try {
+				confDao = new GenericDao<>(ApiConf.class);
+				beanDao = new GenericDao<>(ApiBean.class);
+				allConf = confDao.getAll();
+			} catch (SQLException e) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error Dialog");
+				alert.setHeaderText("Database error");
+				alert.setContentText("Canot access to configuration database.");
+				alert.showAndWait();
+			}
 			loadLayouts();
 			displayBottomPane(false);
 			btn_prev.setOnAction(new EventHandler<ActionEvent>() {
@@ -150,37 +169,16 @@ public class MainController extends Application implements Initializable{
 	}
 
 	private void updateDatabaseConf() throws SQLException {
-		for (java.util.Iterator<SimpleEntry<AbstractController, VBox>> iter = pages.iterator(); iter.hasNext();) {
-			SimpleEntry<AbstractController, VBox> entry = iter.next();
-			List<ApiConf> confList = entry.getKey().getAllApiConf();
-			if(confList != null) {
-				for (ApiConf conf : confList) {
-					if(conf != null && conf.getParamKey() != null) {
-						System.out.println("Updating param : " + conf.getParamKey());
-						if(conf.getParamKey().startsWith("hibernate.")){
-							props.setProperty(conf.getParamKey(), conf.getParamValue());
-						}else {
-							entry.getKey().getConfDao().updateEntity(conf);
-
-						}
-
-					}
+		for (ApiConf conf : allConf) {
+			if(conf != null && conf.getParamKey() != null) {
+				if(conf.getParamKey().startsWith("hibernate.")){
+					props.setProperty(conf.getParamKey(), conf.getParamValue());
+				}else {
+					confDao.updateEntity(conf);
 				}
 
 			}
 		}
-	}
-
-	public void validate() {
-		try {
-			updateAllEntities();
-		} catch (SQLException e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("Erreur lors de la mise à jour de la configuration");
-			alert.setContentText(e.getMessage());
-			alert.showAndWait();
-		}	
 	}
 
 	public void loadLayouts() throws IOException {
@@ -190,7 +188,6 @@ public class MainController extends Application implements Initializable{
 		HomeController homectrl =  loader.getController();
 		homectrl.setId("home");
 		pages.add(new SimpleEntry<>(homectrl,home));
-
 		homectrl.setMainCtrl(this);
 
 		loader = new FXMLLoader();
@@ -204,9 +201,11 @@ public class MainController extends Application implements Initializable{
 		loader = new FXMLLoader();
 		loader.setLocation(getClass().getClassLoader().getResource("fxml/web.fxml"));
 		VBox web = (VBox) loader.load();
+		System.out.println("Load Web controller");
 		WebController webctrl = loader.getController();
 		pages.add(new SimpleEntry<>(webctrl,web));
 		webctrl.setId("web");
+		System.out.println("Set Web main controller");
 		webctrl.setMainCtrl(this);
 
 		loader = new FXMLLoader();
@@ -270,7 +269,7 @@ public class MainController extends Application implements Initializable{
 				break;
 			case 6:
 				nav_button_bar.getChildren().remove(btn_prev);
-				validate();
+				updateEntitiesConf();
 				latch3.countDown();
 				Platform.exit();
 				break;
@@ -292,6 +291,11 @@ public class MainController extends Application implements Initializable{
 			alert.setContentText(e1.getMessage());
 			alert.showAndWait();
 		}
+	}
+
+	private void updateEntitiesConf() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void onPreviousPage() {
@@ -321,18 +325,13 @@ public class MainController extends Application implements Initializable{
 		rect_white.setWidth(240-(40*step_number));
 	}
 
-	public void updateAllEntities() throws SQLException{
-		for (java.util.Iterator<SimpleEntry<AbstractController, VBox>> iter = pages.iterator(); iter.hasNext();) {
-			SimpleEntry<AbstractController, VBox> entry = iter.next();
-			List<ApiConf> confList = entry.getKey().getAllApiConf();
-			if(confList != null) {
-				for (ApiConf conf : confList) {
-					if(conf != null && conf.getParamKey() != null) {
-						entry.getKey().getConfDao().updateEntity(conf);
-					}
-				}
+	public ApiConf getConfByKey(String key) {
+		for (ApiConf apiConf : allConf) {
+			if(apiConf.getParamKey().equals(key)) {
+				return apiConf;
 			}
 		}
+		return null;
 	}
 
 	public void displayBottomPane(boolean displayed) {
@@ -345,6 +344,14 @@ public class MainController extends Application implements Initializable{
 
 	public Properties getProperties() {
 		return props;
+	}
+
+	public List<ApiConf> getAllConf() {
+		return allConf;
+	}
+
+	public void setAllConf(List<ApiConf> allConf) {
+		this.allConf = allConf;
 	}
 
 }

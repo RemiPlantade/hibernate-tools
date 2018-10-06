@@ -78,7 +78,7 @@ public class DatabaseController extends AbstractController implements Initializa
 				new Dialect().setName("FrontBase").setPath("org.hibernate.dialect.FrontbaseDialect"),
 				new Dialect().setName("Firebird").setPath("org.hibernate.dialect.FirebirdDialect")) 
 				));
-		cmd_type_bd.getSelectionModel().select(4);
+		cmd_type_bd.getSelectionModel().select(6);
 	}
 
 	@Override
@@ -96,13 +96,11 @@ public class DatabaseController extends AbstractController implements Initializa
             Class.forName(txt_jdbc.getText());
             conn = DriverManager.getConnection(txt_database_url.getText()+"?useSSL=false", txt_ident_bd.getText(), txt_mdp_bd.getText());
             if (conn != null) {
-            	System.out.println("!!!!!! Connexion is not null");
             	Alert alert = new Alert(AlertType.INFORMATION);
     			alert.setTitle("EDatabase connection");
     			alert.setHeaderText("Database connection established");
     			alert.showAndWait();
             }else {
-            	System.out.println("!!!!!! Connexion is null");
             }
         } catch (ClassNotFoundException ex) {
         	throw new IllegalArgumentException("Could not find database driver class");
@@ -120,26 +118,7 @@ public class DatabaseController extends AbstractController implements Initializa
 	}
 
 	@Override
-	public List<ApiConf> getAllApiConf() {
-		// TODO Auto-generated method stub
-		updateConf();
-		return new ArrayList<>(Arrays.asList(bdName,bdIdent,jdbcDriver,bdPwd,bdType,bdURL,h_bdIdent,h_bdName,h_bdPwd,h_bdType,h_bdURL,h_jdbcDriver));
-	}
-
-	@Override
-	public void getProps() throws SQLException {
-		bdName = confDao.getEntityFromParamKey("spring.datasource.base.name");
-		bdIdent = confDao.getEntityFromParamKey("spring.api.username");
-		jdbcDriver = confDao.getEntityFromParamKey("spring.api.driver-class-name");
-		bdPwd = confDao.getEntityFromParamKey("spring.api.password");
-		bdURL =  confDao.getEntityFromParamKey("spring.api.url");
-		bdType = confDao.getEntityFromParamKey("spring.api.jpa.properties.hibernate.dialect");
-	}
-
-	@Override
 	public void updateConf() {
-		System.out.println("BDName === null : " + (bdName == null));
-		System.out.println("txt_name_bd === null : " + (txt_name_bd == null));
 		bdName.setParamValue(txt_name_bd.getText());
 		bdIdent.setParamValue(txt_ident_bd.getText());
 		bdURL.setParamValue(txt_database_url.getText());
@@ -159,5 +138,15 @@ public class DatabaseController extends AbstractController implements Initializa
 		h_bdURL.setParamValue(bdURL.getParamValue());
 		h_jdbcDriver.setParamKey("hibernate.connection.driver_class");
 		h_jdbcDriver.setParamValue(jdbcDriver.getParamValue());
+	}
+
+	@Override
+	public void getProps() {
+		bdName = getMainCtrl().getConfByKey("spring.datasource.base.name");
+		bdIdent = getMainCtrl().getConfByKey("spring.api.username");
+		jdbcDriver = getMainCtrl().getConfByKey("spring.api.driver-class-name");
+		bdPwd = getMainCtrl().getConfByKey("spring.api.password");
+		bdURL =  getMainCtrl().getConfByKey("spring.api.url");
+		bdType = getMainCtrl().getConfByKey("spring.api.jpa.properties.hibernate.dialect");
 	}
 }

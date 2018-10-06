@@ -82,20 +82,6 @@ public class EntitiesController extends AbstractController implements Initializa
 	}
 
 	@Override
-	public List<ApiConf> getAllApiConf() {
-		return null;
-	}
-
-
-	@Override
-	public void getProps() throws SQLException {
-		baseUrl = confDao.getEntityFromParamKey("api.base.url");
-		httpPort =  confDao.getEntityFromParamKey("api.port.http");
-		httpsPort =  confDao.getEntityFromParamKey("api.port.https");
-		httpsEnabled = confDao.getEntityFromParamKey("server.ssl.enabled");
-	}
-
-	@Override
 	public void updateConf() {
 
 	}
@@ -111,8 +97,6 @@ public class EntitiesController extends AbstractController implements Initializa
 
 	public void addForeignEntity(int steps, EntityPOJOClass owner) {
 		List<ComboBox<EntityPOJOClass>> newContent = comboList.get(owner);
-		System.out.println("Size of list before : " + newContent.size());
-
 		for(int i = 0 ; i < steps ; i++) {
 			ComboBox<EntityPOJOClass> combo = new ComboBox<>();
 			combo.setItems(FXCollections.observableArrayList(pojos));
@@ -165,7 +149,6 @@ public class EntitiesController extends AbstractController implements Initializa
 		@Override
 		public void changed(ObservableValue<? extends EntityPOJOClass> observable, EntityPOJOClass oldValue,
 				EntityPOJOClass newValue) {
-			System.out.println("In POJOComboChanListener !");
 			List<EntityPOJOClass> linked = owner.getLinkedEntities() !=null ?
 					owner.getLinkedEntities() : new ArrayList<>();
 					if(oldValue != null && !oldValue.equals(newValue)) {
@@ -200,7 +183,15 @@ public class EntitiesController extends AbstractController implements Initializa
 
 	public String getStartURL() {
 		return baseUrl.getParamValue() + ":" 
-	+ (httpsEnabled.getParamValue().equals("yes") ? httpsPort.getParamValue() : httpPort.getParamValue()) 
-	+ "/";
+				+ (httpsEnabled.getParamValue().equals("yes") ? httpsPort.getParamValue() : httpPort.getParamValue()) 
+				+ "/";
+	}
+
+	@Override
+	public void getProps() {
+		baseUrl = getMainCtrl().getConfByKey("api.base.url");
+		httpPort =  getMainCtrl().getConfByKey("api.port.http");
+		httpsPort =  getMainCtrl().getConfByKey("api.port.https");
+		httpsEnabled = getMainCtrl().getConfByKey("server.ssl.enabled");
 	}
 }

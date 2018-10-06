@@ -33,7 +33,8 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize();
+		super.initialize();		
+	
 	}
 
 	@Override
@@ -41,20 +42,14 @@ public class HTTPSQuotaController  extends AbstractController implements Initial
 	}
 
 	@Override
-	public List<ApiConf> getAllApiConf() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void getProps() throws SQLException {
-		httpsEnabled = confDao.getEntityFromParamKey("server.ssl.enabled");
-		quotaEnabled = confDao.getEntityFromParamKey("api.quota.managed");
-	}
-
-	@Override
 	public void updateConf() {
 		httpsEnabled.setParamValue(chkbx_https.isSelected()?"true":"false");
 		quotaEnabled.setParamValue(chkbx_quota.isSelected()?"true":"false");
+	}
+
+	@Override
+	public void getProps() {
+		httpsEnabled =  getMainCtrl().getConfByKey("server.ssl.enabled");
+		quotaEnabled =  getMainCtrl().getConfByKey("api.quota.managed");
 	}
 }

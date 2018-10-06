@@ -161,12 +161,9 @@ public class HibernateToolTask extends Task {
 		if(configurationTask instanceof JDBCConfigurationTask) {
 			configureJDBCProps();
 		}
-		
 		validateParameters();
 		Iterator<ExporterTask> iterator = generators.iterator();
-		
 		AntClassLoader loader = getProject().createClassLoader(classPath);
-		
 		ExporterTask generatorTask = null;
 		int count = 1;
 		try {
@@ -175,7 +172,7 @@ public class HibernateToolTask extends Task {
 			loader.setThreadContextLoader();
 			while (iterator.hasNext() ) {		
 				generatorTask = iterator.next();
-				log(count++ + ". task: " + generatorTask.getName() );
+				log(count++ + ". task: " + generatorTask.getName());
 				generatorTask.execute();			
 			}
 		} catch (RuntimeException re) {

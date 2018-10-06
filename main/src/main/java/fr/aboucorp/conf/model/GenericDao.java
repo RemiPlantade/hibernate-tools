@@ -11,6 +11,8 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 
+import api_conf.conf.model.ApiConf;
+
 public class GenericDao<T> {
 	private ConnectionSource connection;
 	private Dao<T,String> dao;
@@ -26,35 +28,36 @@ public class GenericDao<T> {
 
 	public List<T> getEntitiesFromAttr(String attrName, String value) throws SQLException {
 		QueryBuilder<T, String> queryBuilder = dao.queryBuilder();
-		// the 'password' field must be equal to "qwerty"
 		queryBuilder.where().eq(attrName, value);
 		// prepare our sql statement
 		PreparedQuery<T> preparedQuery = queryBuilder.prepare();
 		// query for all accounts that have "qwerty" as a password
 		return dao.query(preparedQuery);
 	}
-	
+
 	public T getOneEntityFromAttr(String attrName, String value) throws SQLException {
 		QueryBuilder<T, String> queryBuilder = dao.queryBuilder();
-		// the 'password' field must be equal to "qwerty"
 		queryBuilder.limit(1L).where().eq(attrName, value);
 		// prepare our sql statement
 		PreparedQuery<T> preparedQuery = queryBuilder.prepare();
 		// query for all accounts that have "qwerty" as a password
 		return dao.queryForFirst(preparedQuery);
 	}
-	
+
 	public T getEntityFromParamKey(String value) throws SQLException {
 		QueryBuilder<T, String> queryBuilder = dao.queryBuilder();
-		// the 'password' field must be equal to "qwerty"
 		queryBuilder.where().eq("param_key", value);
 		// prepare our sql statement
 		PreparedQuery<T> preparedQuery = queryBuilder.prepare();
 		// query for all accounts that have "qwerty" as a password
 		return dao.queryForFirst(preparedQuery);
 	}
-	
+
 	public boolean updateEntity(T object) throws SQLException {
 		return dao.update(object) == 1;
+	}
+
+	public List<ApiConf> getAll() throws SQLException {
+		return (List<ApiConf>) dao.queryForAll();
 	}
 }

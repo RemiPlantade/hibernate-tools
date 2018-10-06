@@ -32,11 +32,11 @@ public class CredentialsController extends AbstractController implements Initial
 
 	@FXML
 	private TextField txt_ident;
-	
+
 	private ApiConf admin_username;
 	private ApiConf admin_pwd;
 
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize();
@@ -44,7 +44,6 @@ public class CredentialsController extends AbstractController implements Initial
 
 	@Override
 	public void checkInfo() {
-		System.out.println("!!!!!!!!!!!!! Credential Check infos !");
 		if(txt_ident.getText().length() <= 0 ) {
 			throw new IllegalArgumentException("Le champ identifiant ne peut pas être vide");
 		}
@@ -55,26 +54,17 @@ public class CredentialsController extends AbstractController implements Initial
 		} 
 	}
 
-	@Override
-	public List<ApiConf> getAllApiConf() {
-		return new ArrayList<>(Arrays.asList(admin_username,admin_pwd));
-	}
-
-	@Override
-	public void getProps() throws SQLException {
-		try {
-			admin_username = confDao.getEntityFromParamKey("api.admin.username");
-			admin_pwd = confDao.getEntityFromParamKey("api.admin.password");
-		} catch (SQLException e) {
-			throw new SQLException(e.getMessage());
-		}
-		
-	}
 
 	@Override
 	public void updateConf() {
 		admin_username.setParamValue(txt_ident.getText());
 		admin_pwd.setParamValue(txt_mdp.getText());
-		
+
+	}
+
+	@Override
+	public void getProps() {
+		admin_username = getMainCtrl().getConfByKey("api.admin.username");
+		admin_pwd = getMainCtrl().getConfByKey("api.admin.password");
 	}
 }

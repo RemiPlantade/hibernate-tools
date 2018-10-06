@@ -87,24 +87,19 @@ public class SSLController extends AbstractController implements Initializable {
 	}
 
 	@Override
-	public List<ApiConf> getAllApiConf() {
-		return new ArrayList<>(Arrays.asList(pwdKeyStore,keystoreFilePath,keyStoreType,keyAlias));
-	}
-
-	@Override
-	public void getProps() throws SQLException {
-		pwdKeyStore = confDao.getEntityFromParamKey("server.ssl.key-store-password");
-		keystoreFilePath = confDao.getEntityFromParamKey("server.ssl.key-store");
-		keyStoreType = confDao.getEntityFromParamKey("server.ssl.key-store-type");
-		keyAlias = confDao.getEntityFromParamKey("server.ssl.key-alias");
-	}
-
-	@Override
 	public void updateConf() {
 		keystoreFilePath.setParamValue(temp_keystore_path);
 		pwdKeyStore.setParamValue(mdp_keystore.getText());
 		keyAlias.setParamValue(alias_keystore.getText());
 		keyStoreType.setParamValue(cmb_type_keystore.getSelectionModel().getSelectedItem());
 		
+	}
+
+	@Override
+	public void getProps() {
+		pwdKeyStore =  getMainCtrl().getConfByKey("server.ssl.key-store-password");
+		keystoreFilePath =  getMainCtrl().getConfByKey("server.ssl.key-store");
+		keyStoreType =  getMainCtrl().getConfByKey("server.ssl.key-store-type");
+		keyAlias =  getMainCtrl().getConfByKey("server.ssl.key-alias");
 	}
 }

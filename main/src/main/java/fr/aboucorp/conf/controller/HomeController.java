@@ -24,16 +24,6 @@ public class HomeController extends AbstractController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		try {
-			confDao = new GenericDao<>(ApiConf.class);
-			beanDao = new GenericDao<>(ApiBean.class);
-		} catch (SQLException e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("Database error");
-			alert.setContentText("Canot access to configuration database.");
-			alert.showAndWait();
-		}
 		btn_begin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				getMainCtrl().onNextPage();
@@ -46,19 +36,10 @@ public class HomeController extends AbstractController implements Initializable{
 	public void checkInfo() throws IllegalArgumentException{}
 
 	@Override
-	public List<ApiConf> getAllApiConf() {
-		// TODO Auto-generated method stub
-		return new ArrayList<>();
-	}
+	public void updateConf() {}
 
 	@Override
-	public void getProps() throws SQLException {}
-
-	@Override
-	public void updateConf() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void getProps() {}
 
 
 }

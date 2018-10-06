@@ -48,6 +48,7 @@ public class WebController extends AbstractController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		super.initialize();
 		SpinnerValueFactory<Integer> spin_http_port_facto = //
 				new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 65535, 80);
 		spin_http_port.setValueFactory(spin_http_port_facto);
@@ -73,7 +74,7 @@ public class WebController extends AbstractController implements Initializable{
 				}else {
 					baseUrl.setParamValue(newValue);
 				}
-				
+
 			}
 		});
 
@@ -94,7 +95,7 @@ public class WebController extends AbstractController implements Initializable{
 				}
 			}
 		});
-		super.initialize();
+
 	}
 
 	@Override
@@ -104,11 +105,6 @@ public class WebController extends AbstractController implements Initializable{
 		}
 	}
 
-	@Override
-	public List<ApiConf> getAllApiConf() {
-		return new ArrayList<>(Arrays.asList(baseUrl,httpPort,httpsPort));
-	}
-
 	private boolean containsIllegals(String toExamine) {
 		Pattern pattern = Pattern.compile("[~#@*+%{}<>\\[\\]|\"\\_^]");
 		Matcher matcher = pattern.matcher(toExamine);
@@ -116,17 +112,16 @@ public class WebController extends AbstractController implements Initializable{
 	}
 
 	@Override
-	public void getProps() throws SQLException {
-		baseUrl = confDao.getEntityFromParamKey("api.base.url");
-		httpPort =  confDao.getEntityFromParamKey("api.port.http");
-		httpsPort =  confDao.getEntityFromParamKey("api.port.https");
-	}
-
-	@Override
 	public void updateConf() {
 		baseUrl.setParamValue(txt_base_url.getText());
 		httpPort.setParamValue(spin_http_port.getEditor().textProperty().get());
 		httpsPort.setParamValue(spin_https_port.getEditor().textProperty().get());
-		
+	}
+
+	@Override
+	public void getProps() {
+		baseUrl =  getMainCtrl().getConfByKey("api.base.url");
+		httpPort =   getMainCtrl().getConfByKey("api.port.http");
+		httpsPort =   getMainCtrl().getConfByKey("api.port.https");
 	}
 }
