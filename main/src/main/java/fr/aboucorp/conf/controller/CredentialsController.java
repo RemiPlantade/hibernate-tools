@@ -25,9 +25,7 @@ public class CredentialsController extends AbstractController implements Initial
 
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize();
-	}
+	public void initialize(URL location, ResourceBundle resources) {}
 
 	@Override
 	public void checkInfo() {

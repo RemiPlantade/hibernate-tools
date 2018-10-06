@@ -6,9 +6,6 @@ public abstract class AbstractController {
 	
 	private MainController mainCtrl;
 	
-	public void initialize() {}
-
-	
 	public abstract void checkInfo() throws IllegalArgumentException;
 	
 	public abstract void updateConf();	

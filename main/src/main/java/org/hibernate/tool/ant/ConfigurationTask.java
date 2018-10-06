@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
@@ -32,7 +33,7 @@ public class ConfigurationTask extends Task {
 	private File configurationFile;
 	private File propertyFile;
 	protected String entityResolver;
-	protected Properties manualProps;
+	protected Properties manualProps = new Properties();
 	
 	public ConfigurationTask() {
 		setDescription("Standard Configuration");
@@ -61,7 +62,15 @@ public class ConfigurationTask extends Task {
 	}
 	
 	protected Properties loadPropertiesFile() {
-		if (propertyFile!=null) { 
+		if(!manualProps.isEmpty()) {
+			System.out.println("Return manualProp");
+			for (Entry<Object, Object> fileSet :  manualProps.entrySet()) {
+				System.out.println("Prop : " + fileSet.getKey() +" : " + fileSet.getValue());
+			}
+			return manualProps;
+		}
+		else if (propertyFile != null) { 
+			System.out.println("Yolo ! propertyFile is not null");
 			Properties properties = new Properties(); // TODO: should we "inherit" from the ant projects properties ?
 			FileInputStream is = null;
 			try {
@@ -83,8 +92,6 @@ public class ConfigurationTask extends Task {
 					}
 				}
 			}
-		} else if(manualProps != null){
-			return manualProps;
 		}else {
 			return null;
 		}

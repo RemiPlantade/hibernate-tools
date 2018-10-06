@@ -43,7 +43,6 @@ public class SSLController extends AbstractController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize();
 		temp_keystore_path ="C:\\Program Files\\Java\\jdk1.8.0_161\\jre\\lib\\security\\cacerts";
 		cmb_type_keystore.itemsProperty().set(FXCollections.observableArrayList(
 		        "JKS",

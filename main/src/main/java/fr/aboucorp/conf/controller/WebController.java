@@ -31,7 +31,6 @@ public class WebController extends AbstractController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize();
 		SpinnerValueFactory<Integer> spin_http_port_facto = //
 				new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 65535, 80);
 		spin_http_port.setValueFactory(spin_http_port_facto);

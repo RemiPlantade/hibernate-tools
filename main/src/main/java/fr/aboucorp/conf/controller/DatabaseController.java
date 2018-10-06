@@ -32,26 +32,17 @@ public class DatabaseController extends AbstractController implements Initializa
 	private PasswordField txt_mdp_bd;
 	@FXML
 	private TextField txt_database_url;
-
-
-	private ApiConf bdName;
-	private ApiConf bdIdent;
-	private ApiConf jdbcDriver;
-	private ApiConf bdPwd;
-	private ApiConf bdURL;
-	private ApiConf bdType;
 	
-	private ApiConf h_bdName = new ApiConf();
-	private ApiConf h_bdIdent = new ApiConf();
-	private ApiConf h_jdbcDriver = new ApiConf();
-	private ApiConf h_bdPwd = new ApiConf();
-	private ApiConf h_bdURL = new ApiConf();
-	private ApiConf h_bdType = new ApiConf();
+	private ApiConf h_bdName ;
+	private ApiConf h_bdIdent;
+	private ApiConf h_jdbcDriver ;
+	private ApiConf h_bdPwd;
+	private ApiConf h_bdURL ;
+	private ApiConf h_bdType;
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize();
 		cmd_type_bd.setItems(FXCollections.observableArrayList(Arrays.asList(
 				new Dialect().setName("DB2").setPath("org.hibernate.dialect.DB2Dialect"),
 				new Dialect().setName("DB2 AS/400").setPath("org.hibernate.dialect.DB2400Dialect"),
@@ -117,34 +108,21 @@ public class DatabaseController extends AbstractController implements Initializa
 
 	@Override
 	public void updateConf() {
-		bdName.setParamValue(txt_name_bd.getText());
-		bdIdent.setParamValue(txt_ident_bd.getText());
-		bdURL.setParamValue(txt_database_url.getText());
-		jdbcDriver.setParamValue(txt_jdbc.getText());
-		bdPwd.setParamValue(txt_mdp_bd.getText());
-		bdType.setParamValue(cmd_type_bd.getSelectionModel().getSelectedItem().getPath());
-		
-		h_bdIdent.setParamKey("hibernate.connection.username");
-		h_bdIdent.setParamValue(bdIdent.getParamValue());
-		h_bdName.setParamKey("hibernate.default_catalog");
-		h_bdName.setParamValue(bdName.getParamValue());
-		h_bdPwd.setParamKey("hibernate.connection.password");
-		h_bdPwd.setParamValue(bdPwd.getParamValue());
-		h_bdType.setParamKey("hibernate.dialect");
-		h_bdType.setParamValue(bdType.getParamValue());
-		h_bdURL.setParamKey("hibernate.connection.url");
-		h_bdURL.setParamValue(bdURL.getParamValue());
-		h_jdbcDriver.setParamKey("hibernate.connection.driver_class");
-		h_jdbcDriver.setParamValue(jdbcDriver.getParamValue());
+		h_bdIdent.setParamValue(txt_ident_bd.getText());
+		h_bdName.setParamValue(txt_name_bd.getText());
+		h_bdPwd.setParamValue(txt_mdp_bd.getText());
+		h_bdType.setParamValue(cmd_type_bd.getSelectionModel().getSelectedItem().getPath());
+		h_bdURL.setParamValue(txt_database_url.getText());
+		h_jdbcDriver.setParamValue(txt_jdbc.getText());
 	}
 
 	@Override
 	public void getProps() {
-		bdName = getMainCtrl().getConfByKey("spring.datasource.base.name");
-		bdIdent = getMainCtrl().getConfByKey("spring.api.username");
-		jdbcDriver = getMainCtrl().getConfByKey("spring.api.driver-class-name");
-		bdPwd = getMainCtrl().getConfByKey("spring.api.password");
-		bdURL =  getMainCtrl().getConfByKey("spring.api.url");
-		bdType = getMainCtrl().getConfByKey("spring.api.jpa.properties.hibernate.dialect");
+		h_bdName = getMainCtrl().getConfByKey("hibernate.default_catalog");
+		h_bdIdent = getMainCtrl().getConfByKey("hibernate.connection.username");
+		h_jdbcDriver = getMainCtrl().getConfByKey("hibernate.connection.driver_class");
+		h_bdPwd = getMainCtrl().getConfByKey("hibernate.connection.password");
+		h_bdURL =  getMainCtrl().getConfByKey("hibernate.connection.url");
+		h_bdType = getMainCtrl().getConfByKey("hibernate.dialect");
 	}
 }

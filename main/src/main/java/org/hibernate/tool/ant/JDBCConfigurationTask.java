@@ -132,6 +132,7 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 			throw new BuildException("Could not create or find " + className + " with one argument delegate constructor", e);
 		} 
 	}
+	
 	public void setHibernateProperties(Properties hibernateProp) {
 		manualProps = hibernateProp;
 	}

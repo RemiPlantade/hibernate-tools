@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 
-//import api_conf.conf.model.ApiBean;
+import api_conf.conf.model.ApiBean;
 import api_conf.conf.model.ApiConf;
 import fr.aboucorp.conf.model.GenericDao;
 import javafx.application.Application;
@@ -61,7 +61,7 @@ public class MainController extends Application implements Initializable{
 
 	protected static GenericDao<ApiConf> confDao;
 
-//	protected static GenericDao<ApiBean> beanDao;
+	protected static GenericDao<ApiBean> beanDao;
 
 	@FXML
 	private FlowPane contentPane;
@@ -141,7 +141,7 @@ public class MainController extends Application implements Initializable{
 		try {
 			try {
 				confDao = new GenericDao<>(ApiConf.class);
-//				beanDao = new GenericDao<>(ApiBean.class);
+				beanDao = new GenericDao<>(ApiBean.class);
 				allConf = confDao.getAll();
 			} catch (SQLException e) {
 				Alert alert = new Alert(AlertType.ERROR);
@@ -171,13 +171,15 @@ public class MainController extends Application implements Initializable{
 	private void updateDatabaseConf() throws SQLException {
 		for (ApiConf conf : allConf) {
 			if(conf != null && conf.getParamKey() != null) {
-				if(conf.getParamKey().startsWith("hibernate.")){
-					props.setProperty(conf.getParamKey(), conf.getParamValue());
-				}else {
-					confDao.updateEntity(conf);
-				}
-
+				System.out.println("Conf before update = key : " + conf.getParamKey() + "value : " + conf.getParamValue());
+				confDao.updateEntity(conf);
 			}
+		}
+		allConf = confDao.getAll();
+		for (ApiConf conf : allConf) {
+			if(conf.getParamKey().startsWith("hibernate")){
+				props.setProperty(conf.getParamKey(), conf.getParamValue());
+			}	
 		}
 	}
 
@@ -258,6 +260,7 @@ public class MainController extends Application implements Initializable{
 		SimpleEntry<AbstractController,VBox> actual = pages.getFirst();
 		try {
 			actual.getKey().checkInfo();
+			actual.getKey().updateConf();
 			pages.removeFirst();
 			contentPane.getChildren().clear();
 			pages.addLast(actual);
@@ -295,7 +298,7 @@ public class MainController extends Application implements Initializable{
 
 	private void updateEntitiesConf() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void onPreviousPage() {

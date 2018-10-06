@@ -41,7 +41,6 @@ public class EntitiesController extends AbstractController implements Initializa
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize();
 		comboList = new HashMap<>();
 		list_view_entities.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<EntityPOJOClass>() {
 			@Override

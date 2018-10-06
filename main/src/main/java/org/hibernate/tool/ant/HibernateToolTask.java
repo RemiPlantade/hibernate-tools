@@ -187,11 +187,6 @@ public class HibernateToolTask extends Task {
 	}
 
 	private void configureJDBCProps() {
-		configurationTask.setPropertyFile(null);
-		/** 
-		 * Aboucorp
-	     * Starting configuration
-		 */
 		if(!MainController.running.get()) {
 			new Thread() {
 				@Override
@@ -216,7 +211,7 @@ public class HibernateToolTask extends Task {
 	}
 
 	private void reportException(Throwable re, int count, ExporterTask generatorTask) {
-		log("An exception occurred while running exporter #" + count + ":" + generatorTask.getName(), Project.MSG_ERR);
+		log("An exception occurred while running exporter #" + count + ":" + generatorTask.getName() + " msg : " + re.getMessage(), Project.MSG_ERR );
 		log("To get the full stack trace run ant with -verbose", Project.MSG_ERR);
 		
 		log(re.toString(), Project.MSG_ERR);
