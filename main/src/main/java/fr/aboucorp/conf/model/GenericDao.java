@@ -11,8 +11,6 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 
-import api_conf.conf.model.ApiConf;
-
 public class GenericDao<T> {
 	private ConnectionSource connection;
 	private Dao<T,String> dao;
@@ -57,7 +55,7 @@ public class GenericDao<T> {
 		return dao.update(object) == 1;
 	}
 
-	public List<ApiConf> getAll() throws SQLException {
-		return (List<ApiConf>) dao.queryForAll();
+	public List<T> getAll() throws SQLException {
+		return (List<T>) dao.queryForAll();
 	}
 }

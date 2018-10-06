@@ -1,49 +1,24 @@
 package fr.aboucorp.conf.controller;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 
 import api_conf.conf.exception.BadURLException;
 import api_conf.conf.model.ApiConf;
-import fr.aboucorp.conf.PropertyBindingException;
-import fr.aboucorp.conf.ihm.POJOClassCell;
 import fr.aboucorp.conf.ihm.POJOClassCellFactory;
-import javafx.beans.property.adapter.JavaBeanIntegerProperty;
-import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
-import javafx.beans.property.adapter.JavaBeanStringProperty;
-import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.util.StringConverter;
-import javafx.scene.control.Alert.AlertType;
 
 public class EntitiesController extends AbstractController implements Initializable{
 

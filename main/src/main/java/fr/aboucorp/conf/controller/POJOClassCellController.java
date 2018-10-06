@@ -1,30 +1,16 @@
 package fr.aboucorp.conf.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.management.BadAttributeValueExpException;
-import javax.transaction.Transactional.TxType;
-
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
-import org.hibernate.tool.hbm2x.pojo.POJOClass;
-
 import api_conf.conf.exception.BadURLException;
-import api_conf.conf.model.ApiConf;
 import fr.aboucorp.conf.ihm.POJOClassCell;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -32,8 +18,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.util.Callback;
 
 public class POJOClassCellController implements Initializable{

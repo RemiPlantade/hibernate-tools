@@ -2,14 +2,9 @@ package fr.aboucorp.conf.controller;
 
 import java.io.File;
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import api_conf.conf.model.ApiConf;
-import fr.aboucorp.conf.PropertyBindingException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

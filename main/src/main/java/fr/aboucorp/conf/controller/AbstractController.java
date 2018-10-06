@@ -1,7 +1,5 @@
 package fr.aboucorp.conf.controller;
 
-import javafx.fxml.Initializable;
-
 public abstract class AbstractController {
 	
 	private String id;

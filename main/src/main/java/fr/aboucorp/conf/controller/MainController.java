@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 
-import api_conf.conf.model.ApiBean;
+//import api_conf.conf.model.ApiBean;
 import api_conf.conf.model.ApiConf;
 import fr.aboucorp.conf.model.GenericDao;
 import javafx.application.Application;
@@ -61,7 +61,7 @@ public class MainController extends Application implements Initializable{
 
 	protected static GenericDao<ApiConf> confDao;
 
-	protected static GenericDao<ApiBean> beanDao;
+//	protected static GenericDao<ApiBean> beanDao;
 
 	@FXML
 	private FlowPane contentPane;
@@ -141,7 +141,7 @@ public class MainController extends Application implements Initializable{
 		try {
 			try {
 				confDao = new GenericDao<>(ApiConf.class);
-				beanDao = new GenericDao<>(ApiBean.class);
+//				beanDao = new GenericDao<>(ApiBean.class);
 				allConf = confDao.getAll();
 			} catch (SQLException e) {
 				Alert alert = new Alert(AlertType.ERROR);
