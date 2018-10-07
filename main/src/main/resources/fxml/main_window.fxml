@@ -11,8 +11,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.MainController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.141"
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.aboucorp.conf.controller.MainController">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -35,56 +38,84 @@
 		</MenuBar>
 	</top>
 	<center>
-		<FlowPane fx:id="contentPane" alignment="CENTER" prefHeight="500.0" prefWidth="950" BorderPane.alignment="CENTER" />
+		<VBox BorderPane.alignment="TOP_CENTER">
+			<children>
+				<FlowPane fx:id="headerPane" alignment="CENTER" prefHeight="100.0"
+					prefWidth="950" BorderPane.alignment="CENTER">
+					<children>
+						<ImageView fitWidth="249.0" pickOnBounds="true"
+							preserveRatio="true">
+							<image>
+								<Image url="@images/logo.png" />
+							</image>
+							<FlowPane.margin>
+								<Insets />
+							</FlowPane.margin>
+						</ImageView>
+					</children>
+				</FlowPane>
+				<FlowPane fx:id="contentPane" alignment="CENTER"
+					prefHeight="400.0" prefWidth="950" BorderPane.alignment="CENTER" />
+			</children>
+		</VBox>
 	</center>
 	<bottom>
-		
+
 	</bottom>
-   <bottom>
-      <VBox fx:id="bottom_pane" prefWidth="100.0" BorderPane.alignment="BOTTOM_CENTER">
-      <children>
-            <FlowPane fx:id="nav_button_bar" alignment="CENTER" columnHalignment="CENTER" hgap="300.0" prefHeight="50.0" style="-fx-background-color: E1E8FB;">
-         <children>
-            <Button fx:id="btn_prev" mnemonicParsing="false" prefWidth="80.0" text="Previous">
-               <FlowPane.margin>
-                  <Insets />
-               </FlowPane.margin>
-            </Button>
-            <Button fx:id="btn_next" mnemonicParsing="false" prefWidth="80.0" text="Next">
-               <FlowPane.margin>
-                  <Insets />
-               </FlowPane.margin>
-            </Button>
-         </children>
-      </FlowPane>
-      <FlowPane alignment="BOTTOM_CENTER" prefWidth="200.0" style="-fx-background-color: E1E8FB;">
-         <children>
-            <VBox alignment="CENTER">
-               <children>
-                  <Label fx:id="lbl_step" text="Step 3 / 6" />
-                   <HBox>
-                     <children>
-                        <Rectangle fx:id="rect_blue" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="120.0" />
-                        <Rectangle fx:id="rect_white" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="10.0" stroke="DODGERBLUE" strokeType="INSIDE" width="120.0" />
-                     </children>
-                  </HBox>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </VBox>
-         </children>
-         <VBox.margin>
-                  <Insets />
-         </VBox.margin>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="10.0" />
-         </padding>
-      </FlowPane>
-      </children>
-      </VBox>
-   </bottom>
+	<bottom>
+		<VBox fx:id="bottom_pane" prefWidth="100.0" BorderPane.alignment="BOTTOM_CENTER">
+			<children>
+				<FlowPane fx:id="nav_button_bar" alignment="CENTER"
+					columnHalignment="CENTER" hgap="300.0" prefHeight="50.0"
+					style="-fx-background-color: E1E8FB;">
+					<children>
+						<Button fx:id="btn_prev" mnemonicParsing="false" prefWidth="80.0"
+							text="Previous">
+							<FlowPane.margin>
+								<Insets />
+							</FlowPane.margin>
+						</Button>
+						<Button fx:id="btn_next" mnemonicParsing="false" prefWidth="80.0"
+							text="Next">
+							<FlowPane.margin>
+								<Insets />
+							</FlowPane.margin>
+						</Button>
+					</children>
+				</FlowPane>
+				<FlowPane alignment="BOTTOM_CENTER" prefWidth="200.0"
+					style="-fx-background-color: E1E8FB;">
+					<children>
+						<VBox alignment="CENTER">
+							<children>
+								<Label fx:id="lbl_step" text="Step 3 / 6" />
+								<HBox>
+									<children>
+										<Rectangle fx:id="rect_blue" arcHeight="5.0"
+											arcWidth="5.0" fill="DODGERBLUE" height="10.0" stroke="DODGERBLUE"
+											strokeType="INSIDE" width="120.0" />
+										<Rectangle fx:id="rect_white" arcHeight="5.0"
+											arcWidth="5.0" fill="WHITE" height="10.0" stroke="DODGERBLUE"
+											strokeType="INSIDE" width="120.0" />
+									</children>
+								</HBox>
+							</children>
+							<opaqueInsets>
+								<Insets />
+							</opaqueInsets>
+						</VBox>
+					</children>
+					<VBox.margin>
+						<Insets />
+					</VBox.margin>
+					<opaqueInsets>
+						<Insets />
+					</opaqueInsets>
+					<padding>
+						<Insets bottom="10.0" />
+					</padding>
+				</FlowPane>
+			</children>
+		</VBox>
+	</bottom>
 </BorderPane>

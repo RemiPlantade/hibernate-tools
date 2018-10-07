@@ -84,12 +84,8 @@ public class DatabaseController extends AbstractController implements Initializa
         try {
             Class.forName(txt_jdbc.getText());
             conn = DriverManager.getConnection(txt_database_url.getText()+"?useSSL=false", txt_ident_bd.getText(), txt_mdp_bd.getText());
-            if (conn != null) {
-            	Alert alert = new Alert(AlertType.INFORMATION);
-    			alert.setTitle("EDatabase connection");
-    			alert.setHeaderText("Database connection established");
-    			alert.showAndWait();
-            }else {
+            if (conn == null) {
+            	throw new IllegalArgumentException("Could not find connect to the database");
             }
         } catch (ClassNotFoundException ex) {
         	throw new IllegalArgumentException("Could not find database driver class");

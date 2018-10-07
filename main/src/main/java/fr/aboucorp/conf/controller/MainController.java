@@ -1,5 +1,6 @@
 package fr.aboucorp.conf.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -28,6 +29,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -39,6 +43,7 @@ public class MainController extends Application implements Initializable{
 
 	public static final CountDownLatch latch = new CountDownLatch(1);
 	public static final CountDownLatch latch1 = new CountDownLatch(1);
+	public static final CountDownLatch latch2 = new CountDownLatch(1);
 	public static final CountDownLatch latch3 = new CountDownLatch(1);
 
 	public static MainController controller = null;
@@ -64,6 +69,8 @@ public class MainController extends Application implements Initializable{
 	protected static GenericDao<ApiBean> beanDao;
 
 	@FXML
+	private FlowPane headerPane;
+	@FXML
 	private FlowPane contentPane;
 	@FXML
 	private VBox bottom_pane;
@@ -81,6 +88,8 @@ public class MainController extends Application implements Initializable{
 	private FlowPane nav_button_bar;
 
 	private int step_number = 0;
+
+	private AtomicBoolean isEnding = new AtomicBoolean(false);
 
 	public MainController() {
 		pages = new LinkedList<>();
@@ -160,7 +169,11 @@ public class MainController extends Application implements Initializable{
 
 			btn_next.setOnAction(new EventHandler<ActionEvent>() {
 				@Override public void handle(ActionEvent event) {
-					onNextPage();
+					if(!isEnding.get()) {
+						onNextPage();
+					}else {
+						closeWindow();
+					}
 				}
 			});
 		} catch (IOException e) {
@@ -168,14 +181,7 @@ public class MainController extends Application implements Initializable{
 		}
 	}
 
-	private void updateDatabaseConf() throws SQLException {
-		for (ApiConf conf : allConf) {
-			if(conf != null && conf.getParamKey() != null) {
-				System.out.println("Conf before update = key : " + conf.getParamKey() + "value : " + conf.getParamValue());
-				confDao.updateEntity(conf);
-			}
-		}
-		allConf = confDao.getAll();
+	private void setProperties() {
 		for (ApiConf conf : allConf) {
 			if(conf.getParamKey().startsWith("hibernate")){
 				props.setProperty(conf.getParamKey(), conf.getParamValue());
@@ -266,39 +272,89 @@ public class MainController extends Application implements Initializable{
 			pages.addLast(actual);
 			switch(step_number) {
 			case 5 :
-				updateDatabaseConf();	
-				btn_next.setText("Finish");
+				setProperties();			
+				btn_next.setText("Generate");
+				contentPane.getChildren().add(pages.getFirst().getValue());
 				latch1.countDown();
 				break;
 			case 6:
 				nav_button_bar.getChildren().remove(btn_prev);
-				updateEntitiesConf();
-				latch3.countDown();
-				Platform.exit();
+				btn_next.setDisable(true);
+				btn_next.setText("Finish");
+				displayLoading();
+				Thread t = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							updatingData();
+							isEnding.set(true);
+							btn_next.setDisable(false);
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									endLoading();
+								}
+							});
+						} catch (SQLException e) {
+							Alert alert = new Alert(AlertType.ERROR);
+							alert.setTitle("Error Dialog");
+							alert.setHeaderText("Error when saving configuration");
+							alert.setContentText(e.getMessage());
+							alert.showAndWait();
+						}
+					}
+				});
+				t.start();
 				break;
+			default:
+				contentPane.getChildren().add(pages.getFirst().getValue());
 			}
-			contentPane.getChildren().add(pages.getFirst().getValue());
 			step_number++;
 			refreshStepState();
 		}catch(IllegalArgumentException e) {
+			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Erreur de saisie");
 			alert.setContentText(e.getMessage());
 			alert.showAndWait();
-
-		}catch(Exception e1) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("Unexpected error");
-			alert.setContentText(e1.getMessage());
-			alert.showAndWait();
 		}
 	}
 
-	private void updateEntitiesConf() {
-		// TODO Auto-generated method stub
+	private void updatingData() throws SQLException {
+		for (ApiConf conf : allConf) {
+			if(conf != null && conf.getParamKey() != null) {
+				confDao.updateEntity(conf);
+			}
+		}	
+	}
 
+	private void closeWindow() {
+		latch3.countDown();
+		Platform.exit();
+	}
+
+	private void displayLoading() {
+		VBox container = new VBox();
+		ProgressIndicator progressIndicator = new ProgressIndicator();
+		progressIndicator.setMinSize(80, 80);
+		Label chargingLbl = new Label("Generating API ...");
+		contentPane.getChildren().clear();
+		container.getChildren().add(progressIndicator);
+		container.getChildren().add(chargingLbl);
+		contentPane.getChildren().add(container);
+	}
+
+	private void endLoading() {
+		VBox container = new VBox();
+		Label chargingLbl = new Label("API generated !");
+		Image image = new Image("fxml/images/ok_icon.png",80,80,true,true);
+		ImageView imageView = new ImageView(image);
+		imageView.setCache(true);
+		contentPane.getChildren().clear();
+		container.getChildren().add(imageView);
+		container.getChildren().add(chargingLbl);
+		contentPane.getChildren().add(container);
 	}
 
 	public void onPreviousPage() {
